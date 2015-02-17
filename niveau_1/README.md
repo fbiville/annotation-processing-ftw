@@ -8,9 +8,9 @@ Le première étape de l'exercice consiste à utiliser `javac` en ligne de comma
 
 La compilation d'un annotation processor est identique à n'importe quelle classe.
 
-Essayez de compiler `HelloWorldProcessor.java` qui se trouve dans le répertoire exo1 (le plus simple fonctionne).
+Essayez de compiler `StutteringHelloWorldProcessor.java` qui se trouve dans le répertoire exo1 (le plus simple fonctionne).
 
-solution: cd exo1 && javac HelloWorldProcessor
+solution: cd exo1 && javac StutteringHelloWorldProcessor
 
 ### étape 2: utiliser un annotation processor
 
@@ -25,7 +25,7 @@ Note: Hello world!
 Note: Hello world!
 ```
 
-solution: cd exo1 && javac -processor HelloWorldProcessor SomeDeprecatedClass.java
+solution: cd exo1 && javac -processor StutteringHelloWorldProcessor SomeDeprecatedClass.java
 
 Maintenant, compilez en même temps `SomeDeprecatedClass.java` et `SomeOtherDeprecatedClass.java`. Constatez que le résultat dans la console est le même.
 

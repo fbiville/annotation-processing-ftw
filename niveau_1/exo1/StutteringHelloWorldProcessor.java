@@ -14,8 +14,12 @@ import javax.tools.Diagnostic;
 /**
  * Un {@link javax.annotation.processing.Processor} qui écrit simplement "Hello world!" dans les logs de compilation si
  * au moins un élément dans le code est annoté avec {@link Deprecated}.
+ * <p>
+ * Comme vous aller pouvoir le constater en l'utilisant, cet annotation processor affiche 2 fois "Hello world!" au lieu
+ * d'une, d'où le nom (Stuttering = bégayant).
+ * </p>
  */
-public class HelloWorldProcessor implements Processor {
+public class StutteringHelloWorldProcessor implements Processor {
   private ProcessingEnvironment processingEnv;
 
   @Override
