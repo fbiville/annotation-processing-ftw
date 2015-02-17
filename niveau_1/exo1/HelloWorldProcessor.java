@@ -46,10 +46,7 @@ public class HelloWorldProcessor implements Processor {
 
   @Override
   public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-    if (roundEnv.processingOver()) {
-      // essayez les différentes valeurs de Diagnostic.Kind et constatez les effets dans les logs Maven
-      processingEnv.getMessager().printMessage(Diagnostic.Kind.MANDATORY_WARNING, "Hello world!");
-    }
+    processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Hello world!");
     return false;
   }
 }
