@@ -49,11 +49,25 @@ Une option de `javac` permet d'activer les logs des rounds d'annotations process
 
 Compilez `HelloWorldProcessor.java` dans le répetoire `exo2` puis `SomeDeprecatedClass` en activant les rounds.
 
-solution: javac -XprintRounds -processor HelloWorldProcessor SomeDeprecatedClass.java
+solution: cd exo2 && javac -XprintRounds -processor HelloWorldProcessor SomeDeprecatedClass.java
 
 Constatez qu'il y a deux rounds, ce qui explique l'affichage du "Hello world!" en doublon.
 
-### étape 2: supprimer le doublon avec l'API
+### étape 2: supprimer le doublon à la bourrin
+
+Le cycle de vie d'un objet implémentation l'interface `Processor` est le suivant (citation de la JSR-269, javadoc de l'interface `Processor`):
+
+Each implementation of a Processor must provide a public no-argument constructor to be used by tools to instantiate the processor. The tool infrastructure will interact with classes implementing this interface as follows:
+    1. If an existing Processor object is not being used, to create an instance of a processor the tool calls the no-arg constructor of the processor class.
+    2. Next, the tool calls the init method with an appropriate ProcessingEnvironment.
+    3. Afterwards, the tool calls getSupportedAnnotationTypes, getSupportedOptions, and getSupportedSourceVersion. These methods are only called once per run, not on each round.
+    4. As appropriate, the tool calls the process method on the Processor object; a new Processor object is not created for each round. 
+
+En substance, il faut comprendre qu'une seule instance d'un annotation processor est créé par compilation. Il est donc tout à fait possible de traiter ce problème en exploitant l'aspect "statefull" des instances d'annotation processor (ici, c'est pas très propre, mais ça marche, et dans la vraie vie, c'est parfois indispensable).
+
+solution: il suffit d'un flag stockée en propriété de la classe `HelloWorldProcessor`.
+
+### étape 3: supprimer le doublon proprement
 
 Corrigez le doublon en utilisant l'API (astuce: regardez du côté de `RoundEnvironment`).
 
@@ -69,18 +83,5 @@ solution:
   }
 ```
 
-### étape 3: supprimer le doublon sans l'API
-
-Le cycle de vie d'un objet implémentation l'interface `Processor` est le suivant (citation de la JSR-269, javadoc de l'interface `Processor`):
-
-Each implementation of a Processor must provide a public no-argument constructor to be used by tools to instantiate the processor. The tool infrastructure will interact with classes implementing this interface as follows:
-    1. If an existing Processor object is not being used, to create an instance of a processor the tool calls the no-arg constructor of the processor class.
-    2. Next, the tool calls the init method with an appropriate ProcessingEnvironment.
-    3. Afterwards, the tool calls getSupportedAnnotationTypes, getSupportedOptions, and getSupportedSourceVersion. These methods are only called once per run, not on each round.
-    4. As appropriate, the tool calls the process method on the Processor object; a new Processor object is not created for each round. 
-
-En substance, il faut comprendre qu'une seule instance d'un annotation processor est créé par compilation. Il est donc tout à fait possible de traiter ce problème en exploitant l'aspect "statefull" des instances d'annotation processor (ici, c'est pas très propre, mais ça marche, et dans la vraie vie, c'est parfois indispensable).
-
-solution: il suffit d'un flag stockée en propriété de la classe `HelloWorldProcessor`.
 
 
