@@ -83,5 +83,31 @@ solution:
   }
 ```
 
+## exo3: la même chose avec Maven
 
+Dans le répertoire `exo3`, vous trouverez deux projets Maven et les classes de l'exo 2:
 
+ * répertoire `processor`: le projet `processor-exo3` produit un `jar` qui contient la classe `fr.devoxx.niveau1.exo3.HelloWorldProcessor`.
+ * répertoire `subject`: le projet `subject-exo3` contient la classe `fr.devoxx.niveau1.exo3.SomeDeprecatedClass`
+
+### étape 1: déclarer le processor
+
+Compilez le projet `processor-exo3` (pensez au `install`) puis `subject-exo3` (`compile` suffit), constatez qu'aucune ligne `Hello world!` ne s'affiche dans les traces Maven.
+
+De la même manière qu'en utilisant `javac` à la main il faut ajouter une ligne de commande pour déclarer un annotation processor, avec Maven il faut ajouter quelques lignes dans le `pom.xml`.
+
+Le plugin Maven qui se charge de la compilation (et fait donc l'interface entre Maven et le compilateur) est le `maven-compiler-plugin`.
+
+Trouvez comment déclarer le processor `fr.devoxx.niveau1.exo3.HelloWorldProcessor`, recompilez et consatez que le message suivant s'affiche dans les logs Maven:
+
+```
+[WARNING] Hello world!
+```
+
+solution:
+ajout dans la configuration de `maven-compiler-plugin` des 3 lignes suivantes:
+```
+<annotationProcessors>
+  <annotationProcessor>fr.devoxx.niveau1.exo3.HelloWorldProcessor</annotationProcessor>
+</annotationProcessors>
+```

@@ -37,9 +37,6 @@
         <configuration>
           <source>${jdk.version}</source>
           <target>${jdk.version}</target>
-          <annotationProcessors>
-            <annotationProcessor>fr.devoxx.niveau1.exo3.HelloWorldProcessor</annotationProcessor>
-          </annotationProcessors>
         </configuration>
       </plugin>
     </plugins>
