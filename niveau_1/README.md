@@ -111,3 +111,22 @@ ajout dans la configuration de `maven-compiler-plugin` des 3 lignes suivantes:
   <annotationProcessor>fr.devoxx.niveau1.exo3.HelloWorldProcessor</annotationProcessor>
 </annotationProcessors>
 ```
+
+### étape 2: les niveaux de diagnostic et Maven
+
+Le niveau de log utilisé dans l'implémentation Maven de `HelloWorldProcessor` n'est pas le même que dans l'implémentation pour `javac`.
+
+Pour comprendre pourquoi, faites un test avec les valeurs `NOTE` puis `WARNING` (et `OTHER` si vous y tenez) de l'enum `javax.tools.Diagnostic.Kind`.
+
+Ce comportement est un "choix" du plugin `maven-compiler-plugin` pour réduire la quantité de logs Maven (sic!) durant la phase compilation.
+
+Trouvez, l'option du plugin permet l'affichage des warnings de compilation dans Maven.
+
+solution: ajouter `<showWarnings>true</showWarnings>` dans la configuration de `maven-compiler-plugin` pour afficher `WARNING`, `NOTES` et `OTHER` au niveau `[INFO]`.
+
+Tentez maintenant la compilation avec le niveau `ERROR`.
+
+Constatez que vous avez maintenant dans vos mains le moyen de contrôler la compilation de vos classes.
+
+>Note:
+>Par ailleurs, ce comportement permet de comprendre pourquoi on utilise une enum qui s'appelle `Diagnostic.Kind` et non quelque chose comme `Level`. En principe, on n'enregistre pas un log mais on transmet un diagnostic au compilateur (sous forme de message), en le qualifiant. Charge au compilateur ensuite de choisir ce qu'il en fait. Dans les faits, cela revient à afficher un log sauf si c'est le niveau `ERROR` auquel cas le compilateur arrête également la compilation.
