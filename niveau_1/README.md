@@ -130,3 +130,79 @@ Constatez que vous avez maintenant dans vos mains le moyen de contrôler la comp
 
 >Note:
 >Par ailleurs, ce comportement permet de comprendre pourquoi on utilise une enum qui s'appelle `Diagnostic.Kind` et non quelque chose comme `Level`. En principe, on n'enregistre pas un log mais on transmet un diagnostic au compilateur (sous forme de message), en le qualifiant. Charge au compilateur ensuite de choisir ce qu'il en fait. Dans les faits, cela revient à afficher un log sauf si c'est le niveau `ERROR` auquel cas le compilateur arrête également la compilation.
+
+## exo4: découverte automatique des processors
+
+L'obligation de déclarer explicitement son processor est un handicape au déploiement d'une solution basée sur un annotation processor.
+
+Heureusement, la JSR-269 spécifie la présence d'un "discovery process". Celui de `javac` est basé sur le `ServiceLoader` de l'API Java.
+
+### étape 1: se passer de déclaration explicite du processor
+
+La documentation de `javac` indique:
+
+>Processors are located by means of service provider-configuration files named META-INF/services/javax.annotation.processing.Processor on the search path
+
+Ajoutez le fichier dans le répertoire `src/main/resources` du projet `exo4-processor1` avec comme seul contenu le nom complet de la classe `DeprecatedCodeWhistleblower` sur une ligne. Recompilez tout le projet (`mvn clean install`). Le message suivant s'affiche dans la console lors de la compilation du module `exo4-subject1`.
+
+```
+[WARNING] Attention, il y a du code deprecated dans les sources de ce module !
+```
+
+Félicitations ! Il suffit maintenant d'avoir l'artifact `fr.devoxx.2015.niveau1:exo4-processor1` comme dépendance avec le scope `compile` pour bénéficier de ses avertissements (super utiles) à la compilation.
+
+### étape 2: automatiser encore plus
+
+La création du fichier `META-INF/services/javax.annotation.processing.Processor` et l'écriture de son contenu sont un exemple parfait de ce qui peut être automatisé avec le processing d'annotation à la compilation.
+
+Et pour preuve, c'est le but de la toute petite (3 classes) librairie `AutoService`.
+
+Préparez votre totem, vous allez faire de l'annotation processing sur un annotation processor.
+
+Ajoutez la dépendance `com.google.auto.service:auto-service` au module `exo4-processor2`, puis l'annotation `@AutoService(Processor.class)` sur la classe `OverrideJohns`. Relancez la compilation de tout le projet, vous devez voir apparaître la ligne suivante lors de la compilation du module `exo4-subject2`:
+
+```
+[WARNING] True rewards await those who choose wisely.
+```
+
+Fantastique ! Ca fonctionne ! Il est possible de faire de l'annotation processing alors même que l'on code un processor, pas mal non ?
+
+### étape 3: la bonne gestion des dépendances de type annotation processor
+
+Vous aurez sûrement remarqué que la ligne produite par `DeprecatedCodeWhistleblower` ("[WARNING] Attention, il y a du code deprecated dans les sources de ce module !") est aussi présente lors de la compilation du module `exo4-subject2`.
+
+Comme ce processor utilise un "service provider-configuration files", cela signifie que le module `exo4-subject2` déclare une dépendance vers le module `exo4-processor1`.
+
+Vérifiez le `pom.xml` et constatez que ce n'est pas le cas, en tout cas pas directement.
+
+Le module `exo4-subject2` déclare une dépendance vers `exo4-subject1` et du coup se voit appliqué le processor de ce module.
+
+Ce comportement est rarement souhaitable. Il existe une option de la déclaration de dépendance Maven qui permet de corriger ce comportement.
+
+Faites en sorte que la ligne de log du processor `DeprecatedCodeWhistleblower` ne s'affiche plus lors de la compilation du module `exo4-subject2` sans modifier le `pom.xml` de `exo4-subject2`.
+
+#### étape 4: bonus, contourner les bugs du maven-compiler-plugin
+
+Si vous regardez le `pom.xml` du module `exo4-processor1`, vous constaterez qu'une option du compilateur a été ajoutée pour désactiver totalement le processing d'annotation lors de la compilation de ce module.
+
+Cette option est super-extrèmement-ultra-vachement importante si vous écrivez `META-INF/services/javax.annotation.processing.Processor` à la main.
+
+Supprimez cette option, compilez le projet. Constatez que plus aucun des logs de nos processors ne s'affichent lors de la compilation des modules `exo4-subject1` et `exo4-subject2`.
+
+Pour connaître la cause de la disparition de `DeprecatedCodeWhistleblower`, regardez dans le répertoire `exo4-processor1/target/classes` et constatez qu'il n'y a aucune classe compilée. La compilation est indiquée par Maven à tort comme ayant fonctionné.
+
+L'explication n'est pas triviale, mais la voici. Lors du build:
+
+1. Maven copie les ressources dans le répertoire `exo4-processor1/target/classes`
+2. lors de la compilation, le `maven-compiler-plugin` spécifie à `javac` que le répertoire `exo4-processor1/target/classes` fait partie de son classpath (bug ?)
+3. `javac` constate donc la présence d'un fichier `META-INF/services/javax.annotation.processing.Processor` dans le classpath et recherche le processor indiqué: `DeprecatedCodeWhistleblower`
+4. ce processor n'existe pas (forcément, on est sur le point de le compiler) et `javac` "affiche" une erreur et ne compile aucun fichier
+5. l'erreur ("error: Bad service configuration file, or exception thrown while constructing Processor object: javax.annotation.processing.Processor: Provider fr.devoxx.niveau1.exo4.DeprecatedCodeWhistleblower not found") est simplement ignorée par le `maven-compiler-plugin` (bug! gros bug!) qui considère que la compilation a réussi
+6. la compilation de `exo4-processor1` produit donc un jar qui ne contient que `META-INF/services/javax.annotation.processing.Processor`
+7. ce jar est tiré par les modules `exo4-subject1` et `exo4-subject2`, il y a donc dans le classpath un fichier `META-INF/services/javax.annotation.processing.Processor` qui référence un processor inexistant, `javac` lève une erreur et la compilation n'a pas lieu
+8. s'il n'y a pas de compilation, le message de `OverrideJohns` ne peut pas s'afficher, pas de plus que celui de `DeprecatedCodeWhistleblower` qui n'a pas été compilé
+
+En conclusion, la présence d'un fichier `META-INF/services/javax.annotation.processing.Processor` sans son processor peut sérieusement compromettre la compilation. Et encore plus celle d'un projet Maven dû à certains bugs du `maven-compiler-plugin`.
+
+
+
