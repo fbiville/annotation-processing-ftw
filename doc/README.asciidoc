@@ -1,6 +1,7 @@
-= Documentation Hands-on Devoxx FR 2015
+= Annotation Processing: @​Nailed("it")
+:toc: right
 
-== Documentation liée à l'Annotation Processing
+== Documentation Annotation Processing
 
 === JSR 269
 
@@ -56,7 +57,7 @@ L'interface avec le compilateur quand on utilise Maven est le `maven-compiler-pl
 ** link:maven-compiler-plugin/usage.html[usage]
 ** link:maven-compiler-plugin/compile-mojo.html[goal compile] (indispensable)
 
-== Outils
+== Documentation Outils
 
 === AutoService
 
