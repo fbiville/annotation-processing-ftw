@@ -133,7 +133,7 @@ Constatez que vous avez maintenant dans vos mains le moyen de contrôler la comp
 
 ## exo4: découverte automatique des processors
 
-L'obligation de déclarer explicitement son processor est un handicape au déploiement d'une solution basée sur un annotation processor.
+L'obligation de déclarer explicitement son processor est un handicap au déploiement d'une solution basée sur un annotation processor.
 
 Heureusement, la JSR-269 spécifie la présence d'un "discovery process". Celui de `javac` est basé sur le `ServiceLoader` de l'API Java.
 
@@ -143,13 +143,13 @@ La documentation de `javac` indique:
 
 >Processors are located by means of service provider-configuration files named META-INF/services/javax.annotation.processing.Processor on the search path
 
-Ajoutez le fichier dans le répertoire `src/main/resources` du projet `exo4-processor1` avec comme seul contenu le nom complet de la classe `DeprecatedCodeWhistleblower` sur une ligne. Recompilez tout le projet (`mvn clean install`). Le message suivant s'affiche dans la console lors de la compilation du module `exo4-subject1`.
+Ajoutez le fichier dans le répertoire `src/main/resources` du projet `exo4-processor1` avec comme seul contenu le nom qualifié de la classe `DeprecatedCodeWhistleblower` sur une ligne. Recompilez tout le projet (`mvn clean install`). Le message suivant s'affiche dans la console lors de la compilation du module `exo4-subject1`.
 
 ```
-[WARNING] Attention, il y a du code deprecated dans les sources de ce module !
+[WARNING] Attention, il y a du code déprécié dans les sources de ce module !
 ```
 
-Félicitations ! Il suffit maintenant d'avoir l'artifact `fr.devoxx.2015.niveau1:exo4-processor1` comme dépendance avec le scope `compile` pour bénéficier de ses avertissements (super utiles) à la compilation.
+Félicitations ! Il suffit maintenant d'avoir l'artefact `fr.devoxx.2015.niveau1:exo4-processor1` comme dépendance avec le scope `compile` pour bénéficier de ses avertissements (super utiles) à la compilation.
 
 ### étape 2: automatiser encore plus
 
@@ -169,7 +169,7 @@ Fantastique ! Ca fonctionne ! Il est possible de faire de l'annotation processin
 
 ### étape 3: la bonne gestion des dépendances de type annotation processor
 
-Vous aurez sûrement remarqué que la ligne produite par `DeprecatedCodeWhistleblower` ("[WARNING] Attention, il y a du code deprecated dans les sources de ce module !") est aussi présente lors de la compilation du module `exo4-subject2`.
+Vous aurez sûrement remarqué que la ligne produite par `DeprecatedCodeWhistleblower` ("[WARNING] Attention, il y a du code déprécié dans les sources de ce module !") est aussi présente lors de la compilation du module `exo4-subject2`.
 
 Comme ce processor utilise un "service provider-configuration files", cela signifie que le module `exo4-subject2` déclare une dépendance vers le module `exo4-processor1`.
 

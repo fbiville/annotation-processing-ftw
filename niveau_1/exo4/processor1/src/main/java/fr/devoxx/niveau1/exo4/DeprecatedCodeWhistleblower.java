@@ -51,7 +51,7 @@ public class DeprecatedCodeWhistleblower implements Processor {
     if (roundEnv.processingOver()) {
       processingEnv.getMessager().printMessage(
           Diagnostic.Kind.MANDATORY_WARNING,
-          "Attention, il y a du code deprecated dans les sources de ce module !"
+          "Attention, il y a du code déprécié dans les sources de ce module !"
       );
     }
     return false;
