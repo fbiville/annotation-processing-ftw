@@ -173,11 +173,13 @@ Vous aurez sûrement remarqué que la ligne produite par `DeprecatedCodeWhistleb
 
 Comme ce processor utilise un "service provider-configuration files", cela signifie que le module `exo4-subject2` déclare une dépendance vers le module `exo4-processor1`.
 
-Vérifiez le `pom.xml` et constatez que ce n'est pas le cas, en tout cas pas directement.
+Vérifiez le `pom.xml` et constatez que ce n'est pas le cas.
 
-Le module `exo4-subject2` déclare une dépendance vers `exo4-subject1` et du coup se voit appliqué le processor de ce module.
+En réalité, le module `exo4-processor1` est une dépendance indirecte du module `exo4-subject2`. En effet, celui-ci déclare une dépendance vers `exo4-subject1`, qui déclare une dépendance à `exo4-processor1`.
 
-Ce comportement est rarement souhaitable. Il existe une option de la déclaration de dépendance Maven qui permet de corriger ce comportement.
+Du coup, `exo4-processor1` est bien dans le classpath de `exo4-subject2` et il se voit donc appliqué le processor de ce module.
+
+Ce comportement est rarement souhaitable. Heureusement, il existe une option de la déclaration de dépendance Maven qui permet de le corriger, de faire en sorte d'avoir une dépendance de scope `compile` mais que celle-ci ne puisse être tirée indirectement.
 
 Faites en sorte que la ligne de log du processor `DeprecatedCodeWhistleblower` ne s'affiche plus lors de la compilation du module `exo4-subject2` sans modifier le `pom.xml` de `exo4-subject2`.
 
