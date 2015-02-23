@@ -189,22 +189,38 @@ Si vous regardez le `pom.xml` du module `exo4-processor1`, vous constaterez qu'u
 
 Cette option est super-extrèmement-ultra-vachement importante si vous écrivez `META-INF/services/javax.annotation.processing.Processor` à la main.
 
-Supprimez cette option, compilez le projet. Constatez que plus aucun des logs de nos processors ne s'affichent lors de la compilation des modules `exo4-subject1` et `exo4-subject2`.
+Supprimez cette option, compilez le projet. Constatez que le build échoue avec le message suivant:
 
-Pour connaître la cause de la disparition de `DeprecatedCodeWhistleblower`, regardez dans le répertoire `exo4-processor1/target/classes` et constatez qu'il n'y a aucune classe compilée. La compilation est indiquée par Maven à tort comme ayant fonctionné.
+```
+[ERROR] Bad service configuration file, or exception thrown while constructing Processor object: javax.annotation.processing.Processor: Provider fr.devoxx.niveau1.exo4.DeprecatedCodeWhistleblower not found
+```
 
-L'explication n'est pas triviale, mais la voici. Lors du build:
+Cette erreur signifie que Java n'a pas trouvé un processor alors que celui-ci est référencé dans un fichier `META-INF/services/javax.annotation.processing.Processor`. Mais bon, forcément, il ne trouve pas un processor qu'il est censé compiler.
+
+L'explication de se comportement n'est pas triviale, mais la voici. Lors du build:
 
 1. Maven copie les ressources dans le répertoire `exo4-processor1/target/classes`
-2. lors de la compilation, le `maven-compiler-plugin` spécifie à `javac` que le répertoire `exo4-processor1/target/classes` fait partie de son classpath (bug ?)
-3. `javac` constate donc la présence d'un fichier `META-INF/services/javax.annotation.processing.Processor` dans le classpath et recherche le processor indiqué: `DeprecatedCodeWhistleblower`
-4. ce processor n'existe pas (forcément, on est sur le point de le compiler) et `javac` "affiche" une erreur et ne compile aucun fichier
+2. lors de la compilation, le `maven-compiler-plugin` spécifie à `javac` que le répertoire `exo4-processor1/target/classes` fait partie de son classpath (un [ticket](https://jira.codehaus.org/browse/MCOMPILER-97) est ouvert sur le sujet depuis des années mais ce choix est requis pour le build incrémental)
+3. `javac` constate donc la présence d'un fichier `META-INF/services/javax.annotation.processing.Processor` dans le classpath et recherche donc le processor indiqué: `DeprecatedCodeWhistleblower`
+4. ce processor n'existe pas (forcément, on est sur le point de le compiler) et `javac` lève une erreur et ne compile aucun fichier
+5. l'erreur ("error: Bad service configuration file, or exception thrown while constructing Processor object: javax.annotation.processing.Processor: Provider fr.devoxx.niveau1.exo4.DeprecatedCodeWhistleblower not found") est remontée par le `maven-compiler-plugin` et le build échoue
+
+Le workaround qui est "prescrit" pour ce problème est celui indiqué ci-dessus: désactiver l'annotation processing complètement lors de la compilation du processor.
+
+Ce workaround est acceptable à la condition d'avoir isolé le processor dans son propre module (ce qui est une bonne pratique de toute manière) et/ou que l'on a pas besoin d'annotation processing de toute façon.
+
+L'autre workaround consiste à utiliser l'annotation `@AutoService`.
+
+##### c'est pire avec Java 6 et 7
+
+Attention, le build n'échoue que si Maven est exécuté avec Java 8. Avec Java 7 et 6, javac ne rapporte aucune erreur (bug corrigé en 8) et ne compile toujours aucune classe. Donc voici la situation que l'on reprend au point 5:
+
 5. l'erreur ("error: Bad service configuration file, or exception thrown while constructing Processor object: javax.annotation.processing.Processor: Provider fr.devoxx.niveau1.exo4.DeprecatedCodeWhistleblower not found") est simplement ignorée par le `maven-compiler-plugin` (bug! gros bug!) qui considère que la compilation a réussi
 6. la compilation de `exo4-processor1` produit donc un jar qui ne contient que `META-INF/services/javax.annotation.processing.Processor`
 7. ce jar est tiré par les modules `exo4-subject1` et `exo4-subject2`, il y a donc dans le classpath un fichier `META-INF/services/javax.annotation.processing.Processor` qui référence un processor inexistant, `javac` lève une erreur et la compilation n'a pas lieu
 8. s'il n'y a pas de compilation, le message de `OverrideJohns` ne peut pas s'afficher, pas de plus que celui de `DeprecatedCodeWhistleblower` qui n'a pas été compilé
 
-En conclusion, la présence d'un fichier `META-INF/services/javax.annotation.processing.Processor` sans son processor peut sérieusement compromettre la compilation. Et encore plus celle d'un projet Maven dû à certains bugs du `maven-compiler-plugin`.
+En conclusion, la présence d'un fichier `META-INF/services/javax.annotation.processing.Processor` sans son processor peut sérieusement compromettre la compilation. Et encore plus celle d'un projet Maven dû à certains bugs du `maven-compiler-plugin` si vous n'utilisez pas Java 8.
 
 
 
