@@ -1,5 +1,6 @@
 = Niveau 1
 :toc: right
+:toc-title: Niveau 1
 :icons: font
 
 == exo 1: en ligne de commande !
