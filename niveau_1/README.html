@@ -557,7 +557,7 @@ Maintenant, compilez en même temps <code>SomeDeprecatedClass.java</code> et <co
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Compilez <code>HelloWorldProcessor.java</code> dans le répetoire <code>exo2</code> puis <code>SomeDeprecatedClass</code> en activant les rounds.
+Compilez <code>HelloWorldProcessor.java</code> dans le répertoire <code>exo2</code> puis <code>SomeDeprecatedClass</code> en activant les logs des rounds. (TODO: lien doc)
 </td>
 </tr>
 </table>
@@ -567,6 +567,24 @@ Compilez <code>HelloWorldProcessor.java</code> dans le répetoire <code>exo2</co
 </div>
 <div class="paragraph">
 <p>Constatez qu&#8217;il y a deux rounds, ce qui explique l&#8217;affichage du "Hello world!" en doublon.</p>
+</div>
+<div class="paragraph">
+<p>Une autre option permet d&#8217;afficher pour chaque round quels sont les processors que javac fait participer.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Compilez <code>SomeDeprecatedClass</code> en activant les deux options.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>solution: cd exo2 &amp;&amp; javac -XprintRounds -XprintProcessorInfo -processor HelloWorldProcessor SomeDeprecatedClass.java</p>
 </div>
 </div>
 <div class="sect2">
@@ -981,7 +999,7 @@ Vérifiez le <code>pom.xml</code> et constatez que ce n&#8217;est pas le cas.
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-02-24 15:36:40 CET
+Last updated 2015-02-24 15:50:51 CET
 </div>
 </div>
 </body>

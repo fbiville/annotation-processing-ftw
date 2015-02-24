@@ -54,11 +54,17 @@ Ce comportement est en réalité lié au mécanisme de "round" de l'annotation p
 
 Une option de `javac` permet d'activer les logs des rounds d'annotations processing. Consultez la doc de `javac` pour l'identifier.
 
-IMPORTANT: Compilez `HelloWorldProcessor.java` dans le répetoire `exo2` puis `SomeDeprecatedClass` en activant les rounds.
+IMPORTANT: Compilez `HelloWorldProcessor.java` dans le répertoire `exo2` puis `SomeDeprecatedClass` en activant les logs des rounds. (TODO: lien doc)
 
 solution: cd exo2 && javac -XprintRounds -processor HelloWorldProcessor SomeDeprecatedClass.java
 
 Constatez qu'il y a deux rounds, ce qui explique l'affichage du "Hello world!" en doublon.
+
+Une autre option permet d'afficher pour chaque round quels sont les processors que javac fait participer.
+
+IMPORTANT: Compilez `SomeDeprecatedClass` en activant les deux options.
+
+solution: cd exo2 && javac -XprintRounds -XprintProcessorInfo -processor HelloWorldProcessor SomeDeprecatedClass.java
 
 === étape 2: supprimer le doublon à la bourrin
 
