@@ -133,7 +133,23 @@ ajout dans la configuration de `maven-compiler-plugin` des 3 lignes suivantes:
 </annotationProcessors>
 ----
 
-=== étape 2: les niveaux de diagnostic et Maven
+=== étape 2: activer les logs
+
+L'activation des logs liés au processing d'annotations passait par des options de ligne de commande, tout comme la déclaration d'un processor. Avec maven donc, pour activer ces logs, on utilisera aussi des options de configuration du maven-compiler-plugin.
+
+IMPORTANT: modifiez le pom.xml de `subject-exo3` de sorte que les logs du processing d'annotations s'affichent dans les logs du build maven.
+
+solution:
+
+[source,xml]
+----
+  <compilerArgs>
+    <compilerArg>-XprintRounds</compilerArg>
+    <compilerArg>-XprintProcessorInfo</compilerArg>
+  </compilerArgs>
+----
+
+=== étape 3: les niveaux de diagnostic et Maven
 
 Le niveau de log utilisé dans l'implémentation Maven de `HelloWorldProcessor` n'est pas le même que dans l'implémentation pour `javac`.
 
