@@ -859,13 +859,13 @@ Processors are located by means of service provider-configuration files named ME
 <div class="sect2">
 <h3 id="_étape_2_automatiser_encore_plus">étape 2: automatiser encore plus</h3>
 <div class="paragraph">
-<p>La création du fichier <code>META-INF/services/javax.annotation.processing.Processor</code> et l&#8217;écriture de son contenu sont un exemple parfait de ce qui peut être automatisé avec le processing d&#8217;annotation à la compilation.</p>
+<p>La création du fichier <code>META-INF/services/javax.annotation.processing.Processor</code> et l&#8217;écriture de son contenu sont un exemple parfait de ce qui peut être automatisé avec le traitement d&#8217;annotations à la compilation.</p>
 </div>
 <div class="paragraph">
 <p>Et pour preuve, c&#8217;est le but de la toute petite (3 classes) librairie <code>AutoService</code>.</p>
 </div>
 <div class="paragraph">
-<p>Préparez votre totem, vous allez faire de l&#8217;annotation processing sur un annotation processor.</p>
+<p>Préparez votre totem, vous allez faire du traitement d&#8217;annotations sur un annotation processor.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -887,7 +887,7 @@ Processors are located by means of service provider-configuration files named ME
 </table>
 </div>
 <div class="paragraph">
-<p>Fantastique ! Ca fonctionne ! Il est possible de faire de l&#8217;annotation processing alors même que l&#8217;on code un processor, pas mal non ?</p>
+<p>Fantastique ! Ca fonctionne ! Il est possible de faire du traitement d&#8217;annotations alors même que l&#8217;on code un processor, pas mal non ?</p>
 </div>
 </div>
 <div class="sect2">
@@ -937,7 +937,7 @@ Vérifiez le <code>pom.xml</code> et constatez que ce n&#8217;est pas le cas.
 <div class="sect2">
 <h3 id="_étape_4_bonus_contourner_les_bugs_du_maven_compiler_plugin">étape 4: bonus, contourner les bugs du maven-compiler-plugin</h3>
 <div class="paragraph">
-<p>Si vous regardez le <code>pom.xml</code> du module <code>exo4-processor1</code>, vous constaterez qu&#8217;une option du compilateur a été ajoutée pour désactiver totalement le processing d&#8217;annotation lors de la compilation de ce module.</p>
+<p>Si vous regardez le <code>pom.xml</code> du module <code>exo4-processor1</code>, vous constaterez qu&#8217;une option du compilateur a été ajoutée pour désactiver totalement le traitement d&#8217;annotations lors de la compilation de ce module.</p>
 </div>
 <div class="paragraph">
 <p>Cette option est super-extrèmement-ultra-vachement importante si vous écrivez <code>META-INF/services/javax.annotation.processing.Processor</code> à la main.</p>
@@ -990,7 +990,7 @@ Vérifiez le <code>pom.xml</code> et constatez que ce n&#8217;est pas le cas.
 </ol>
 </div>
 <div class="paragraph">
-<p>Le workaround qui est "prescrit" pour ce problème est celui indiqué ci-dessus: désactiver l&#8217;annotation processing complètement lors de la compilation du processor.</p>
+<p>Le workaround qui est "prescrit" pour ce problème est celui indiqué ci-dessus: désactiver le traitement d&#8217;annotations complètement lors de la compilation du processor.</p>
 </div>
 <div class="paragraph">
 <p>Ce workaround est acceptable à la condition d&#8217;avoir isolé le processor dans son propre module (ce qui est une bonne pratique de toute manière) et/ou que l&#8217;on a pas besoin d&#8217;annotation processing de toute façon.</p>
@@ -1029,7 +1029,7 @@ Vérifiez le <code>pom.xml</code> et constatez que ce n&#8217;est pas le cas.
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-02-24 15:58:53 CET
+Last updated 2015-02-24 15:59:12 CET
 </div>
 </div>
 </body>

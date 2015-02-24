@@ -195,11 +195,11 @@ Félicitations ! Il suffit maintenant d'avoir l'artefact `fr.devoxx.2015.niveau1
 
 === étape 2: automatiser encore plus
 
-La création du fichier `META-INF/services/javax.annotation.processing.Processor` et l'écriture de son contenu sont un exemple parfait de ce qui peut être automatisé avec le processing d'annotation à la compilation.
+La création du fichier `META-INF/services/javax.annotation.processing.Processor` et l'écriture de son contenu sont un exemple parfait de ce qui peut être automatisé avec le traitement d'annotations à la compilation.
 
 Et pour preuve, c'est le but de la toute petite (3 classes) librairie `AutoService`.
 
-Préparez votre totem, vous allez faire de l'annotation processing sur un annotation processor.
+Préparez votre totem, vous allez faire du traitement d'annotations sur un annotation processor.
 
 [IMPORTANT]
 ====
@@ -210,7 +210,7 @@ Ajoutez la dépendance `com.google.auto.service:auto-service` au module `exo4-pr
 ----
 ====
 
-Fantastique ! Ca fonctionne ! Il est possible de faire de l'annotation processing alors même que l'on code un processor, pas mal non ?
+Fantastique ! Ca fonctionne ! Il est possible de faire du traitement d'annotations alors même que l'on code un processor, pas mal non ?
 
 === étape 3: la bonne gestion des dépendances de type annotation processor
 
@@ -233,7 +233,7 @@ Faites en sorte que la ligne de log du processor `DeprecatedCodeWhistleblower` n
 
 === étape 4: bonus, contourner les bugs du maven-compiler-plugin
 
-Si vous regardez le `pom.xml` du module `exo4-processor1`, vous constaterez qu'une option du compilateur a été ajoutée pour désactiver totalement le processing d'annotation lors de la compilation de ce module.
+Si vous regardez le `pom.xml` du module `exo4-processor1`, vous constaterez qu'une option du compilateur a été ajoutée pour désactiver totalement le traitement d'annotations lors de la compilation de ce module.
 
 Cette option est super-extrèmement-ultra-vachement importante si vous écrivez `META-INF/services/javax.annotation.processing.Processor` à la main.
 
@@ -258,7 +258,7 @@ L'explication de se comportement n'est pas triviale, mais la voici. Lors du buil
 4. ce processor n'existe pas (forcément, on est sur le point de le compiler) et `javac` lève une erreur et ne compile aucun fichier
 5. l'erreur ("error: Bad service configuration file, or exception thrown while constructing Processor object: javax.annotation.processing.Processor: Provider fr.devoxx.niveau1.exo4.DeprecatedCodeWhistleblower not found") est remontée par le `maven-compiler-plugin` et le build échoue
 
-Le workaround qui est "prescrit" pour ce problème est celui indiqué ci-dessus: désactiver l'annotation processing complètement lors de la compilation du processor.
+Le workaround qui est "prescrit" pour ce problème est celui indiqué ci-dessus: désactiver le traitement d'annotations complètement lors de la compilation du processor.
 
 Ce workaround est acceptable à la condition d'avoir isolé le processor dans son propre module (ce qui est une bonne pratique de toute manière) et/ou que l'on a pas besoin d'annotation processing de toute façon.
 
