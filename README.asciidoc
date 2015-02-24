@@ -1,0 +1,54 @@
+= Annotation Processing: @​Nailed("it")
+:toc:
+:toc: right
+
+Ceci est le support du Hands-On de Devoxx France 2015 intitulée http://cfp.devoxx.fr/2015/talk/QHH-4326/Compile-time_annotation_processing_:_@Nailed(%22it%22)[Annotation Processing: @​Nailed("it")] créé par https://github.com/fbiville/[Florent Biville] et https://github.com/lesaint[Sébastien Lesaint].
+
+== Installation de l'environnement
+
+=== Prérequis
+
+1. un terminal
+2. Git
+3. Docker
+4. une IDE
+
+=== Installation
+
+Pour suivre ce hands-on, vous avez besoin:
+
+1. d'un clone de ce repo en local
++
+----
+cd /tmp && git clone https://github.com/fbiville/annotation-processing-ftw.git
+----
+2. installer docker si vous ne l'avez pas encore
+3. executer les commandes suivantes
++
+----
+cd [répertoire racine du clone de ce repo]
+cd container
+TODO compléter avec la commande docker
+----
+Vous êtes maintenant connecté en intéractif sur votre container docker dans lequel Java et Maven sont configurés (notamment avec un repo maven "pré-alimenté").
+4. d'ouvrir le `README.html` à la racine du repo dans votre navigateur ou de visualiser la racine du repo sur GitHub
+** la première solution est conseillée car le rendu est bien meilleur
+5. d'ouvrir le `README.html` du répertoire `doc` dans un autre onglet ou de visualiser ce répertoire du repo sur GitHub
+** nous vous fournissons les documentations qui vous permettront la plupart des exercices
+** régulièrement, nous vous orienterons même vers la bonne documentation
+
+== Structure du Hands-on
+
+=== 4 niveaux
+
+Ce hands-on est structuré en 4 niveaux. Ceux-ci vous amèneront de plus en plus profond dans les capacités des processors et donc de leurs usages.
+
+=== Une présentation et quelques exercices
+
+Chaque niveau est précédé d'une courte présentation (5 à 10 minutes max) et découpé en plusieurs exercices qui chacun se réalisent en quelques étapes successives.
+
+Chaque niveau possède un `README.asciidoc` et un `README.html` qui décrit les exercices et les étapes. Il est conseillé de visualier la version HTML en local (meilleur rendu) que le rendu du ASCIIDOC sur GitHub.
+
+1. Comprendre les bases et mettre les mains dans le cambouis: link:exo1/README.html[html local] ou link:exo1/README.asciidoc[Asciidoc GitHub]
+
+TODO liens vers les niveaux
