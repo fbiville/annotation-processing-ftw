@@ -1,0 +1,82 @@
+= Annotation Processing: @​Nailed("it")
+:toc: right
+
+== Documentation Annotation Processing
+
+=== JSR 269
+
+La JSR 269 définit l'API d'Annotation Processing de Java. La spécification est rédigée sous forme de JavaDoc.
+
+* http://jcp.org/aboutJava/communityprocess/mrel/jsr269/index2.html[téléchargement de la spécification]
+* doc hors ligne (version 1.8 - maintenance 2)
+** link:Jsr269-1.8/index.html[index]
+** link:Jsr269-1.8/javax/annotation/processing/Processor.html[l'interface processor]
+** link:Jsr269-1.8/javax/annotation/processing/AbstractProcessor.html[la classe AbstractProcessor]
+** link:Jsr269-1.8/javax/lang/model/util/Elements.html[l'interface Elements]
+** link:Jsr269-1.8/javax/lang/model/util/Types.html[l'interface Types]
+** link:Jsr269-1.8/javax/lang/model/element/package-summary.html[package javax.lang.model.element]
+** link:Jsr269-1.8/javax/lang/model/type/package-summary.html[package javax.lang.model.type]
+
+=== Java Language Specification
+
+L'annotation processing consiste souvent en le traitement des sources Java, ce qui implique fréquemment d'apprendre (ou réapprendre) les noms exacts et leur signification utilisé pour décrire le language. Pour cela, rien de mieux que la spécification.
+
+* http://docs.oracle.com/javase/specs/[téléchargement et pages HTML]
+* documentation hors ligne (PDF uniquement)
+** link:jls/jls8.pdf[Java 8]
+** link:jls/jls7.pdf[Java 7]
+
+=== Javac
+
+Documentation du compilateur Javac d'Oracle
+
+* en ligne
+** Javac 8: http://docs.oracle.com/javase/8/docs/technotes/tools/windows/javac.html[Windows] http://docs.oracle.com/javase/8/docs/technotes/tools/unix/javac.html[Unix]
+** Javax 7: http://docs.oracle.com/javase/7/docs/technotes/tools/windows/javac.html[Windows] http://docs.oracle.com/javase/7/docs/technotes/tools/solaris/javac.html[Unix]
+* hors ligne
+** Javac 8: link:javac/8/windows/index.html[Windows] link:javac/8/unix/index.html[Unix]
+** Javax 7: link:javac/7/windows/index.html[Windows] link:javac/7/unix/index.html[Unix]
+
+=== Javadoc de l'API Java
+
+Parce qu'on a toujours besoin!
+
+* en ligne http://docs.oracle.com/javase/8/docs/api/[Java 8] http://docs.oracle.com/javase/7/docs/api/[Java 7]
+* hors ligne
+** index link:java/jdk8/index.html[Java 8] link:java/jdk7/index.html[Java 7]
+** ServiceLoader link:java/jdk8/java/util/ServiceLoader.html[Java 8] link:java/jdk7/java/util/ServiceLoader.html[Java 7]
+
+=== maven-compiler-plugin
+
+L'interface avec le compilateur quand on utilise Maven est le `maven-compiler-plugin`, on est donc forcément confronté à son utilisation à un moment ou un autre.
+
+* en ligne
+** http://maven.apache.org/plugins/maven-compiler-plugin/usage.html[usage]
+** http://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html[goal compile] (indispensable)
+* hors ligne (version 3.2)
+** link:maven-compiler-plugin/usage.html[usage]
+** link:maven-compiler-plugin/compile-mojo.html[goal compile] (indispensable)
+
+== Documentation Outils
+
+=== AutoService
+
+AutoService est un annotation processor qui permet de générer un fichier dans META-INF avec une simple annotation.
+
+* link:https://github.com/google/auto/tree/master/service[GitHub]
+* link:auto-service/[clone hors ligne] (1.0-RC2)
+
+=== JavaPoet
+
+JavaPoet est un outil pour générer des fichiers sources Java en tapant du code Java.
+
+* link:https://github.com/square/javapoet[GitHub]
+* link:javapoet/[clone hors ligne] (tag 1.0.0)
+
+=== Compile-testing
+
+Compile-testing est un outil pour écrire des tests unitaires de compilation de fichiers Java.
+
+* link:https://github.com/google/compile-testing[GitHub]
+* link:compile-testing/master/[clone hors ligne] (master, version 0.1-SNAPSHOT)
+* link:compile-testing/0.6/[clone hors ligne] (version 0.6)
