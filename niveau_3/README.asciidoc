@@ -1,0 +1,281 @@
+= Niveau 3
+:toc: right
+:toc-title: Niveau 3
+:icons: font
+
+== exo 1: en ligne de commande !
+
+=== étape 1: compiler un annotation processor
+
+Le première étape de l'exercice consiste à utiliser `javac` en ligne de commande pour compiler un annotation processor.
+
+La compilation d'un annotation processor est identique à n'importe quelle classe.
+
+IMPORTANT: Essayez de compiler `StutteringHelloWorldProcessor.java` qui se trouve dans le répertoire exo1 (le plus simple fonctionne).
+
+solution: cd exo1 && javac StutteringHelloWorldProcessor
+
+=== étape 2: utiliser un annotation processor
+
+Pour utiliser en annotation processor, il suffit de spécifier à `javac` le nom de la ou les classes à utiliser via un argument de la ligne de commande lors de la compilation.
+
+[IMPORTANT]
+====
+Essayez de compiler `SomeDeprecatedClass.java` (ici encore, le plus simple fonctionnera).
+
+Vous devez voir s'afficher les 2 lignes suivantes dans la console:
+
+----
+Note: Hello world!
+Note: Hello world!
+----
+====
+
+solution: cd exo1 && javac -processor StutteringHelloWorldProcessor SomeDeprecatedClass.java
+
+IMPORTANT: Maintenant, compilez en même temps `SomeDeprecatedClass.java` et `SomeOtherDeprecatedClass.java`.
+
+Constatez que le résultat dans la console est le même. Nous allons rechercher l'explication et corriger ce bégaiement dans le prochain exercice.
+
+=== étape 3: bonus
+
+Vous pouvez vérifier qu'aucun message ne s'affiche si vous commentez l'annotation `@Deprecated` des classes que vous compilez (`SomeDeprecatedClass` et/ou `SomeOtherDeprecatedClass.java`).
+
+Vous pouvez vérifier le comportement de `javac` si vous spécifiez le nom d'un annotation processor qui ne se trouve pas dans le class path.
+
+etc...
+
+== exo 2: rounds et cycle de vie
+
+Lors de l'étape 2 de l'exo 1, vous vous êtes sûrement demandé pour quelle raison deux lignes s'affichent et constaté que ce n'est pas lié au nombre de fichiers compilés.
+
+Ce comportement est en réalité lié au mécanisme de "round" de l'annotation processing et à l'implémentation de `HelloWorldProcessor.java` que nous utilisons.
+
+=== étape 1: activer les logs des rounds
+
+Une option de `javac` permet d'activer les logs des rounds d'annotations processing. Consultez la doc de `javac` pour l'identifier.
+
+IMPORTANT: Compilez `HelloWorldProcessor.java` dans le répertoire `exo2` puis `SomeDeprecatedClass` en activant les logs des rounds. (TODO: lien doc)
+
+solution: cd exo2 && javac -XprintRounds -processor HelloWorldProcessor SomeDeprecatedClass.java
+
+Constatez qu'il y a deux rounds, ce qui explique l'affichage du "Hello world!" en doublon.
+
+Une autre option permet d'afficher pour chaque round quels sont les processors que javac fait participer.
+
+IMPORTANT: Compilez `SomeDeprecatedClass` en activant les deux options.
+
+solution: cd exo2 && javac -XprintRounds -XprintProcessorInfo -processor HelloWorldProcessor SomeDeprecatedClass.java
+
+=== étape 2: supprimer le doublon à la bourrin
+
+Le cycle de vie d'un objet implémentation l'interface `Processor` est le suivant (citation de la JSR-269, javadoc de l'interface `Processor`):
+
+Each implementation of a Processor must provide a public no-argument constructor to be used by tools to instantiate the processor. The tool infrastructure will interact with classes implementing this interface as follows:
+    1. If an existing Processor object is not being used, to create an instance of a processor the tool calls the no-arg constructor of the processor class.
+    2. Next, the tool calls the init method with an appropriate ProcessingEnvironment.
+    3. Afterwards, the tool calls getSupportedAnnotationTypes, getSupportedOptions, and getSupportedSourceVersion. These methods are only called once per run, not on each round.
+    4. As appropriate, the tool calls the process method on the Processor object; a new Processor object is not created for each round.
+
+En substance, il faut comprendre qu'une seule instance d'un annotation processor est créé par compilation. Il est donc tout à fait possible de traiter ce problème en exploitant l'aspect "statefull" des instances d'annotation processor (ici, c'est pas très propre, mais ça marche, et dans la vraie vie, c'est parfois indispensable).
+
+IMPORTANT: Modifiez la classe `HelloWorldProcessor` de sorte que le message ne s'affiche plus qu'une seule fois par compilation
+
+solution: il suffit d'un flag stockée en propriété de la classe `HelloWorldProcessor`.
+
+=== étape 3: supprimer le doublon proprement
+
+IMPORTANT: Corrigez le doublon en utilisant l'API (astuce: regardez du côté de `RoundEnvironment`).
+
+solution:
+
+[source,java]
+----
+  @Override
+  public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+    if (roundEnv.processingOver()) {
+      processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Hello world!");
+    }
+    return false;
+  }
+----
+
+== exo3: la même chose avec Maven
+
+Dans le répertoire `exo3`, vous trouverez deux projets Maven et les classes de l'exo 2:
+
+ * répertoire `processor`: le projet `processor-exo3` produit un `jar` qui contient la classe `fr.devoxx.niveau1.exo3.HelloWorldProcessor`.
+ * répertoire `subject`: le projet `subject-exo3` contient la classe `fr.devoxx.niveau1.exo3.SomeDeprecatedClass`
+
+=== étape 1: déclarer le processor
+
+IMPORTANT: Compilez le projet `processor-exo3` (pensez au `install`) puis `subject-exo3` (`compile` suffit). Constatez qu'aucune ligne `Hello world!` ne s'affiche dans les traces Maven.
+
+De la même manière qu'en utilisant `javac` à la main il faut ajouter une ligne de commande pour déclarer un annotation processor, avec Maven il faut ajouter quelques lignes dans le `pom.xml`.
+
+Le plugin Maven qui se charge de la compilation (et fait donc l'interface entre Maven et le compilateur) est le `maven-compiler-plugin`.
+
+[IMPORTANT]
+====
+Trouvez comment déclarer le processor `fr.devoxx.niveau1.exo3.HelloWorldProcessor` (TODO: lien doc), recompilez et consatez que le message suivant s'affiche dans les logs Maven:
+
+----
+[WARNING] Hello world!
+----
+====
+
+solution:
+ajout dans la configuration de `maven-compiler-plugin` des 3 lignes suivantes:
+
+[source,xml]
+----
+<annotationProcessors>
+  <annotationProcessor>fr.devoxx.niveau1.exo3.HelloWorldProcessor</annotationProcessor>
+</annotationProcessors>
+----
+
+=== étape 2: activer les logs
+
+L'activation des logs liés au processing d'annotations passait par des options de ligne de commande, tout comme la déclaration d'un processor. Avec maven donc, pour activer ces logs, on utilisera aussi des options de configuration du maven-compiler-plugin.
+
+IMPORTANT: modifiez le pom.xml de `subject-exo3` de sorte que les logs du processing d'annotations s'affichent dans les logs du build maven.
+
+solution:
+
+[source,xml]
+----
+  <compilerArgs>
+    <compilerArg>-XprintRounds</compilerArg>
+    <compilerArg>-XprintProcessorInfo</compilerArg>
+  </compilerArgs>
+----
+
+=== étape 3: les niveaux de diagnostic et Maven
+
+Le niveau de log utilisé dans l'implémentation Maven de `HelloWorldProcessor` n'est pas le même que dans l'implémentation pour `javac`.
+
+IMPORTANT: Pour comprendre pourquoi, faites un test avec les valeurs `NOTE` puis `WARNING` (et `OTHER` si vous y tenez) de l'enum `javax.tools.Diagnostic.Kind`.
+
+Ce comportement est un "choix" du plugin `maven-compiler-plugin` pour réduire la quantité de logs Maven (sic!) durant la phase compilation.
+
+IMPORTANT: Trouvez l'option du plugin permet l'affichage des warnings de compilation dans Maven (TODO: lien doc).
+
+solution: ajouter `<showWarnings>true</showWarnings>` dans la configuration de `maven-compiler-plugin` pour afficher `WARNING`, `NOTES` et `OTHER` au niveau `[INFO]`.
+
+IMPORTANT: Tentez maintenant la compilation avec le niveau `ERROR`.
+
+Constatez que vous avez maintenant dans vos mains le moyen de contrôler la compilation de vos classes.
+
+NOTE: Par ailleurs, ce comportement permet de comprendre pourquoi on utilise une enum qui s'appelle `Diagnostic.Kind` et non quelque chose comme `Level`. En principe, on n'enregistre pas un log mais on transmet un diagnostic au compilateur (sous forme de message), en le qualifiant. Charge au compilateur ensuite de choisir ce qu'il en fait. Dans les faits, cela revient à afficher un log sauf si c'est le niveau `ERROR` auquel cas le compilateur arrête également la compilation.
+
+== exo4: découverte automatique des processors
+
+L'obligation de déclarer explicitement son processor est un handicap au déploiement d'une solution basée sur un annotation processor.
+
+Heureusement, la JSR-269 spécifie la présence d'un "discovery process". Celui de `javac` est basé sur le `ServiceLoader` de l'API Java.
+
+=== étape 1: se passer de déclaration explicite du processor
+
+La documentation de `javac` indique:
+
+[quote]
+Processors are located by means of service provider-configuration files named META-INF/services/javax.annotation.processing.Processor on the search path
+
+[IMPORTANT]
+====
+Ajoutez le fichier dans le répertoire `src/main/resources` du projet `exo4-processor1` avec comme seul contenu le nom qualifié de la classe `DeprecatedCodeWhistleblower` sur une ligne.
+
+Recompilez tout le projet (`mvn clean install`). Le message suivant s'affiche dans la console lors de la compilation du module `exo4-subject1`.
+
+----
+[WARNING] Attention, il y a du code déprécié dans les sources de ce module !
+----
+====
+
+Félicitations ! Il suffit maintenant d'avoir l'artefact `fr.devoxx.2015.niveau1:exo4-processor1` comme dépendance avec le scope `compile` pour bénéficier de ses avertissements (super utiles) à la compilation.
+
+=== étape 2: automatiser encore plus
+
+La création du fichier `META-INF/services/javax.annotation.processing.Processor` et l'écriture de son contenu sont un exemple parfait de ce qui peut être automatisé avec le traitement d'annotations à la compilation.
+
+Et pour preuve, c'est le but de la toute petite (3 classes) librairie `AutoService`.
+
+Préparez votre totem, vous allez faire du traitement d'annotations sur un annotation processor.
+
+[IMPORTANT]
+====
+Ajoutez la dépendance `com.google.auto.service:auto-service` au module `exo4-processor2`, puis l'annotation `@AutoService(Processor.class)` sur la classe `OverrideJohns`. Relancez la compilation de tout le projet, vous devez voir apparaître la ligne suivante lors de la compilation du module `exo4-subject2`:
+
+----
+[WARNING] True rewards await those who choose wisely.
+----
+====
+
+Fantastique ! Ca fonctionne ! Il est possible de faire du traitement d'annotations alors même que l'on code un processor, pas mal non ?
+
+=== étape 3: la bonne gestion des dépendances de type annotation processor
+
+Vous aurez sûrement remarqué que la ligne produite par `DeprecatedCodeWhistleblower` ("[WARNING] Attention, il y a du code déprécié dans les sources de ce module !") est aussi présente lors de la compilation du module `exo4-subject2`.
+
+Comme ce processor utilise un "service provider-configuration files", cela signifie que le module `exo4-subject2` déclare une dépendance vers le module `exo4-processor1`.
+
+IMPORTANT: Vérifiez le `pom.xml` et constatez que ce n'est pas le cas.
+
+En réalité, le module `exo4-processor1` est une dépendance indirecte du module `exo4-subject2`. En effet, celui-ci déclare une dépendance vers `exo4-subject1`, qui déclare une dépendance à `exo4-processor1`.
+
+Du coup, `exo4-processor1` est bien dans le classpath de `exo4-subject2` et il se voit donc appliqué le processor de ce module.
+
+Ce comportement est rarement souhaitable. Heureusement, il existe une option de la déclaration de dépendance Maven qui permet de le corriger, de faire en sorte d'avoir une dépendance de scope `compile` mais que celle-ci ne puisse être tirée indirectement.
+
+[IMPORTANT]
+====
+Faites en sorte que la ligne de log du processor `DeprecatedCodeWhistleblower` ne s'affiche plus lors de la compilation du module `exo4-subject2` sans modifier le `pom.xml` de `exo4-subject2`. (astuce: la doc de `@AutoValue` est correcte de ce point de vue)
+====
+
+=== étape 4: bonus, contourner les bugs du maven-compiler-plugin
+
+Si vous regardez le `pom.xml` du module `exo4-processor1`, vous constaterez qu'une option du compilateur a été ajoutée pour désactiver totalement le traitement d'annotations lors de la compilation de ce module.
+
+Cette option est super-extrèmement-ultra-vachement importante si vous écrivez `META-INF/services/javax.annotation.processing.Processor` à la main.
+
+[IMPORTANT]
+====
+Supprimez cette option, compilez le projet.
+
+Constatez que le build échoue avec le message suivant:
+
+----
+[ERROR] Bad service configuration file, or exception thrown while constructing Processor object: javax.annotation.processing.Processor: Provider fr.devoxx.niveau1.exo4.DeprecatedCodeWhistleblower not found
+----
+====
+
+Cette erreur signifie que Java n'a pas trouvé un processor alors que celui-ci est référencé dans un fichier `META-INF/services/javax.annotation.processing.Processor`. Mais bon, forcément, il ne trouve pas un processor qu'il est censé compiler.
+
+L'explication de se comportement n'est pas triviale, mais la voici. Lors du build:
+
+1. Maven copie les ressources dans le répertoire `exo4-processor1/target/classes`
+2. lors de la compilation, le `maven-compiler-plugin` spécifie à `javac` que le répertoire `exo4-processor1/target/classes` fait partie de son classpath (un [ticket](https://jira.codehaus.org/browse/MCOMPILER-97) est ouvert sur le sujet depuis des années mais ce choix est requis pour le build incrémental)
+3. `javac` constate donc la présence d'un fichier `META-INF/services/javax.annotation.processing.Processor` dans le classpath et recherche donc le processor indiqué: `DeprecatedCodeWhistleblower`
+4. ce processor n'existe pas (forcément, on est sur le point de le compiler) et `javac` lève une erreur et ne compile aucun fichier
+5. l'erreur ("error: Bad service configuration file, or exception thrown while constructing Processor object: javax.annotation.processing.Processor: Provider fr.devoxx.niveau1.exo4.DeprecatedCodeWhistleblower not found") est remontée par le `maven-compiler-plugin` et le build échoue
+
+Le workaround qui est "prescrit" pour ce problème est celui indiqué ci-dessus: désactiver le traitement d'annotations complètement lors de la compilation du processor.
+
+Ce workaround est acceptable à la condition d'avoir isolé le processor dans son propre module (ce qui est une bonne pratique de toute manière) et/ou que l'on a pas besoin d'annotation processing de toute façon.
+
+L'autre workaround consiste à utiliser l'annotation `@AutoService`.
+
+==== c'est pire avec Java 6 et 7
+
+Attention, le build n'échoue que si Maven est exécuté avec Java 8. Avec Java 7 et 6, javac ne rapporte aucune erreur (bug corrigé en 8) et ne compile toujours aucune classe. Donc voici la situation que l'on reprend au point 5:
+
+[arabic, start=5]
+1. l'erreur ("error: Bad service configuration file, or exception thrown while constructing Processor object: javax.annotation.processing.Processor: Provider fr.devoxx.niveau1.exo4.DeprecatedCodeWhistleblower not found") est simplement ignorée par le `maven-compiler-plugin` (bug! gros bug!) qui considère que la compilation a réussi
+2. la compilation de `exo4-processor1` produit donc un jar qui ne contient que `META-INF/services/javax.annotation.processing.Processor`
+3. ce jar est tiré par les modules `exo4-subject1` et `exo4-subject2`, il y a donc dans le classpath un fichier `META-INF/services/javax.annotation.processing.Processor` qui référence un processor inexistant, `javac` lève une erreur et la compilation n'a pas lieu
+4. s'il n'y a pas de compilation, le message de `OverrideJohns` ne peut pas s'afficher, pas de plus que celui de `DeprecatedCodeWhistleblower` qui n'a pas été compilé
+
+En conclusion, la présence d'un fichier `META-INF/services/javax.annotation.processing.Processor` sans son processor peut sérieusement compromettre la compilation. Et encore plus celle d'un projet Maven dû à certains bugs du `maven-compiler-plugin` si vous n'utilisez pas Java 8.
+
+
+
