@@ -9,4 +9,16 @@
   <artifactId>exo1-processor</artifactId>
   <packaging>jar</packaging>
 
+  <dependencies>
+    <dependency>
+      <groupId>fr.devoxx.2015.niveau3</groupId>
+      <artifactId>exo1-annotation</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.auto.service</groupId>
+      <artifactId>auto-service</artifactId>
+    </dependency>
+  </dependencies>
+
 </project>

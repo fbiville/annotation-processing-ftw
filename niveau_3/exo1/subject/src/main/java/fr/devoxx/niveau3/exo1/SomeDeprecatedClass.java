@@ -1,11 +1,10 @@
 package fr.devoxx.niveau3.exo1;
 
 /**
- * SomeDeprecatedClass - Une classe annotée avec {@link java.lang.Deprecated}, ce qui déclenchera l'annotation processor
- * {@code HelloWorldProcessor}
+ * SomeDeprecatedClass - Une classe annotée avec {@link fr.devoxx.niveau3.exo1.SomeAnnotation}.
  *
  * @author Sébastien Lesaint
  */
-@Deprecated
+@SomeAnnotation
 public class SomeDeprecatedClass {
 }

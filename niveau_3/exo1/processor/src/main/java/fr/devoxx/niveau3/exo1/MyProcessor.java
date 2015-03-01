@@ -13,11 +13,16 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 
+import com.google.auto.service.AutoService;
+
 /**
  * Un {@link javax.annotation.processing.Processor} qui affiche un citation d'Indiana Johns à la compilation si au
  * moins une annotation {@link Deprecated} est présente dans les sources compilées.
  */
-public class OverrideJohns implements Processor {
+@AutoService(Processor.class)
+public class MyProcessor implements Processor {
+  private static final Set<String> SUPPORTED_ANNOTATION_TYPES = Collections.singleton(SomeAnnotation.class
+          .getCanonicalName());
   private ProcessingEnvironment processingEnv;
 
   @Override
@@ -27,7 +32,7 @@ public class OverrideJohns implements Processor {
 
   @Override
   public Set<String> getSupportedAnnotationTypes() {
-    return Collections.singleton(Override.class.getCanonicalName());
+    return SUPPORTED_ANNOTATION_TYPES;
   }
 
   @Override
