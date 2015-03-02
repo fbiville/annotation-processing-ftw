@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.2">
-<title>Niveau 1</title>
+<title>Niveau 3</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -412,37 +412,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>Niveau 1</h1>
+<h1>Niveau 3</h1>
 <div id="toc" class="toc2">
-<div id="toctitle">Niveau 1</div>
+<div id="toctitle">Niveau 3</div>
 <ul class="sectlevel1">
-<li><a href="#_exo_1_en_ligne_de_commande">exo 1: en ligne de commande !</a>
+<li><a href="#_exo_1_générer_un_fichier">exo 1: générer un fichier</a>
 <ul class="sectlevel2">
-<li><a href="#_étape_1_compiler_un_annotation_processor">étape 1: compiler un annotation processor</a></li>
-<li><a href="#_étape_2_utiliser_un_annotation_processor">étape 2: utiliser un annotation processor</a></li>
-<li><a href="#_étape_3_bonus">étape 3: bonus</a></li>
-</ul>
-</li>
-<li><a href="#_exo_2_rounds_et_cycle_de_vie">exo 2: rounds et cycle de vie</a>
-<ul class="sectlevel2">
-<li><a href="#_étape_1_activer_les_logs_des_rounds">étape 1: activer les logs des rounds</a></li>
-<li><a href="#_étape_2_supprimer_le_doublon_à_la_bourrin">étape 2: supprimer le doublon à la bourrin</a></li>
-<li><a href="#_étape_3_supprimer_le_doublon_proprement">étape 3: supprimer le doublon proprement</a></li>
-</ul>
-</li>
-<li><a href="#_exo3_la_même_chose_avec_maven">exo3: la même chose avec Maven</a>
-<ul class="sectlevel2">
-<li><a href="#_étape_1_déclarer_le_processor">étape 1: déclarer le processor</a></li>
-<li><a href="#_étape_2_activer_les_logs">étape 2: activer les logs</a></li>
-<li><a href="#_étape_3_les_niveaux_de_diagnostic_et_maven">étape 3: les niveaux de diagnostic et Maven</a></li>
-</ul>
-</li>
-<li><a href="#_exo4_découverte_automatique_des_processors">exo4: découverte automatique des processors</a>
-<ul class="sectlevel2">
-<li><a href="#_étape_1_se_passer_de_déclaration_explicite_du_processor">étape 1: se passer de déclaration explicite du processor</a></li>
-<li><a href="#_étape_2_automatiser_encore_plus">étape 2: automatiser encore plus</a></li>
-<li><a href="#_étape_3_la_bonne_gestion_des_dépendances_de_type_annotation_processor">étape 3: la bonne gestion des dépendances de type annotation processor</a></li>
-<li><a href="#_étape_4_bonus_contourner_les_bugs_du_maven_compiler_plugin">étape 4: bonus, contourner les bugs du maven-compiler-plugin</a></li>
+<li><a href="#_étape_1_récupérer_une_annotation">étape 1: récupérer une annotation</a></li>
+<li><a href="#_étape_2_écrire_un_fichier">étape 2: écrire un fichier</a></li>
 </ul>
 </li>
 </ul>
@@ -450,385 +427,35 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_exo_1_en_ligne_de_commande">exo 1: en ligne de commande !</h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_étape_1_compiler_un_annotation_processor">étape 1: compiler un annotation processor</h3>
-<div class="paragraph">
-<p>Le première étape de l&#8217;exercice consiste à utiliser <code>javac</code> en ligne de commande pour compiler un annotation processor.</p>
-</div>
-<div class="paragraph">
-<p>La compilation d&#8217;un annotation processor est identique à n&#8217;importe quelle classe.</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-Essayez de compiler <code>StutteringHelloWorldProcessor.java</code> qui se trouve dans le répertoire exo1 (le plus simple fonctionne).
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>solution: cd exo1 &amp;&amp; javac StutteringHelloWorldProcessor</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_étape_2_utiliser_un_annotation_processor">étape 2: utiliser un annotation processor</h3>
-<div class="paragraph">
-<p>Pour utiliser en annotation processor, il suffit de spécifier à <code>javac</code> le nom de la ou les classes à utiliser via un argument de la ligne de commande lors de la compilation.</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>Essayez de compiler <code>SomeDeprecatedClass.java</code> (ici encore, le plus simple fonctionnera).</p>
-</div>
-<div class="paragraph">
-<p>Vous devez voir s&#8217;afficher les 2 lignes suivantes dans la console:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>Note: Hello world!
-Note: Hello world!</pre>
-</div>
-</div>
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>solution: cd exo1 &amp;&amp; javac -processor StutteringHelloWorldProcessor SomeDeprecatedClass.java</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-Maintenant, compilez en même temps <code>SomeDeprecatedClass.java</code> et <code>SomeOtherDeprecatedClass.java</code>.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Constatez que le résultat dans la console est le même. Nous allons rechercher l&#8217;explication et corriger ce bégaiement dans le prochain exercice.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_étape_3_bonus">étape 3: bonus</h3>
-<div class="paragraph">
-<p>Vous pouvez vérifier qu&#8217;aucun message ne s&#8217;affiche si vous commentez l&#8217;annotation <code>@Deprecated</code> des classes que vous compilez (<code>SomeDeprecatedClass</code> et/ou <code>SomeOtherDeprecatedClass.java</code>).</p>
-</div>
-<div class="paragraph">
-<p>Vous pouvez vérifier le comportement de <code>javac</code> si vous spécifiez le nom d&#8217;un annotation processor qui ne se trouve pas dans le class path.</p>
-</div>
-<div class="paragraph">
-<p>etc&#8230;&#8203;</p>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_exo_2_rounds_et_cycle_de_vie">exo 2: rounds et cycle de vie</h2>
+<h2 id="_exo_1_générer_un_fichier">exo 1: générer un fichier</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Lors de l&#8217;étape 2 de l&#8217;exo 1, vous vous êtes sûrement demandé pour quelle raison deux lignes s&#8217;affichent et constaté que ce n&#8217;est pas lié au nombre de fichiers compilés.</p>
+<p>L&#8217;objectif de cet exercice est de générer un fichier dans lequel figurera le prénom des personnages décédés du livre Game of Thrones.</p>
 </div>
 <div class="paragraph">
-<p>Ce comportement est en réalité lié au mécanisme de "round" de l&#8217;annotation processing et à l&#8217;implémentation de <code>HelloWorldProcessor.java</code> que nous utilisons.</p>
-</div>
-<div class="sect2">
-<h3 id="_étape_1_activer_les_logs_des_rounds">étape 1: activer les logs des rounds</h3>
-<div class="paragraph">
-<p>Une option de <code>javac</code> permet d&#8217;activer les logs des rounds d&#8217;annotations processing. Consultez la doc de <code>javac</code> pour l&#8217;identifier.</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-Compilez <code>HelloWorldProcessor.java</code> dans le répertoire <code>exo2</code> puis <code>SomeDeprecatedClass</code> en activant les logs des rounds. (TODO: lien doc)
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>solution: cd exo2 &amp;&amp; javac -XprintRounds -processor HelloWorldProcessor SomeDeprecatedClass.java</p>
-</div>
-<div class="paragraph">
-<p>Constatez qu&#8217;il y a deux rounds, ce qui explique l&#8217;affichage du "Hello world!" en doublon.</p>
-</div>
-<div class="paragraph">
-<p>Une autre option permet d&#8217;afficher pour chaque round quels sont les processors que javac fait participer.</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-Compilez <code>SomeDeprecatedClass</code> en activant les deux options.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>solution: cd exo2 &amp;&amp; javac -XprintRounds -XprintProcessorInfo -processor HelloWorldProcessor SomeDeprecatedClass.java</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_étape_2_supprimer_le_doublon_à_la_bourrin">étape 2: supprimer le doublon à la bourrin</h3>
-<div class="paragraph">
-<p>Le cycle de vie d&#8217;un objet implémentation l&#8217;interface <code>Processor</code> est le suivant (citation de la JSR-269, javadoc de l&#8217;interface <code>Processor</code>):</p>
-</div>
-<div class="paragraph">
-<p>Each implementation of a Processor must provide a public no-argument constructor to be used by tools to instantiate the processor. The tool infrastructure will interact with classes implementing this interface as follows:
-    1. If an existing Processor object is not being used, to create an instance of a processor the tool calls the no-arg constructor of the processor class.
-    2. Next, the tool calls the init method with an appropriate ProcessingEnvironment.
-    3. Afterwards, the tool calls getSupportedAnnotationTypes, getSupportedOptions, and getSupportedSourceVersion. These methods are only called once per run, not on each round.
-    4. As appropriate, the tool calls the process method on the Processor object; a new Processor object is not created for each round.</p>
-</div>
-<div class="paragraph">
-<p>En substance, il faut comprendre qu&#8217;une seule instance d&#8217;un annotation processor est créé par compilation. Il est donc tout à fait possible de traiter ce problème en exploitant l&#8217;aspect "statefull" des instances d&#8217;annotation processor (ici, c&#8217;est pas très propre, mais ça marche, et dans la vraie vie, c&#8217;est parfois indispensable).</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-Modifiez la classe <code>HelloWorldProcessor</code> de sorte que le message ne s&#8217;affiche plus qu&#8217;une seule fois par compilation
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>solution: il suffit d&#8217;un flag stockée en propriété de la classe <code>HelloWorldProcessor</code>.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_étape_3_supprimer_le_doublon_proprement">étape 3: supprimer le doublon proprement</h3>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-Corrigez le doublon en utilisant l&#8217;API (astuce: regardez du côté de <code>RoundEnvironment</code>).
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>solution:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">  @Override
-  public boolean process(Set&lt;? extends TypeElement&gt; annotations, RoundEnvironment roundEnv) {
-    if (roundEnv.processingOver()) {
-      processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Hello world!");
-    }
-    return false;
-  }</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_exo3_la_même_chose_avec_maven">exo3: la même chose avec Maven</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Dans le répertoire <code>exo3</code>, vous trouverez deux projets Maven et les classes de l&#8217;exo 2:</p>
+<p>Dans le répertoire <code>exo1</code>, vous trouverez un projet Maven constitué de deux sous modules:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>répertoire <code>processor</code>: le projet <code>processor-exo3</code> produit un <code>jar</code> qui contient la classe <code>fr.devoxx.niveau1.exo3.HelloWorldProcessor</code>.</p>
+<p>dans le module <code>processor</code> se trouvent l&#8217;annotation <code>Personnage</code> et le processor <code>CrocMortProcessor</code></p>
 </li>
 <li>
-<p>répertoire <code>subject</code>: le projet <code>subject-exo3</code> contient la classe <code>fr.devoxx.niveau1.exo3.SomeDeprecatedClass</code></p>
+<p>dans le module <code>subject</code> se trouvent les membres des familles Baratheon et Stark.
+Chaque personnage est représenté par une classe, dont le nom est le prénom du personnage, annotée avec l&#8217;annotation <code>Personnage</code>.</p>
 </li>
 </ul>
 </div>
-<div class="sect2">
-<h3 id="_étape_1_déclarer_le_processor">étape 1: déclarer le processor</h3>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-Compilez le projet <code>processor-exo3</code> (pensez au <code>install</code>) puis <code>subject-exo3</code> (<code>compile</code> suffit). Constatez qu&#8217;aucune ligne <code>Hello world!</code> ne s&#8217;affiche dans les traces Maven.
-</td>
-</tr>
-</table>
-</div>
 <div class="paragraph">
-<p>De la même manière qu&#8217;en utilisant <code>javac</code> à la main il faut ajouter une ligne de commande pour déclarer un annotation processor, avec Maven il faut ajouter quelques lignes dans le <code>pom.xml</code>.</p>
-</div>
-<div class="paragraph">
-<p>Le plugin Maven qui se charge de la compilation (et fait donc l&#8217;interface entre Maven et le compilateur) est le <code>maven-compiler-plugin</code>.</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>Trouvez comment déclarer le processor <code>fr.devoxx.niveau1.exo3.HelloWorldProcessor</code> (TODO: lien doc), recompilez et consatez que le message suivant s&#8217;affiche dans les logs Maven:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>[WARNING] Hello world!</pre>
-</div>
-</div>
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>solution:
-ajout dans la configuration de <code>maven-compiler-plugin</code> des 3 lignes suivantes:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;annotationProcessors&gt;
-  &lt;annotationProcessor&gt;fr.devoxx.niveau1.exo3.HelloWorldProcessor&lt;/annotationProcessor&gt;
-&lt;/annotationProcessors&gt;</code></pre>
-</div>
-</div>
+<p>L&#8217;annotation <code>Personnage</code> définie un membre <code>mort</code> de type <code>boolean</code> qui permet de savoir si le personnage est mort (ou pas&#8230;&#8203; encore).</p>
 </div>
 <div class="sect2">
-<h3 id="_étape_2_activer_les_logs">étape 2: activer les logs</h3>
+<h3 id="_étape_1_récupérer_une_annotation">étape 1: récupérer une annotation</h3>
 <div class="paragraph">
-<p>L&#8217;activation des logs liés au processing d&#8217;annotations passait par des options de ligne de commande, tout comme la déclaration d&#8217;un processor. Avec maven donc, pour activer ces logs, on utilisera aussi des options de configuration du maven-compiler-plugin.</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-modifiez le pom.xml de <code>subject-exo3</code> de sorte que les logs du processing d&#8217;annotations s&#8217;affichent dans les logs du build maven.
-</td>
-</tr>
-</table>
+<p>Le première étape de l&#8217;exercice consiste à lire les informations contenues dans les sources dans le contexte d&#8217;un processor.</p>
 </div>
 <div class="paragraph">
-<p>solution:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">  &lt;compilerArgs&gt;
-    &lt;compilerArg&gt;-XprintRounds&lt;/compilerArg&gt;
-    &lt;compilerArg&gt;-XprintProcessorInfo&lt;/compilerArg&gt;
-  &lt;/compilerArgs&gt;</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_étape_3_les_niveaux_de_diagnostic_et_maven">étape 3: les niveaux de diagnostic et Maven</h3>
-<div class="paragraph">
-<p>Le niveau de log utilisé dans l&#8217;implémentation Maven de <code>HelloWorldProcessor</code> n&#8217;est pas le même que dans l&#8217;implémentation pour <code>javac</code>.</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-Pour comprendre pourquoi, faites un test avec les valeurs <code>NOTE</code> puis <code>WARNING</code> (et <code>OTHER</code> si vous y tenez) de l&#8217;enum <code>javax.tools.Diagnostic.Kind</code>.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Ce comportement est un "choix" du plugin <code>maven-compiler-plugin</code> pour réduire la quantité de logs Maven (sic!) durant la phase compilation.</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-Trouvez l&#8217;option du plugin permet l&#8217;affichage des warnings de compilation dans Maven (TODO: lien doc).
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>solution: ajouter <code>&lt;showWarnings&gt;true&lt;/showWarnings&gt;</code> dans la configuration de <code>maven-compiler-plugin</code> pour afficher <code>WARNING</code>, <code>NOTES</code> et <code>OTHER</code> au niveau <code>[INFO]</code>.</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-Tentez maintenant la compilation avec le niveau <code>ERROR</code>.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Constatez que vous avez maintenant dans vos mains le moyen de contrôler la compilation de vos classes.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-Par ailleurs, ce comportement permet de comprendre pourquoi on utilise une enum qui s&#8217;appelle <code>Diagnostic.Kind</code> et non quelque chose comme <code>Level</code>. En principe, on n&#8217;enregistre pas un log mais on transmet un diagnostic au compilateur (sous forme de message), en le qualifiant. Charge au compilateur ensuite de choisir ce qu&#8217;il en fait. Dans les faits, cela revient à afficher un log sauf si c&#8217;est le niveau <code>ERROR</code> auquel cas le compilateur arrête également la compilation.
-</td>
-</tr>
-</table>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_exo4_découverte_automatique_des_processors">exo4: découverte automatique des processors</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>L&#8217;obligation de déclarer explicitement son processor est un handicap au déploiement d&#8217;une solution basée sur un annotation processor.</p>
-</div>
-<div class="paragraph">
-<p>Heureusement, la JSR-269 spécifie la présence d&#8217;un "discovery process". Celui de <code>javac</code> est basé sur le <code>ServiceLoader</code> de l&#8217;API Java.</p>
-</div>
-<div class="sect2">
-<h3 id="_étape_1_se_passer_de_déclaration_explicite_du_processor">étape 1: se passer de déclaration explicite du processor</h3>
-<div class="paragraph">
-<p>La documentation de <code>javac</code> indique:</p>
-</div>
-<div class="quoteblock">
-<blockquote>
-Processors are located by means of service provider-configuration files named META-INF/services/javax.annotation.processing.Processor on the search path
-</blockquote>
+<p>Les deux informations qui nous intéressent: la valeur du membre <code>mort</code> de l&#8217;annotation <code>Personnage</code> et le nom de la classe annotée.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -838,198 +465,42 @@ Processors are located by means of service provider-configuration files named ME
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Ajoutez le fichier dans le répertoire <code>src/main/resources</code> du projet <code>exo4-processor1</code> avec comme seul contenu le nom qualifié de la classe <code>DeprecatedCodeWhistleblower</code> sur une ligne.</p>
+<p>Dans la classe <code>CrocMortProcessor</code>, implémentez la méthode <code>collectDeadCharactersFirstnames</code>.</p>
 </div>
 <div class="paragraph">
-<p>Recompilez tout le projet (<code>mvn clean install</code>). Le message suivant s&#8217;affiche dans la console lors de la compilation du module <code>exo4-subject1</code>.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>[WARNING] Attention, il y a du code déprécié dans les sources de ce module !</pre>
-</div>
-</div>
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Félicitations ! Il suffit maintenant d&#8217;avoir l&#8217;artefact <code>fr.devoxx.2015.niveau1:exo4-processor1</code> comme dépendance avec le scope <code>compile</code> pour bénéficier de ses avertissements (super utiles) à la compilation.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_étape_2_automatiser_encore_plus">étape 2: automatiser encore plus</h3>
-<div class="paragraph">
-<p>La création du fichier <code>META-INF/services/javax.annotation.processing.Processor</code> et l&#8217;écriture de son contenu sont un exemple parfait de ce qui peut être automatisé avec le traitement d&#8217;annotations à la compilation.</p>
-</div>
-<div class="paragraph">
-<p>Et pour preuve, c&#8217;est le but de la toute petite (3 classes) librairie <code>AutoService</code>.</p>
-</div>
-<div class="paragraph">
-<p>Préparez votre totem, vous allez faire du traitement d&#8217;annotations sur un annotation processor.</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>Ajoutez la dépendance <code>com.google.auto.service:auto-service</code> au module <code>exo4-processor2</code>, puis l&#8217;annotation <code>@AutoService(Processor.class)</code> sur la classe <code>OverrideJohns</code>. Relancez la compilation de tout le projet, vous devez voir apparaître la ligne suivante lors de la compilation du module <code>exo4-subject2</code>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>[WARNING] True rewards await those who choose wisely.</pre>
-</div>
-</div>
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Fantastique ! Ca fonctionne ! Il est possible de faire du traitement d&#8217;annotations alors même que l&#8217;on code un processor, pas mal non ?</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_étape_3_la_bonne_gestion_des_dépendances_de_type_annotation_processor">étape 3: la bonne gestion des dépendances de type annotation processor</h3>
-<div class="paragraph">
-<p>Vous aurez sûrement remarqué que la ligne produite par <code>DeprecatedCodeWhistleblower</code> ("[WARNING] Attention, il y a du code déprécié dans les sources de ce module !") est aussi présente lors de la compilation du module <code>exo4-subject2</code>.</p>
-</div>
-<div class="paragraph">
-<p>Comme ce processor utilise un "service provider-configuration files", cela signifie que le module <code>exo4-subject2</code> déclare une dépendance vers le module <code>exo4-processor1</code>.</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-Vérifiez le <code>pom.xml</code> et constatez que ce n&#8217;est pas le cas.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>En réalité, le module <code>exo4-processor1</code> est une dépendance indirecte du module <code>exo4-subject2</code>. En effet, celui-ci déclare une dépendance vers <code>exo4-subject1</code>, qui déclare une dépendance à <code>exo4-processor1</code>.</p>
-</div>
-<div class="paragraph">
-<p>Du coup, <code>exo4-processor1</code> est bien dans le classpath de <code>exo4-subject2</code> et il se voit donc appliqué le processor de ce module.</p>
-</div>
-<div class="paragraph">
-<p>Ce comportement est rarement souhaitable. Heureusement, il existe une option de la déclaration de dépendance Maven qui permet de le corriger, de faire en sorte d&#8217;avoir une dépendance de scope <code>compile</code> mais que celle-ci ne puisse être tirée indirectement.</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>Faites en sorte que la ligne de log du processor <code>DeprecatedCodeWhistleblower</code> ne s&#8217;affiche plus lors de la compilation du module <code>exo4-subject2</code> sans modifier le <code>pom.xml</code> de <code>exo4-subject2</code>. (astuce: la doc de <code>@AutoValue</code> est correcte de ce point de vue)</p>
-</div>
-</td>
-</tr>
-</table>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_étape_4_bonus_contourner_les_bugs_du_maven_compiler_plugin">étape 4: bonus, contourner les bugs du maven-compiler-plugin</h3>
-<div class="paragraph">
-<p>Si vous regardez le <code>pom.xml</code> du module <code>exo4-processor1</code>, vous constaterez qu&#8217;une option du compilateur a été ajoutée pour désactiver totalement le traitement d&#8217;annotations lors de la compilation de ce module.</p>
-</div>
-<div class="paragraph">
-<p>Cette option est super-extrèmement-ultra-vachement importante si vous écrivez <code>META-INF/services/javax.annotation.processing.Processor</code> à la main.</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>Supprimez cette option, compilez le projet.</p>
-</div>
-<div class="paragraph">
-<p>Constatez que le build échoue avec le message suivant:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>[ERROR] Bad service configuration file, or exception thrown while constructing Processor object: javax.annotation.processing.Processor: Provider fr.devoxx.niveau1.exo4.DeprecatedCodeWhistleblower not found</pre>
-</div>
-</div>
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Cette erreur signifie que Java n&#8217;a pas trouvé un processor alors que celui-ci est référencé dans un fichier <code>META-INF/services/javax.annotation.processing.Processor</code>. Mais bon, forcément, il ne trouve pas un processor qu&#8217;il est censé compiler.</p>
-</div>
-<div class="paragraph">
-<p>L&#8217;explication de se comportement n&#8217;est pas triviale, mais la voici. Lors du build:</p>
+<p>Pour cela, vous devrez:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Maven copie les ressources dans le répertoire <code>exo4-processor1/target/classes</code></p>
+<p>récupérez le <code>TypeElement</code> de l&#8217;annotation <code>@Personnage</code> parmis les paramètres de la méthode <code>init</code> (attention, c&#8217;est très simple)</p>
 </li>
 <li>
-<p>lors de la compilation, le <code>maven-compiler-plugin</code> spécifie à <code>javac</code> que le répertoire <code>exo4-processor1/target/classes</code> fait partie de son classpath (un [ticket](<a href="https://jira.codehaus.org/browse/MCOMPILER-97" class="bare">https://jira.codehaus.org/browse/MCOMPILER-97</a>) est ouvert sur le sujet depuis des années mais ce choix est requis pour le build incrémental)</p>
+<p>récupérez les <code>Element</code> des classes annotées avec <code>@Personnage</code> du <code>RoundEnvironnement</code> courant (TODO lien DOC RoundEnvironnement)</p>
 </li>
 <li>
-<p><code>javac</code> constate donc la présence d&#8217;un fichier <code>META-INF/services/javax.annotation.processing.Processor</code> dans le classpath et recherche donc le processor indiqué: <code>DeprecatedCodeWhistleblower</code></p>
+<p>récupérez l&#8217;annotation <code>@Personnage</code> de chaque element afin de savoir si le personnage courant est mort ou pas (TODO lien doc Element)</p>
 </li>
 <li>
-<p>ce processor n&#8217;existe pas (forcément, on est sur le point de le compiler) et <code>javac</code> lève une erreur et ne compile aucun fichier</p>
-</li>
-<li>
-<p>l&#8217;erreur ("error: Bad service configuration file, or exception thrown while constructing Processor object: javax.annotation.processing.Processor: Provider fr.devoxx.niveau1.exo4.DeprecatedCodeWhistleblower not found") est remontée par le <code>maven-compiler-plugin</code> et le build échoue</p>
+<p>récupérez le nom de la classe et l&#8217;ajouter à la propriété <code>deadCharacterFirstnames</code></p>
 </li>
 </ol>
 </div>
-<div class="paragraph">
-<p>Le workaround qui est "prescrit" pour ce problème est celui indiqué ci-dessus: désactiver le traitement d&#8217;annotations complètement lors de la compilation du processor.</p>
-</div>
-<div class="paragraph">
-<p>Ce workaround est acceptable à la condition d&#8217;avoir isolé le processor dans son propre module (ce qui est une bonne pratique de toute manière) et/ou que l&#8217;on a pas besoin d&#8217;annotation processing de toute façon.</p>
-</div>
-<div class="paragraph">
-<p>L&#8217;autre workaround consiste à utiliser l&#8217;annotation <code>@AutoService</code>.</p>
-</div>
-<div class="sect3">
-<h4 id="_c_est_pire_avec_java_6_et_7">c&#8217;est pire avec Java 6 et 7</h4>
-<div class="paragraph">
-<p>Attention, le build n&#8217;échoue que si Maven est exécuté avec Java 8. Avec Java 7 et 6, javac ne rapporte aucune erreur (bug corrigé en 8) et ne compile toujours aucune classe. Donc voici la situation que l&#8217;on reprend au point 5:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic" start="5">
-<li>
-<p>l&#8217;erreur ("error: Bad service configuration file, or exception thrown while constructing Processor object: javax.annotation.processing.Processor: Provider fr.devoxx.niveau1.exo4.DeprecatedCodeWhistleblower not found") est simplement ignorée par le <code>maven-compiler-plugin</code> (bug! gros bug!) qui considère que la compilation a réussi</p>
-</li>
-<li>
-<p>la compilation de <code>exo4-processor1</code> produit donc un jar qui ne contient que <code>META-INF/services/javax.annotation.processing.Processor</code></p>
-</li>
-<li>
-<p>ce jar est tiré par les modules <code>exo4-subject1</code> et <code>exo4-subject2</code>, il y a donc dans le classpath un fichier <code>META-INF/services/javax.annotation.processing.Processor</code> qui référence un processor inexistant, <code>javac</code> lève une erreur et la compilation n&#8217;a pas lieu</p>
-</li>
-<li>
-<p>s&#8217;il n&#8217;y a pas de compilation, le message de <code>OverrideJohns</code> ne peut pas s&#8217;afficher, pas de plus que celui de <code>DeprecatedCodeWhistleblower</code> qui n&#8217;a pas été compilé</p>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p>En conclusion, la présence d&#8217;un fichier <code>META-INF/services/javax.annotation.processing.Processor</code> sans son processor peut sérieusement compromettre la compilation. Et encore plus celle d&#8217;un projet Maven dû à certains bugs du <code>maven-compiler-plugin</code> si vous n&#8217;utilisez pas Java 8.</p>
+</td>
+</tr>
+</table>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_étape_2_écrire_un_fichier">étape 2: écrire un fichier</h3>
+
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-02-24 16:00:40 CET
+Last updated 2015-03-02 18:39:34 CET
 </div>
 </div>
 </body>
