@@ -1,0 +1,37 @@
+= Niveau 3
+:toc: right
+:toc-title: Niveau 3
+:icons: font
+
+== exo 1: générer un fichier
+
+L'objectif de cet exercice est de générer un fichier dans lequel figurera le prénom des personnages décédés du livre Game of Thrones.
+
+Dans le répertoire `exo1`, vous trouverez un projet Maven constitué de deux sous modules:
+
+* dans le module `processor` se trouvent l'annotation `Personnage` et le processor `CrocMortProcessor`
+* dans le module `subject` se trouvent les membres des familles Baratheon et Stark.
+ Chaque personnage est représenté par une classe, dont le nom est le prénom du personnage, annotée avec l'annotation `Personnage`.
+
+L'annotation `Personnage` définie un membre `mort` de type `boolean` qui permet de savoir si le personnage est mort (ou pas... encore).
+
+=== étape 1: récupérer une annotation
+
+Le première étape de l'exercice consiste à lire les informations contenues dans les sources dans le contexte d'un processor.
+
+Les deux informations qui nous intéressent: la valeur du membre `mort` de l'annotation `Personnage` et le nom de la classe annotée.
+
+[IMPORTANT]
+====
+Dans la classe `CrocMortProcessor`, implémentez la méthode `collectDeadCharactersFirstnames`.
+
+Pour cela, vous devrez:
+
+1. récupérez le `TypeElement` de l'annotation `@Personnage` parmis les paramètres de la méthode `init` (attention, c'est très simple)
+2. récupérez les `Element` des classes annotées avec `@Personnage` du `RoundEnvironnement` courant (TODO lien DOC RoundEnvironnement)
+3. récupérez l'annotation `@Personnage` de chaque element afin de savoir si le personnage courant est mort ou pas (TODO lien doc Element)
+4. récupérez le nom de la classe et l'ajouter à la propriété `deadCharacterFirstnames`
+====
+
+=== étape 2: écrire un fichier
+
