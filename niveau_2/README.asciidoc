@@ -38,7 +38,7 @@ Libre à vous d'aller regarder les classes `DontLookAtThisClass` de chaque packa
 
 Le premier exercice se concentre sur la modélisation de la déclaration d'une classe et la compréhension de la distinction entre `Element` et `TypeMirror`.
 
-Pour rappel, un `Element` représentera un élément du language Java (une classe, interface, package, ...) tandis qu'un `TypeMirror` représentera un usage d'un élément dans un autre (le type d'un propriété, un paramètre, ...).
+Pour rappel, un `Element` représentera un élément du language Java (une classe, interface, package, un paramètre, ...) tandis qu'un `TypeMirror` représentera un usage d'un élément dans un autre (le type d'une propriété, d'un paramètre, ...).
 
 === étape 1: nom(s), package et attribut(s)
 
@@ -90,7 +90,7 @@ Cette exercice se focalise sur l'exploration du contenu d'une classe ou d'une m�
 
 === étape 1 : les méthodes
 
-La première étape consiste à découvrir comment récupérer les méthodes et constructeurs d'une classe et ensuite en sélectionner des sous ensembles (les constructeurs, les fonctions publiques, une méthode spécifique, etc.).
+La première étape consiste à découvrir comment récupérer les méthodes et constructeurs d'une classe et en sélectionner des sous ensembles (les constructeurs, les fonctions publiques, une méthode spécifique, etc.). On verra aussi comment explorer la signature d'une méthode (nom, annotations, type de retour et paramètres).
 
 [IMPORTANT]
 ====

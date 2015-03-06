@@ -1,7 +1,6 @@
 package fr.devoxx.niveau2.exo2.etape1;
 
-import java.util.Objects;
-import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import fr.devoxx.niveau2.Flag;
 
@@ -18,10 +17,6 @@ public class Homer {
     this.wearingPants = wearingPants;
   }
 
-  public String speak() {
-    return "Doh !";
-  }
-
   public double getWeight() {
     return Double.MAX_VALUE;
   }
@@ -31,9 +26,12 @@ public class Homer {
     return true;
   }
 
-  public boolean eatDonuts(int count, @Nonnull Flavor flavor) {
-    Objects.requireNonNull(flavor);
+  public boolean eatDonuts(int count, @Nullable Flavor flavor) {
     return true;
+  }
+
+  private void strangleBart(@Nullable String blame) {
+
   }
 
   private void sleepOnCouch() {

@@ -2,18 +2,22 @@ package fr.devoxx.niveau2.exo2.etape1;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeKind;
+import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.SimpleElementVisitor6;
 import javax.lang.model.util.Types;
 
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 /**
  * MethodsExplorer -
@@ -81,11 +85,11 @@ public class MethodsExplorer {
    */
   public List<ExecutableElement> extractPublicMethodsAndConstructors(@Nonnull TypeElement homerTypeElement) {
     return homerTypeElement.getEnclosedElements()
-                                  .stream()
-                                  .filter(s -> s.getModifiers().contains(Modifier.PUBLIC))
-                                  .map(this::asExecutableElement)
-                                  .filter(Objects::nonNull)
-                                  .collect(toList());
+                           .stream()
+                           .filter(s -> s.getModifiers().contains(Modifier.PUBLIC))
+                           .map(this::asExecutableElement)
+                           .filter(Objects::nonNull)
+                           .collect(toList());
   }
 
   /**
@@ -136,6 +140,29 @@ public class MethodsExplorer {
         .filter(s -> s.getAnnotation(Deprecated.class) == null)
         .findFirst()
         .get();
+  }
+
+  /**
+   * Extrait les paramètres de méthode portant l'annotation {@link javax.annotation.Nullable} définis par la classe
+   * {@link fr.devoxx.niveau2.exo2.etape1.Homer} à partir du {@link TypeElement} qui la représente.
+   * <p>
+   * (indice: on peut obtenir le {@link TypeMirror} de tout {@link Element} via la méthode {@code asType()})
+   * </p>
+   *
+   * @param homerTypeElement le {@link TypeElement} de la class {@link fr.devoxx.niveau2.exo2.etape1.Homer}
+   *
+   * @return un Set contenant le {@link TypeMirror} de {@link java.lang.String} et
+   * {@link fr.devoxx.niveau2.exo2.etape1.Homer.Flavor}
+   */
+  public Set<TypeMirror> extractTypeOfNullableParameters(@Nonnull TypeElement homerTypeElement) {
+    return homerTypeElement.getEnclosedElements()
+                           .stream()
+                           .map(this::asExecutableElement)
+                           .filter(Objects::nonNull)
+                           .flatMap(method -> method.getParameters().stream())
+                           .filter(parameter -> parameter.getAnnotation(Nullable.class) != null)
+                           .map(parameter -> parameter.asType())
+                           .collect(toSet());
   }
 
   private ExecutableElement asExecutableElement(@Nonnull Element methodElement) {
