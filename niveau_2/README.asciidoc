@@ -83,3 +83,19 @@ La quatrième étape a pour obectif de faire découvrir la récupération de la 
 ====
 Ecrivez les implémentations des méthodes de la classe `fr.devoxx.niveau2.exo1.etape4.ClassSuperClassExplorer`.
 ====
+
+== exo 2 : contenu d'une classe/interface
+
+Cette exercice se focalise sur l'exploration du contenu d'une classe ou d'une méthode.
+
+=== étape 1 : les méthodes
+
+La première étape consiste à découvrir comment récupérer les méthodes et constructeurs d'une classe et ensuite en sélectionner des sous ensembles (les constructeurs, les fonctions publiques, une méthode spécifique, etc.).
+
+[IMPORTANT]
+====
+Ecrivez les implémentations des méthodes de la classe `fr.devoxx.niveau2.exo2.etape1.MethodsExplorer`.
+
+Les deux premières méthodes s'écrivent en une ligne, les autres peuvent rester très succinctes si on fait bon usage d'un stream et de courtes lambdas.
+====
+
