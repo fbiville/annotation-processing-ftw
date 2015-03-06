@@ -99,3 +99,11 @@ Ecrivez les implémentations des méthodes de la classe `fr.devoxx.niveau2.exo2.
 Les deux premières méthodes s'écrivent en une ligne, les autres peuvent rester très succinctes si on fait bon usage d'un stream et de courtes lambdas.
 ====
 
+=== étape 2 : les champs
+
+La seconde étape consite à découvrir comment récupérer les champs d'une classe (ou d'une enum) et explorer les informations qu'ils portent: nom, attributs, type, annotations.
+
+[IMPORTANT]
+====
+Ecrivez les implémentations des méthodes de la classe `fr.devoxx.niveau2.exo2.etape2.FieldsExplorer`.
+====
