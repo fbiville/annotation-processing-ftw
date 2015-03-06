@@ -5,39 +5,40 @@
 
 L'objet du niveau 2 est de découvrir l'API qui modélise le code source Java sur lequel reposera tout traitement d'annotation (ou presque) via un Processor.
 
+== organisation des exercices
 
-== exo 1: déclaration de classe et distinction Element/TypeMirror
+Chaque exercice possède son répertoire (exercice 1 -> `exo1`, exercice 2 -> `exo2`, ...) dans lequel se trouve un projet Maven organisé comme suit.
 
-Le premier exercice se concentre sur la modélisation de la déclaration d'une classe et la compréhension de la distinction entre `Element` et `TypeMirror`.
+=== un package et une classe explorer
 
-Pour rappel, un `Element` représentera un élément du language Java (une classe, interface, package, ...) tandis qu'un `TypeMirror` représentera un usage d'un élément dans un autre (le type d'un propriété, un paramètre, ...).
-
-=== organisation de l'exercice
-
-Dans le répertoire `exo1` se trouve un projet Maven organisé comme suit.
-
-==== un package et une classe explorer par étape
-
-Dans les sources, 4 packages (un par étape) se composent d'une classe "explorer", qui définie des méthodes vides, et d'une classe "à explorer". Il existe un test unitaire pour chaque classe "explorer".
+Dans les sources, vous trouverez un packages par étape. Celui-ci se composent d'une classe "explorer", qui définie des méthodes vides, et d'une classe "à explorer". Il existe un test unitaire pour chaque classe "explorer".
 
 Chaque classe "explorer" est conçue pour vous faire explorer l'API qui modélise le code source Java par petits bouts. Ainsi, l'implémentation des méthodes restera courte (souvent une ligne, au plus une dizaine).
 Les méthodes sont également ordonnées pour vous guider (vous utiliserez parfois une méthode précédente pour implémenter la méthode courante).
 
-==== faire passer les tests au vert
+=== faire passer les tests au vert
 
-L'objectif de l'exercice est de faire passer progressivement tous les tests au vert en écrivant l'implémentation des méthodes vides. Ainsi, si vous lancez le build du projet, tous les tests échouent (`mvn clean install`).
+L'objectif de chaque exercice est de faire passer progressivement tous les tests au vert en écrivant l'implémentation des méthodes vides. Ainsi, si vous lancez le build du projet d'un exercie, tous les tests échouent (`mvn clean install`).
 
-==== javadoc
+=== javadoc
 
-L'objectif, le résultat attendu et des indices sont présentés dans la javadoc de chaque méthode. Si votre IDE le permet, vous pourrez consulter les documentations des classes et interface de l'API directement dans les sources.
+L'objectif, le résultat attendu et des indices sont présentés dans la javadoc de chaque méthode des classes "explorer".
 
+Si votre IDE le permet, vous pourrez consulter les documentations des classes et interface de l'API directement dans les sources.
 Sinon, il vous sera utile d'ouvrir la javadoc du package (TODO lien pkg element et type) hors ligne dans votre navigateur.
 
-==== solution
+=== solution
 
 La solution des exercices est disponible dans le code, dans les tests unitaires.
 
 Libre à vous d'aller regarder les classes `DontLookAtThisClass` de chaque package si vous vous trouvez bloqués mais prenez le temps de chercher, on apprends beaucoup mieux par soi-même.
+
+
+== exo 1: déclaration de classe
+
+Le premier exercice se concentre sur la modélisation de la déclaration d'une classe et la compréhension de la distinction entre `Element` et `TypeMirror`.
+
+Pour rappel, un `Element` représentera un élément du language Java (une classe, interface, package, ...) tandis qu'un `TypeMirror` représentera un usage d'un élément dans un autre (le type d'un propriété, un paramètre, ...).
 
 === étape 1: nom(s), package et attribut(s)
 

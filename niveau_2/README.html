@@ -416,9 +416,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Niveau 2</div>
 <ul class="sectlevel1">
-<li><a href="#_exo_1_déclaration_de_classe_et_distinction_element_typemirror">exo 1: déclaration de classe et distinction Element/TypeMirror</a>
+<li><a href="#_organisation_des_exercices">organisation des exercices</a>
 <ul class="sectlevel2">
-<li><a href="#_organisation_de_l_exercice">organisation de l&#8217;exercice</a></li>
+<li><a href="#_un_package_et_une_classe_explorer">un package et une classe explorer</a></li>
+<li><a href="#_faire_passer_les_tests_au_vert">faire passer les tests au vert</a></li>
+<li><a href="#_javadoc">javadoc</a></li>
+<li><a href="#_solution">solution</a></li>
+</ul>
+</li>
+<li><a href="#_exo_1_déclaration_de_classe">exo 1: déclaration de classe</a>
+<ul class="sectlevel2">
 <li><a href="#_étape_1_nom_s_package_et_attribut_s">étape 1: nom(s), package et attribut(s)</a></li>
 <li><a href="#_étape_2_annotation_s">étape 2: annotation(s)</a></li>
 <li><a href="#_étape_3_interface_s">étape 3: interface(s)</a></li>
@@ -437,46 +444,39 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="_exo_1_déclaration_de_classe_et_distinction_element_typemirror">exo 1: déclaration de classe et distinction Element/TypeMirror</h2>
+<h2 id="_organisation_des_exercices">organisation des exercices</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Le premier exercice se concentre sur la modélisation de la déclaration d&#8217;une classe et la compréhension de la distinction entre <code>Element</code> et <code>TypeMirror</code>.</p>
-</div>
-<div class="paragraph">
-<p>Pour rappel, un <code>Element</code> représentera un élément du language Java (une classe, interface, package, &#8230;&#8203;) tandis qu&#8217;un <code>TypeMirror</code> représentera un usage d&#8217;un élément dans un autre (le type d&#8217;un propriété, un paramètre, &#8230;&#8203;).</p>
+<p>Chaque exercice possède son répertoire (exercice 1 &#8594; <code>exo1</code>, exercice 2 &#8594; <code>exo2</code>, &#8230;&#8203;) dans lequel se trouve un projet Maven organisé comme suit.</p>
 </div>
 <div class="sect2">
-<h3 id="_organisation_de_l_exercice">organisation de l&#8217;exercice</h3>
+<h3 id="_un_package_et_une_classe_explorer">un package et une classe explorer</h3>
 <div class="paragraph">
-<p>Dans le répertoire <code>exo1</code> se trouve un projet Maven organisé comme suit.</p>
-</div>
-<div class="sect3">
-<h4 id="_un_package_et_une_classe_explorer_par_étape">un package et une classe explorer par étape</h4>
-<div class="paragraph">
-<p>Dans les sources, 4 packages (un par étape) se composent d&#8217;une classe "explorer", qui définie des méthodes vides, et d&#8217;une classe "à explorer". Il existe un test unitaire pour chaque classe "explorer".</p>
+<p>Dans les sources, vous trouverez un packages par étape. Celui-ci se composent d&#8217;une classe "explorer", qui définie des méthodes vides, et d&#8217;une classe "à explorer". Il existe un test unitaire pour chaque classe "explorer".</p>
 </div>
 <div class="paragraph">
 <p>Chaque classe "explorer" est conçue pour vous faire explorer l&#8217;API qui modélise le code source Java par petits bouts. Ainsi, l&#8217;implémentation des méthodes restera courte (souvent une ligne, au plus une dizaine).
 Les méthodes sont également ordonnées pour vous guider (vous utiliserez parfois une méthode précédente pour implémenter la méthode courante).</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_faire_passer_les_tests_au_vert">faire passer les tests au vert</h4>
+<div class="sect2">
+<h3 id="_faire_passer_les_tests_au_vert">faire passer les tests au vert</h3>
 <div class="paragraph">
-<p>L&#8217;objectif de l&#8217;exercice est de faire passer progressivement tous les tests au vert en écrivant l&#8217;implémentation des méthodes vides. Ainsi, si vous lancez le build du projet, tous les tests échouent (<code>mvn clean install</code>).</p>
+<p>L&#8217;objectif de chaque exercice est de faire passer progressivement tous les tests au vert en écrivant l&#8217;implémentation des méthodes vides. Ainsi, si vous lancez le build du projet d&#8217;un exercie, tous les tests échouent (<code>mvn clean install</code>).</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_javadoc">javadoc</h4>
+<div class="sect2">
+<h3 id="_javadoc">javadoc</h3>
 <div class="paragraph">
-<p>L&#8217;objectif, le résultat attendu et des indices sont présentés dans la javadoc de chaque méthode. Si votre IDE le permet, vous pourrez consulter les documentations des classes et interface de l&#8217;API directement dans les sources.</p>
+<p>L&#8217;objectif, le résultat attendu et des indices sont présentés dans la javadoc de chaque méthode des classes "explorer".</p>
 </div>
 <div class="paragraph">
-<p>Sinon, il vous sera utile d&#8217;ouvrir la javadoc du package (TODO lien pkg element et type) hors ligne dans votre navigateur.</p>
+<p>Si votre IDE le permet, vous pourrez consulter les documentations des classes et interface de l&#8217;API directement dans les sources.
+Sinon, il vous sera utile d&#8217;ouvrir la javadoc du package (TODO lien pkg element et type) hors ligne dans votre navigateur.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_solution">solution</h4>
+<div class="sect2">
+<h3 id="_solution">solution</h3>
 <div class="paragraph">
 <p>La solution des exercices est disponible dans le code, dans les tests unitaires.</p>
 </div>
@@ -484,6 +484,16 @@ Les méthodes sont également ordonnées pour vous guider (vous utiliserez parfo
 <p>Libre à vous d&#8217;aller regarder les classes <code>DontLookAtThisClass</code> de chaque package si vous vous trouvez bloqués mais prenez le temps de chercher, on apprends beaucoup mieux par soi-même.</p>
 </div>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_exo_1_déclaration_de_classe">exo 1: déclaration de classe</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Le premier exercice se concentre sur la modélisation de la déclaration d&#8217;une classe et la compréhension de la distinction entre <code>Element</code> et <code>TypeMirror</code>.</p>
+</div>
+<div class="paragraph">
+<p>Pour rappel, un <code>Element</code> représentera un élément du language Java (une classe, interface, package, &#8230;&#8203;) tandis qu&#8217;un <code>TypeMirror</code> représentera un usage d&#8217;un élément dans un autre (le type d&#8217;un propriété, un paramètre, &#8230;&#8203;).</p>
 </div>
 <div class="sect2">
 <h3 id="_étape_1_nom_s_package_et_attribut_s">étape 1: nom(s), package et attribut(s)</h3>
@@ -582,7 +592,7 @@ Les méthodes sont également ordonnées pour vous guider (vous utiliserez parfo
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-03-05 15:48:34 CET
+Last updated 2015-03-06 12:13:48 CET
 </div>
 </div>
 </body>
