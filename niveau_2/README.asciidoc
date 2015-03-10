@@ -107,3 +107,14 @@ La seconde étape consite à découvrir comment récupérer les champs d'une cla
 ====
 Ecrivez les implémentations des méthodes de la classe `fr.devoxx.niveau2.exo2.etape2.FieldsExplorer`.
 ====
+
+=== étape 3, bonus : et avec l'héritage ?
+
+La troisième étape consiste à prendre en compte l'héritage lorsque l'on récupère les méthodes et les champs d'une classe, comment identifier les méthodes d'une classe qui surcharge une méthode définie par une classe parent, etc.
+
+[IMPORTANT]
+====
+Ecrivez les implémentations des méthodes de la classe `fr.devoxx.niveau2.exo2.etape3.DeepExplorer`.
+
+L'usage des streams et des lambdas est recommandé pour garder un code concis.
+====

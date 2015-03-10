@@ -1,8 +1,14 @@
 package fr.devoxx.niveau2.exo2.etape1;
 
-import org.testng.annotations.Test;
+import java.util.List;
+import java.util.Set;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.testng.annotations.Test;
 
 /**
  * MethodsExplorerTest -
@@ -12,52 +18,72 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class MethodsExplorerTest extends DontLookAtThisClass_MethodsExplorerTest {
   @Test
   public void extractMethods() {
-    MethodsExplorerWrapper wrapper = createWrapperAndProcess();
+    ProcessorTask<List<ExecutableElement>> actual = processorTask(
+        (Elements elements, Types typeUtils, TypeElement typeElement) ->
+            new MethodsExplorer(elements, typeUtils).extractMethods(typeElement)
+    );
 
-    assertThat(wrapper.extractMethods()).isEqualTo(expectedExtractMethods(wrapper));
+    assertThat(actual).isEqualTo(processorTask(this::expectedExtractMethods));
   }
 
   @Test
   public void extractConstructors() {
-    MethodsExplorerWrapper wrapper = createWrapperAndProcess();
+    ProcessorTask<List<ExecutableElement>> actual = processorTask(
+        (Elements elements, Types typeUtils, TypeElement typeElement) ->
+            new MethodsExplorer(elements, typeUtils).extractConstructors(typeElement)
+    );
 
-    assertThat(wrapper.extractConstructors()).isEqualTo(expectedExtractConstructors(wrapper));
+    assertThat(actual).isEqualTo(processorTask(this::expectedExtractConstructors));
   }
 
   @Test
   public void extractPublicMethodsAndConstructors() {
-    MethodsExplorerWrapper wrapper = createWrapperAndProcess();
+    ProcessorTask<List<ExecutableElement>> actual = processorTask(
+        (Elements elements, Types typeUtils, TypeElement typeElement) ->
+            new MethodsExplorer(elements, typeUtils).extractPublicMethodsAndConstructors(typeElement)
+    );
 
-    assertThat(wrapper.extractPublicMethodsAndConstructors())
-        .isEqualTo(expectedExtractPublicMethodsAndConstructors(wrapper));
+    assertThat(actual).isEqualTo(processorTask(this::expectedExtractPublicMethodsAndConstructors));
   }
 
   @Test
   public void extractPublicFunctions() {
-    MethodsExplorerWrapper wrapper = createWrapperAndProcess();
+    ProcessorTask<List<ExecutableElement>> actual = processorTask(
+        (Elements elements, Types typeUtils, TypeElement typeElement) ->
+            new MethodsExplorer(elements, typeUtils).extractPublicFunctions(typeElement)
+    );
 
-    assertThat(wrapper.extractPublicFunctions()).isEqualTo(expectedExtractPublicFunctions(wrapper));
+    assertThat(actual).isEqualTo(processorTask(this::expectedExtractPublicFunctions));
   }
 
   @Test
   public void extractEatDonutsMethods() {
-    MethodsExplorerWrapper wrapper = createWrapperAndProcess();
+    ProcessorTask<List<ExecutableElement>> actual = processorTask(
+        (Elements elements, Types typeUtils, TypeElement typeElement) ->
+            new MethodsExplorer(elements, typeUtils).extractEatDonutsMethods(typeElement)
+    );
 
-    assertThat(wrapper.extractEatDonutsMethods()).isEqualTo(expectedExtractEatDonutsMethods(wrapper));
+    assertThat(actual).isEqualTo(processorTask(this::expectedExtractEatDonutsMethods));
   }
 
   @Test
   public void extractCurrentEatDonutsMethod() {
-    MethodsExplorerWrapper wrapper = createWrapperAndProcess();
+    ProcessorTask<ExecutableElement> actual = processorTask(
+        (Elements elements, Types typeUtils, TypeElement typeElement) ->
+            new MethodsExplorer(elements, typeUtils).extractCurrentEatDonutsMethod(typeElement)
+    );
 
-    assertThat(wrapper.extractCurrentEatDonutsMethod()).isEqualTo(expectedExtractCurrentEatDonutsMethod(wrapper));
+    assertThat(actual).isEqualTo(processorTask(this::expectedExtractCurrentEatDonutsMethod));
   }
 
   @Test
   public void extractTypeOfNullableParameters() {
-    MethodsExplorerWrapper wrapper = createWrapperAndProcess();
+    ProcessorTask<Set<TypeMirror>> actual = processorTask(
+        (Elements elements, Types typeUtils, TypeElement typeElement) ->
+            new MethodsExplorer(elements, typeUtils).extractTypeOfNullableParameters(typeElement)
+    );
 
-    assertThat(wrapper.extractTypeOfNullableParameters()).isEqualTo(expectedExtractTypeOfNullableParameters(wrapper));
+    assertThat(actual).isEqualTo(processorTask(this::expectedExtractTypeOfNullableParameters));
   }
 
 }
