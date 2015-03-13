@@ -408,12 +408,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 .hide-for-print{display:none!important}
 .show-for-print{display:inherit!important}}
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css">
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
 <h1>Annotation Processing: @​Nailed("it")</h1>
 <div id="toc" class="toc2">
-<div id="toctitle">Table of Contents</div>
+<div id="toctitle">Hands-On Devoxx 2015</div>
 <ul class="sectlevel1">
 <li><a href="#_installation_de_l_environnement">Installation de l&#8217;environnement</a>
 <ul class="sectlevel2">
@@ -423,10 +424,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#_structure_du_hands_on">Structure du Hands-on</a>
 <ul class="sectlevel2">
-<li><a href="#_4_niveaux">4 niveaux</a></li>
-<li><a href="#_une_présentation_et_quelques_exercices">Une présentation et quelques exercices</a></li>
+<li><a href="#_3_niveaux">3 niveaux</a></li>
+<li><a href="#_une_présentation_et_des_exercices">une présentation et des exercices</a></li>
+<li><a href="#_un_readme">un README</a></li>
+<li><a href="#_philosophie">philosophie</a></li>
+<li><a href="#_documentation">documentation</a></li>
 </ul>
 </li>
+<li><a href="#_let_s_dive_in">Let&#8217;s dive in !</a></li>
 </ul>
 </div>
 </div>
@@ -449,13 +454,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>un terminal</p>
 </li>
 <li>
-<p>Git</p>
+<p>Maven 3.1.1 ou 3.2.5</p>
 </li>
 <li>
-<p>Docker (TODO: quelle version de Docker ?)</p>
+<p>Java 8</p>
 </li>
 <li>
-<p>une IDE</p>
+<p>l&#8217;IDE de votre choix</p>
 </li>
 </ol>
 </div>
@@ -476,23 +481,19 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </li>
 <li>
-<p>installer docker si vous ne l&#8217;avez pas encore</p>
-</li>
-<li>
-<p>executer les commandes suivantes</p>
-<div class="listingblock">
-<div class="content">
-<pre>cd [répertoire racine du clone de ce repo]
-cd container
-TODO compléter avec la commande docker</pre>
-</div>
-</div>
+<p>d&#8217;installer maven si ce n&#8217;est déjà fait</p>
 <div class="paragraph">
-<p>Vous êtes maintenant connecté en interactif sur votre container docker dans lequel Java et Maven sont configurés (notamment avec un repo maven "pré-alimenté").</p>
+<p>TODO</p>
 </div>
 </li>
 <li>
-<p>d&#8217;ouvrir le <code>README.html</code> à la racine du repo dans votre navigateur ou de visualiser la racine du repo sur GitHub</p>
+<p>d&#8217;installer Java 8 si ce n&#8217;est déjà fait</p>
+<div class="paragraph">
+<p>TODO</p>
+</div>
+</li>
+<li>
+<p>d&#8217;ouvrir le <code>README.html</code> (oui, oui, la page que vous êtes en train de lire) à la racine du repo dans votre navigateur ou de visualiser la racine du repo sur GitHub</p>
 <div class="ulist">
 <ul>
 <li>
@@ -509,7 +510,7 @@ TODO compléter avec la commande docker</pre>
 <p>nous vous fournissons les documentations qui vous permettront de résoudre la plupart des exercices</p>
 </li>
 <li>
-<p>régulièrement, nous vous orienterons même vers la bonne documentation</p>
+<p>régulièrement, nous vous orienterons même vers la bonne documentation (trop sympa)</p>
 </li>
 </ul>
 </div>
@@ -523,36 +524,110 @@ TODO compléter avec la commande docker</pre>
 <h2 id="_structure_du_hands_on">Structure du Hands-on</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_4_niveaux">4 niveaux</h3>
+<h3 id="_3_niveaux">3 niveaux</h3>
 <div class="paragraph">
-<p>Ce hands-on est structuré en 4 niveaux. Ceux-ci vous amèneront de plus en plus profond dans les capacités des processors et donc de leurs usages.</p>
+<p>Ce hands-on est structuré en 3 niveaux. Ceux-ci vont progressivement vous amener à apprécier les capacités des annotation processors et de leurs usages.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_une_présentation_et_quelques_exercices">Une présentation et quelques exercices</h3>
+<h3 id="_une_présentation_et_des_exercices">une présentation et des exercices</h3>
 <div class="paragraph">
-<p>Chaque niveau est précédé d&#8217;une courte présentation (5 à 10 minutes max) et découpé en plusieurs exercices qui chacun se réalisent en quelques étapes successives.</p>
+<p>Chaque niveau est précédé d&#8217;une courte présentation (5 à 10 minutes max) et découpé en plusieurs exercices. Chacun se réalise en quelques étapes successives.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_un_readme">un README</h3>
+<div class="paragraph">
+<p>Chaque niveau possède un <code>README.asciidoc</code> et un <code>README.html</code> qui décrit les exercices et les étapes. Il est à nouveau conseillé de visualiser la version HTML en local (meilleur rendu) que le rendu du ASCIIDOC sur GitHub.</p>
 </div>
 <div class="paragraph">
-<p>Chaque niveau possède un <code>README.asciidoc</code> et un <code>README.html</code> qui décrit les exercices et les étapes. Il est conseillé de visualier la version HTML en local (meilleur rendu) que le rendu du ASCIIDOC sur GitHub.</p>
+<p>L&#8217;essentiel de l&#8217;information qui vous permettra de compléter les exercices se trouve dans le README:</p>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
+<div class="ulist">
+<ul>
 <li>
-<p>Comprendre les bases et mettre les mains dans le cambouis: <a href="exo1/README.html">html local</a> ou <a href="exo1/README.asciidoc">Asciidoc GitHub</a></p>
+<p>objectif du niveau</p>
 </li>
-</ol>
+<li>
+<p>objectif, structure de répertoire et description de chaque exercice</p>
+</li>
+<li>
+<p>objectif de chaque étape</p>
+</li>
+<li>
+<p>actions à réaliser, celles-ci sont spécifiquement identifiées par des blocs de la forme suivante :</p>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Dans la classe <code>InjectedPropertyProcessor</code>, implémentez la méthode <code>process</code>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>extraits de documentation et indications vers la solution</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>TODO liens vers les niveaux</p>
+<p>Le niveau 2 fait exception car vous trouverez beaucoup plus d&#8217;informations dans la javadoc. Dans le cas de ce niveau, c&#8217;était beaucoup plus pertinent.</p>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_philosophie">philosophie</h3>
+<div class="paragraph">
+<p>Les niveaux sont conçus de manière assez directive: ceux-ci comportent de nombreux problèmes mais les solutions sont courtes. On pourrait parler d&#8217;exercices unitaires.</p>
+</div>
+<div class="paragraph">
+<p>Si vous vous retrouvez à écrire plus de 50 lignes de code, levez la main, vous faites probablement fausse route et nos indications n&#8217;étaient probablement pas assez bonnes.</p>
+</div>
+<div class="paragraph">
+<p>L&#8217;objectif est de faire découvrir le traitement d&#8217;annotation par petits lots, qui, enchaînés les uns aux autres, vous en donneront une vision d&#8217;ensemble. On en profite au passage pour vous diriger vers la solution la plus efficace, celle promulguée par les concepteurs de l&#8217;API.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_documentation">documentation</h3>
+<div class="paragraph">
+<p>Nous vous fournissons hors-ligne les documentations qui vous permettront de résoudre la plupart des exercices. Bien évidemment, rien ne vous empêche de les consulter en ligne ou même d&#8217;utiliser Google.</p>
+</div>
+<div class="paragraph">
+<p>Le <a href="doc/README.html">README</a> du répertoire <code>doc</code> vous permettra d&#8217;accéder facilement à chaque documentation (en ligne et hors-ligne) et propose même quelques raccourcis vers les documentations indispensables.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_let_s_dive_in">Let&#8217;s dive in !</h2>
+<div class="sectionbody">
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Niveau 1</dt>
+<dd>
+<p>Comprendre les bases et mettre les mains dans le cambouis : <a href="niveau_1/README.html">html local</a> ou <a href="niveau_1/README.asciidoc">Asciidoc GitHub</a></p>
+</dd>
+<dt class="hdlist1">Niveau 2</dt>
+<dd>
+<p>Comprendre le modèle des sources Java : <a href="niveau_2/README.html">html local</a> ou <a href="niveau_2/README.asciidoc">Asciidoc GitHub</a></p>
+</dd>
+<dt class="hdlist1">Niveau 3</dt>
+<dd>
+<p>Générer des erreurs de compilation et des fichiers : <a href="niveau_3/README.html">html local</a> ou <a href="niveau_3/README.asciidoc">Asciidoc GitHub</a></p>
+</dd>
+</dl>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-02-26 20:17:58 CET
+Last updated 2015-03-14 14:05:28 CET
 </div>
 </div>
 </body>

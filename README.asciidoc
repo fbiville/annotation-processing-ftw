@@ -1,6 +1,7 @@
 = Annotation Processing: @​Nailed("it")
-:toc:
 :toc: right
+:toc-title: Hands-On Devoxx 2015
+:icons: font
 
 Ceci est le support du Hands-On de Devoxx France 2015 intitulé http://cfp.devoxx.fr/2015/talk/QHH-4326/Compile-time_annotation_processing_:_@Nailed(%22it%22)[Annotation Processing: @​Nailed("it")] créé par https://github.com/fbiville/[Florent Biville] et https://github.com/lesaint[Sébastien Lesaint].
 
@@ -9,9 +10,9 @@ Ceci est le support du Hands-On de Devoxx France 2015 intitulé http://cfp.devox
 === Prérequis
 
 1. un terminal
-2. Git
-3. Docker (TODO: quelle version de Docker ?)
-4. une IDE
+2. Maven 3.1.1 ou 3.2.5
+3. Java 8
+4. l'IDE de votre choix
 
 === Installation
 
@@ -22,33 +23,63 @@ Pour suivre ce hands-on, vous avez besoin:
 ----
 git clone https://github.com/fbiville/annotation-processing-ftw.git
 ----
-2. installer docker si vous ne l'avez pas encore
-3. executer les commandes suivantes
+2. d'installer maven si ce n'est déjà fait
 +
-----
-cd [répertoire racine du clone de ce repo]
-cd container
-TODO compléter avec la commande docker
-----
-Vous êtes maintenant connecté en interactif sur votre container docker dans lequel Java et Maven sont configurés (notamment avec un repo maven "pré-alimenté").
-4. d'ouvrir le `README.html` à la racine du repo dans votre navigateur ou de visualiser la racine du repo sur GitHub
+TODO
+3. d'installer Java 8 si ce n'est déjà fait
++
+TODO
+4. d'ouvrir le `README.html` (oui, oui, la page que vous êtes en train de lire) à la racine du repo dans votre navigateur ou de visualiser la racine du repo sur GitHub
 ** la première solution est conseillée car le rendu est bien meilleur
 5. d'ouvrir le `README.html` du répertoire `doc` dans un autre onglet ou de visualiser ce répertoire du repo sur GitHub
 ** nous vous fournissons les documentations qui vous permettront de résoudre la plupart des exercices
-** régulièrement, nous vous orienterons même vers la bonne documentation
+** régulièrement, nous vous orienterons même vers la bonne documentation (trop sympa)
 
 == Structure du Hands-on
 
-=== 4 niveaux
+=== 3 niveaux
 
-Ce hands-on est structuré en 4 niveaux. Ceux-ci vous amèneront de plus en plus profond dans les capacités des processors et donc de leurs usages.
+Ce hands-on est structuré en 3 niveaux. Ceux-ci vont progressivement vous amener à apprécier les capacités des annotation processors et de leurs usages.
 
-=== Une présentation et quelques exercices
+=== une présentation et des exercices
 
-Chaque niveau est précédé d'une courte présentation (5 à 10 minutes max) et découpé en plusieurs exercices qui chacun se réalisent en quelques étapes successives.
+Chaque niveau est précédé d'une courte présentation (5 à 10 minutes max) et découpé en plusieurs exercices. Chacun se réalise en quelques étapes successives.
 
-Chaque niveau possède un `README.asciidoc` et un `README.html` qui décrit les exercices et les étapes. Il est conseillé de visualier la version HTML en local (meilleur rendu) que le rendu du ASCIIDOC sur GitHub.
+=== un README
 
-1. Comprendre les bases et mettre les mains dans le cambouis: link:exo1/README.html[html local] ou link:exo1/README.asciidoc[Asciidoc GitHub]
+Chaque niveau possède un `README.asciidoc` et un `README.html` qui décrit les exercices et les étapes. Il est à nouveau conseillé de visualiser la version HTML en local (meilleur rendu) que le rendu du ASCIIDOC sur GitHub.
 
-TODO liens vers les niveaux
+L'essentiel de l'information qui vous permettra de compléter les exercices se trouve dans le README:
+
+* objectif du niveau
+* objectif, structure de répertoire et description de chaque exercice
+* objectif de chaque étape
+* actions à réaliser, celles-ci sont spécifiquement identifiées par des blocs de la forme suivante :
++
+[IMPORTANT]
+====
+Dans la classe `InjectedPropertyProcessor`, implémentez la méthode `process`.
+====
+* extraits de documentation et indications vers la solution
+
+Le niveau 2 fait exception car vous trouverez beaucoup plus d'informations dans la javadoc. Dans le cas de ce niveau, c'était beaucoup plus pertinent.
+
+=== philosophie
+
+Les niveaux sont conçus de manière assez directive: ceux-ci comportent de nombreux problèmes mais les solutions sont courtes. On pourrait parler d'exercices unitaires.
+
+Si vous vous retrouvez à écrire plus de 50 lignes de code, levez la main, vous faites probablement fausse route et nos indications n'étaient probablement pas assez bonnes.
+
+L'objectif est de faire découvrir le traitement d'annotation par petits lots, qui, enchaînés les uns aux autres, vous en donneront une vision d'ensemble. On en profite au passage pour vous diriger vers la solution la plus efficace, celle promulguée par les concepteurs de l'API.
+
+=== documentation
+
+Nous vous fournissons hors-ligne les documentations qui vous permettront de résoudre la plupart des exercices. Bien évidemment, rien ne vous empêche de les consulter en ligne ou même d'utiliser Google.
+
+Le link:doc/README.html[README] du répertoire `doc` vous permettra d'accéder facilement à chaque documentation (en ligne et hors-ligne) et propose même quelques raccourcis vers les documentations indispensables.
+
+== Let's dive in !
+
+Niveau 1:: Comprendre les bases et mettre les mains dans le cambouis : link:niveau_1/README.html[html local] ou link:niveau_1/README.asciidoc[Asciidoc GitHub]
+Niveau 2:: Comprendre le modèle des sources Java : link:niveau_2/README.html[html local] ou link:niveau_2/README.asciidoc[Asciidoc GitHub]
+Niveau 3:: Générer des erreurs de compilation et des fichiers : link:niveau_3/README.html[html local] ou link:niveau_3/README.asciidoc[Asciidoc GitHub]
