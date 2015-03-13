@@ -416,10 +416,17 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Niveau 3</div>
 <ul class="sectlevel1">
-<li><a href="#_exo_2_générer_un_fichier">exo 2: générer un fichier</a>
+<li><a href="#_exo_1_interrompre_la_compilation">exo 1 : interrompre la compilation</a>
 <ul class="sectlevel2">
-<li><a href="#_étape_1_récupérer_une_annotation">étape 1: récupérer une annotation</a></li>
-<li><a href="#_étape_2_écrire_un_fichier">étape 2: écrire un fichier</a></li>
+<li><a href="#_étape_1_lever_une_erreur">étape 1 : lever une erreur</a></li>
+<li><a href="#_étape_2_indiquer_le_fichier">étape 2 : indiquer le fichier</a></li>
+<li><a href="#_étape_3_indiquer_l_annotation">étape 3 : indiquer l&#8217;annotation</a></li>
+</ul>
+</li>
+<li><a href="#_exo_2_générer_un_fichier">exo 2 : générer un fichier</a>
+<ul class="sectlevel2">
+<li><a href="#_étape_1_récupérer_une_annotation">étape 1 : récupérer une annotation</a></li>
+<li><a href="#_étape_2_écrire_un_fichier">étape 2 : écrire un fichier</a></li>
 </ul>
 </li>
 </ul>
@@ -434,7 +441,157 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="_exo_2_générer_un_fichier">exo 2: générer un fichier</h2>
+<h2 id="_exo_1_interrompre_la_compilation">exo 1 : interrompre la compilation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>L&#8217;objectif de cet exercice est de créer un processor qui lèvera une erreur de compilation s&#8217;il existe un champs annotée avec <code>javax.inject.Inject</code>.</p>
+</div>
+<div class="paragraph">
+<p>Dans le répertoire <code>exo1</code>, vous trouverez deux projets Maven:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>dans le sous-répertoire <code>processor</code>, le projet comporte le processor <code>InjectedPropertyProcessor</code> et un test unitaire pour chacune des étapes ci-dessous</p>
+</li>
+<li>
+<p>dans le sous-répertoire <code>subject</code>, le projet comporte quelques sources utilisant l&#8217;annotation <code>@Inject</code> ce qui vous permettra de constater le comportement de <code>InjectedPropertyProcessor</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Ainsi, si vous compilez le projet <code>processor</code> sans les tests unitaires (<code>(cd processor &amp;&amp; mvn clean install -DskipTests)</code>) et qu&#8217;ensuite vous compilez le projet <code>subject</code> (<code>(cd subject &amp;&amp; mvn clean install)</code>), vous constaterez que ce dernier compile sans problème.</p>
+</div>
+<div class="sect2">
+<h3 id="_étape_1_lever_une_erreur">étape 1 : lever une erreur</h3>
+<div class="paragraph">
+<p>Comme il a été vu au niveau 1, le type de diagnostic <code>Diagnostic.Kind.ERROR</code> passé en argument des méthodes <code>javax.annotation.processing.Messager#printMessage</code> permet de remonter un diagnostique qui se traduira par une erreur de compilation et l&#8217;affichage d&#8217;un message dans les logs.</p>
+</div>
+<div class="paragraph">
+<p>L&#8217;objectif de cette étape est d&#8217;implémenter la méthode <code>process</code> du processor <code>fr.devoxx.niveau3.exo1.InjectedPropertyProcessor</code> de sorte que la compilation s&#8217;arrète avec le message "Fields annotated with @Inject are not allowed".</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Dans la classe <code>InjectedPropertyProcessor</code>, implémentez la méthode <code>process</code>.</p>
+</div>
+<div class="paragraph">
+<p>Pour cela, vous devrez:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>récupérez le <code>TypeElement</code> de l&#8217;annotation <code>@Inject</code> parmis les paramètres de la méthode <code>init</code> (puisque le procesor n'"écoute" qu&#8217;une seule annotation, c&#8217;est très simple)</p>
+</li>
+<li>
+<p>récupérez l' <code>Element</code> d&#8217;au moins une propriété annotée avec <code>@Inject</code> du <code>RoundEnvironnement</code> courant (TODO lien DOC RoundEnvironnement)</p>
+</li>
+<li>
+<p>attention, l&#8217;annotation <code>@Inject</code> peut être utilisée sur des champs mais aussi des méthodes et des constructeurs</p>
+</li>
+<li>
+<p>lever une erreur de compilation avec le message attendu (cf. la constante <code>InjectedPropertyProcessor#COMPILATION_ERROR_MSG</code>) en utilisant la surcharge la plus simple de <code>Messager#printMessage</code></p>
+</li>
+</ol>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Si votre implémentation est correcte, le test unitaire <code>Etape1Test</code> dans le projet <code>processor</code> sera passant. Si ensuite vous compilez le projet <code>subject</code>, la compilation échouera avec le message suivant:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[ERROR] Fields annotated with @Inject are not allowed</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_étape_2_indiquer_le_fichier">étape 2 : indiquer le fichier</h3>
+<div class="paragraph">
+<p>Comme il est frustrant de voir s&#8217;afficher une erreur de compilation sans aucune indication de l&#8217;endroit où se trouve l&#8217;erreur !</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Dans la classe <code>InjectedPropertyProcessor</code>, améliorez l&#8217;implémentation de la méthode <code>process</code> en utilisant la surcharge de la méthode <code>Messager#printMessage</code> qui prend un <code>Element</code>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Pour vérifier votre implémentation, activez les tests de la classe <code>Etape2Test</code> (mettez à <code>true</code> le membre <code>enable</code> des annotations <code>@Test</code>) et constatez que celui-ci est passant.</p>
+</div>
+<div class="paragraph">
+<p>Si ensuite vous compilez le projet <code>subject</code>, la compilation échouera avec le message suivant (indique une erreur à la ligne 12 de la classe <code>SomeService</code>) :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[ERROR] [some path]/niveau_3/exo1/subject/src/main/java/fr/devoxx/niveau3/exo1/SomeService.java:[12,23] Fields annotated with @Inject are not allowed</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_étape_3_indiquer_l_annotation">étape 3 : indiquer l&#8217;annotation</h3>
+<div class="paragraph">
+<p>Il est possible, très simplement, d&#8217;être encore plus précis. Si l&#8217;erreur provient d&#8217;une annotation (comme c&#8217;est le cas ici), il est possible d&#8217;indiquer la ligne sur laquelle se trouve cette annotation.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Pour trouver l' <code>AnnotationMirror</code> d&#8217;une annotation donnée sur un <code>Element</code>, la technique la plus simple est de comparer (via la méthode <code>equals</code>) l' <code>Element</code> de chaque <code>AnnotationMirror</code> à l' <code>Element</code> de l&#8217;annotation. Ce dernier aura été récupéré soit par la méthode adéquate de <code>javax.lang.model.util.Elements</code> soit via les paramètres de la méthode <code>Processor#process</code>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Dans la classe <code>InjectedPropertyProcessor</code>, améliorez encore l&#8217;implémentation de la méthode <code>process</code> en utilisant la surcharge de la méthode <code>Messager#printMessage</code> qui prend un <code>AnnotationMirror</code>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Pour vérifier votre implémentation, activez les tests de la classe <code>Etape3Test</code> (mettez à <code>true</code> le membre <code>enable</code> des annotations <code>@Test</code>) et constatez que celui-ci est passant.</p>
+</div>
+<div class="paragraph">
+<p>Si ensuite vous compilez le projet <code>subject</code>, la compilation échouera avec le message suivant (indique une erreur à la ligne 11, cad. celle de l&#8217;annotation) :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[ERROR] [some path]/niveau_3/exo1/subject/src/main/java/fr/devoxx/niveau3/exo1/SomeService.java:[11,3] Fields annotated with @Inject are not allowed</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_exo_2_générer_un_fichier">exo 2 : générer un fichier</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>L&#8217;objectif de cet exercice est de générer un fichier dans lequel figurera le prénom des personnages décédés du livre Game of Thrones.</p>
@@ -457,7 +614,7 @@ Chaque personnage est représenté par une classe, dont le nom est le prénom du
 <p>L&#8217;annotation <code>Character</code> définie un membre <code>dead</code> de type <code>boolean</code> qui permet de savoir si le personnage est mort (ou pas&#8230;&#8203; encore).</p>
 </div>
 <div class="sect2">
-<h3 id="_étape_1_récupérer_une_annotation">étape 1: récupérer une annotation</h3>
+<h3 id="_étape_1_récupérer_une_annotation">étape 1 : récupérer une annotation</h3>
 <div class="paragraph">
 <p>Le première étape de l&#8217;exercice consiste à lire les informations contenues dans les sources dans le contexte d&#8217;un processor.</p>
 </div>
@@ -502,7 +659,7 @@ Chaque personnage est représenté par une classe, dont le nom est le prénom du
 </div>
 </div>
 <div class="sect2">
-<h3 id="_étape_2_écrire_un_fichier">étape 2: écrire un fichier</h3>
+<h3 id="_étape_2_écrire_un_fichier">étape 2 : écrire un fichier</h3>
 <div class="paragraph">
 <p>La seconde étape de l&#8217;exercice se consacre à la génération du fichier <code>dead_characters.txt</code> dans le package <code>fr.devoxx.niveau3.exo2</code>.</p>
 </div>
@@ -548,7 +705,7 @@ Chaque personnage est représenté par une classe, dont le nom est le prénom du
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-03-12 22:08:38 CET
+Last updated 2015-03-13 21:14:24 CET
 </div>
 </div>
 </body>
