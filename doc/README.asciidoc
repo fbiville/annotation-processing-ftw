@@ -64,7 +64,7 @@ L'interface avec le compilateur quand on utilise Maven est le `maven-compiler-pl
 AutoService est un annotation processor qui permet de générer un fichier dans META-INF avec une simple annotation.
 
 * link:https://github.com/google/auto/tree/master/service[GitHub]
-* link:auto-service/[clone hors ligne] (1.0-RC2)
+* link:auto-service/[clone hors ligne] (+ link:auto-service/README.html[README]) (1.0-RC2)
 
 === JavaPoet
 

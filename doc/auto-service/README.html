@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+  </style>
+</head>
+<body>
+<h1 id="autoservice">AutoService</h1>
+<p>A configuration/metadata generator for java.util.ServiceLoader-style service providers</p>
+<h2 id="autowhat">AutoWhat‽</h2>
+<p><a href="https://en.wikipedia.org/wiki/Java_(programming_language)">Java</a> annotation processors and other systems use <a href="http://docs.oracle.com/javase/6/docs/api/java/util/ServiceLoader.html">java.util.ServiceLoader</a> to register implementations of well-known types using META-INF metadata. However, it is easy for a developer to forget to update or correctly specify the service descriptors.<br />AutoService generates this metadata for the developer, for any class annotated with <code>@AutoService</code>, avoiding typos, providing resistance to errors from refactoring, etc.</p>
+<h2 id="example">Example</h2>
+<p>Say you have:</p>
+<pre class="sourceCode java"><code class="sourceCode java"><span class="kw">package foo.bar;</span>
+
+<span class="kw">import javax.annotation.processing.Processor;</span>
+
+<span class="fu">@AutoService</span>(Processor.<span class="fu">class</span>)
+<span class="dt">final</span> <span class="kw">class</span> MyProcessor <span class="kw">extends</span> Processor {
+  <span class="co">// …</span>
+}</code></pre>
+<p>AutoService will generate the file <code>META-INF/services/javax.annotation.processing.Processor</code> in the output classes folder. The file will contain:</p>
+<pre><code>foo.bar.MyProcessor</code></pre>
+<p>In the case of javax.annotation.processing.Processor, if this metadata file is included in a jar, and that jar is on javac's classpath, then <code>javac</code> will automatically load it, and include it in its normal annotation processing environment. Other users of java.util.ServiceLoader may use the infrastructure to different ends, but this metadata will provide auto-loading appropriately.</p>
+<h2 id="download">Download</h2>
+<p>In order to activate metadata generation you will need to include <code>auto-service-${version}.jar</code> in your build at compile time.</p>
+<p>In a Maven project, one would include the <code>auto-service</code> artifact as an &quot;optional&quot; dependency:</p>
+<pre class="sourceCode xml"><code class="sourceCode xml"><span class="kw">&lt;dependencies&gt;</span>
+  <span class="kw">&lt;dependency&gt;</span>
+    <span class="kw">&lt;groupId&gt;</span>com.google.auto.service<span class="kw">&lt;/groupId&gt;</span>
+    <span class="kw">&lt;artifactId&gt;</span>auto-service<span class="kw">&lt;/artifactId&gt;</span>
+    <span class="kw">&lt;version&gt;</span>${version}<span class="kw">&lt;/version&gt;</span>
+    <span class="kw">&lt;optional&gt;</span>true<span class="kw">&lt;/optional&gt;</span>
+  <span class="kw">&lt;/dependency&gt;</span>
+<span class="kw">&lt;/dependencies&gt;</span></code></pre>
+<h2 id="license">License</h2>
+<pre><code>Copyright 2013 Google, Inc.
+
+Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</code></pre>
+</body>
+</html>
