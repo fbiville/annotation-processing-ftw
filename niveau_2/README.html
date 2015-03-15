@@ -416,27 +416,27 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Niveau 2</div>
 <ul class="sectlevel1">
-<li><a href="#_organisation_des_exercices">organisation des exercices</a>
+<li><a href="#_organisation_des_exercices">Organisation des exercices</a>
 <ul class="sectlevel2">
-<li><a href="#_un_package_et_une_classe_explorer">un package et une classe explorer</a></li>
-<li><a href="#_faire_passer_les_tests_au_vert">faire passer les tests au vert</a></li>
-<li><a href="#_javadoc">javadoc</a></li>
-<li><a href="#_solution">solution</a></li>
+<li><a href="#_un_package_et_une_classe_explorer">Un package et une classe "explorer"</a></li>
+<li><a href="#_faire_passer_les_tests_au_vert">Faire passer les tests au vert</a></li>
+<li><a href="#_javadoc">Javadoc</a></li>
+<li><a href="#_solution">Solution</a></li>
 </ul>
 </li>
-<li><a href="#_exo_1_déclaration_de_classe">exo 1: déclaration de classe</a>
+<li><a href="#_exercice_1_déclaration_de_classe">Exercice 1 : déclaration de classe</a>
 <ul class="sectlevel2">
-<li><a href="#_étape_1_nom_s_package_et_attribut_s">étape 1: nom(s), package et attribut(s)</a></li>
-<li><a href="#_étape_2_annotation_s">étape 2: annotation(s)</a></li>
-<li><a href="#_étape_3_interface_s">étape 3: interface(s)</a></li>
-<li><a href="#_étape_4_super_classe">étape 4: super classe</a></li>
+<li><a href="#_Étape_1_nom_s_package_et_attribut_s">Étape 1 : nom(s), package et attribut(s)</a></li>
+<li><a href="#_Étape_2_annotation_s">Étape 2 : annotation(s)</a></li>
+<li><a href="#_Étape_3_interface_s">Étape 3 : interface(s)</a></li>
+<li><a href="#_Étape_4_super_classe">Étape 4 : super classe</a></li>
 </ul>
 </li>
-<li><a href="#_exo_2_contenu_d_une_classe_interface">exo 2 : contenu d&#8217;une classe/interface</a>
+<li><a href="#_exercice_2_contenu_d_une_classe_interface">Exercice 2 : contenu d&#8217;une classe/interface</a>
 <ul class="sectlevel2">
-<li><a href="#_étape_1_les_méthodes">étape 1 : les méthodes</a></li>
+<li><a href="#_Étape_1_les_méthodes">Étape 1 : les méthodes</a></li>
 <li><a href="#_étape_2_les_champs">étape 2 : les champs</a></li>
-<li><a href="#_étape_3_bonus_et_avec_l_héritage">étape 3 : bonus, et avec l&#8217;héritage ?</a></li>
+<li><a href="#_Étape_3_bonus_et_avec_l_héritage">Étape 3, bonus : et avec l&#8217;héritage ?</a></li>
 </ul>
 </li>
 </ul>
@@ -451,15 +451,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="_organisation_des_exercices">organisation des exercices</h2>
+<h2 id="_organisation_des_exercices">Organisation des exercices</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Chaque exercice possède son répertoire (exercice 1 &#8594; <code>exo1</code>, exercice 2 &#8594; <code>exo2</code>, &#8230;&#8203;) dans lequel se trouve un projet Maven organisé comme suit.</p>
+<p>À l&#8217;instar de la seconde moitié du niveau 1, chaque exercice possède son répertoire (exercice 1 &#8594; <code>exo1</code>, exercice 2 &#8594; <code>exo2</code>, &#8230;&#8203;) dans lequel se trouve un projet Maven organisé comme suit.</p>
 </div>
 <div class="sect2">
-<h3 id="_un_package_et_une_classe_explorer">un package et une classe explorer</h3>
+<h3 id="_un_package_et_une_classe_explorer">Un package et une classe "explorer"</h3>
 <div class="paragraph">
-<p>Dans les sources, vous trouverez un packages par étape. Celui-ci se composent d&#8217;une classe "explorer", qui définie des méthodes vides, et d&#8217;une classe "à explorer". Il existe un test unitaire pour chaque classe "explorer".</p>
+<p>Dans les sources, vous trouverez un package par étape. Celui-ci se compose d&#8217;une classe "explorer", qui définit des méthodes vides, et d&#8217;une classe "à explorer". Il existe un test unitaire pour chaque classe "explorer".</p>
 </div>
 <div class="paragraph">
 <p>Chaque classe "explorer" est conçue pour vous faire explorer l&#8217;API qui modélise le code source Java par petits bouts. Ainsi, l&#8217;implémentation des méthodes restera courte (souvent une ligne, au plus une dizaine).
@@ -467,34 +467,34 @@ Les méthodes sont également ordonnées pour vous guider (vous utiliserez parfo
 </div>
 </div>
 <div class="sect2">
-<h3 id="_faire_passer_les_tests_au_vert">faire passer les tests au vert</h3>
+<h3 id="_faire_passer_les_tests_au_vert">Faire passer les tests au vert</h3>
 <div class="paragraph">
-<p>L&#8217;objectif de chaque exercice est de faire passer progressivement tous les tests au vert en écrivant l&#8217;implémentation des méthodes vides. Ainsi, si vous lancez le build du projet d&#8217;un exercie, tous les tests échouent (<code>mvn clean install</code>).</p>
+<p>L&#8217;objectif de chaque exercice est de faire passer progressivement tous les tests au vert en écrivant l&#8217;implémentation des méthodes vides. Ainsi, si vous lancez le build du projet d&#8217;un exercice, tous les tests échouent (<code>mvn clean install</code>).</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_javadoc">javadoc</h3>
+<h3 id="_javadoc">Javadoc</h3>
 <div class="paragraph">
 <p>L&#8217;objectif, le résultat attendu et des indices sont présentés dans la javadoc de chaque méthode des classes "explorer".</p>
 </div>
 <div class="paragraph">
 <p>Si votre IDE le permet, vous pourrez consulter les documentations des classes et interface de l&#8217;API directement dans les sources.
-Sinon, il vous sera utile d&#8217;ouvrir la javadoc du package (TODO lien pkg element et type) hors ligne dans votre navigateur.</p>
+Sinon, il vous sera utile d&#8217;ouvrir la javadoc du package correspondant (<a href="../doc/Jsr269-1.8/javax/lang/model/element/package-summary.html" class="external" target="_blank">javax.lang.model.element</a>, <a href="../doc/Jsr269-1.8/javax/lang/model/type/package-summary.html" class="external" target="_blank">javax.lang.model.type</a>) hors ligne dans votre navigateur.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_solution">solution</h3>
+<h3 id="_solution">Solution</h3>
 <div class="paragraph">
 <p>La solution des exercices est disponible dans le code, dans les tests unitaires.</p>
 </div>
 <div class="paragraph">
-<p>Libre à vous d&#8217;aller regarder les classes <code>DontLookAtThisClass</code> de chaque package si vous vous trouvez bloqués mais prenez le temps de chercher, on apprends beaucoup mieux par soi-même.</p>
+<p>Libre à vous d&#8217;aller regarder les classes <code>DontLookAtThisClass</code> de chaque package si vous vous trouvez bloqués mais prenez le temps de chercher, on apprend beaucoup mieux par soi-même ;)</p>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_exo_1_déclaration_de_classe">exo 1: déclaration de classe</h2>
+<h2 id="_exercice_1_déclaration_de_classe">Exercice 1 : déclaration de classe</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Le premier exercice se concentre sur la modélisation de la déclaration d&#8217;une classe et la compréhension de la distinction entre <code>Element</code> et <code>TypeMirror</code>.</p>
@@ -503,9 +503,9 @@ Sinon, il vous sera utile d&#8217;ouvrir la javadoc du package (TODO lien pkg el
 <p>Pour rappel, un <code>Element</code> représentera un élément du language Java (une classe, interface, package, un paramètre, &#8230;&#8203;) tandis qu&#8217;un <code>TypeMirror</code> représentera un usage d&#8217;un élément dans un autre (le type d&#8217;une propriété, d&#8217;un paramètre, &#8230;&#8203;).</p>
 </div>
 <div class="sect2">
-<h3 id="_étape_1_nom_s_package_et_attribut_s">étape 1: nom(s), package et attribut(s)</h3>
+<h3 id="_Étape_1_nom_s_package_et_attribut_s">Étape 1 : nom(s), package et attribut(s)</h3>
 <div class="paragraph">
-<p>La première étape consiste à découvrir comment récupérer les noms (simple et qualifié), le package et les attributs d&#8217;une classe à partir de l' <code>Element</code> qui le représente. A cette étape, on fait également un petit écart pour aller explorer l&#8217;usage des Visitor pour connaitre le sous type exacte d&#8217;un <code>Element</code> à l&#8217;exécution.</p>
+<p>La première étape consiste à découvrir comment récupérer les noms (simple et qualifié), le package et les attributs d&#8217;une classe à partir de l' <code>Element</code> qui le représente. À cette étape, on fait également un petit écart pour aller explorer l&#8217;usage des <code>Visitor</code> pour connaître le sous-type exact d&#8217;un <code>Element</code> à l&#8217;exécution.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -515,10 +515,10 @@ Sinon, il vous sera utile d&#8217;ouvrir la javadoc du package (TODO lien pkg el
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Ecrivez les implémentations des méthodes de la classe <code>fr.devoxx.niveau2.exo1.etape1.ClassDeclarationExplorer</code>.</p>
+<p>Écrivez les implémentations des méthodes de la classe <code>fr.devoxx.niveau2.exo1.etape1.ClassDeclarationExplorer</code>.</p>
 </div>
 <div class="paragraph">
-<p>A l&#8217;exception (notable) de la méthode <code>asTypeElement(Element)</code>, toutes ces méthodes s&#8217;écrivent en une ligne.</p>
+<p>À l&#8217;exception (notable) de la méthode <code>asTypeElement(Element)</code>, toutes ces méthodes s&#8217;écrivent en une ligne.</p>
 </div>
 <div class="paragraph">
 <p>L&#8217;objectif de la méthode <code>asTypeElement(Element)</code> est de vous faire découvrir l&#8217;usage du pattern visiteur conseillé pour exploiter l&#8217;API (plutôt que l&#8217;usage de <code>instanceof</code> et de casts).</p>
@@ -529,7 +529,7 @@ Sinon, il vous sera utile d&#8217;ouvrir la javadoc du package (TODO lien pkg el
 </div>
 </div>
 <div class="sect2">
-<h3 id="_étape_2_annotation_s">étape 2: annotation(s)</h3>
+<h3 id="_Étape_2_annotation_s">Étape 2 : annotation(s)</h3>
 <div class="paragraph">
 <p>La seconde étape consiste à découvrir comment récupérer les annotations, et leurs valeurs, d&#8217;une classe à partir du <code>Element</code> qui la représente.</p>
 </div>
@@ -552,7 +552,7 @@ Sinon, il vous sera utile d&#8217;ouvrir la javadoc du package (TODO lien pkg el
 </div>
 </div>
 <div class="sect2">
-<h3 id="_étape_3_interface_s">étape 3: interface(s)</h3>
+<h3 id="_Étape_3_interface_s">Étape 3 : interface(s)</h3>
 <div class="paragraph">
 <p>La troisième étape a pour obectif de faire découvrir la récupération des interfaces déclarées par une classe (ici <code>fr.devoxx.niveau2.exo1.etape3.ImplementsInterfacesClass</code>).</p>
 </div>
@@ -564,7 +564,7 @@ Sinon, il vous sera utile d&#8217;ouvrir la javadoc du package (TODO lien pkg el
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Ecrivez les implémentations des méthodes de la classe <code>fr.devoxx.niveau2.exo1.etape3.ClassInterfacesExplorer</code>.</p>
+<p>Écrivez les implémentations des méthodes de la classe <code>fr.devoxx.niveau2.exo1.etape3.ClassInterfacesExplorer</code>.</p>
 </div>
 <div class="paragraph">
 <p>L&#8217;implémentation de ces méthodes peut paraître plus complexe mais elles peuvent tout de même s&#8217;écrire très succinctement si on fait bon usage d&#8217;un stream et de courtes lambdas.</p>
@@ -575,9 +575,9 @@ Sinon, il vous sera utile d&#8217;ouvrir la javadoc du package (TODO lien pkg el
 </div>
 </div>
 <div class="sect2">
-<h3 id="_étape_4_super_classe">étape 4: super classe</h3>
+<h3 id="_Étape_4_super_classe">Étape 4 : super classe</h3>
 <div class="paragraph">
-<p>La quatrième étape a pour obectif de faire découvrir la récupération de la super classe d&#8217;une classe (ici <code>fr.devoxx.niveau2.exo1.etape4.MyListClass</code>). A cette étape, on fait également un petit écart pour aller explorer l&#8217;usage des Visitor pour connaitre le sous type exacte d&#8217;un <code>TypeMirror</code> à l&#8217;exécution.</p>
+<p>La quatrième étape a pour obectif de faire découvrir la récupération de la super classe d&#8217;une classe (ici <code>fr.devoxx.niveau2.exo1.etape4.MyListClass</code>). À cette étape, on fait également un petit écart pour aller explorer l&#8217;usage des <code>Visitor</code> pour connaitre le sous type exact d&#8217;un <code>TypeMirror</code> à l&#8217;exécution.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -587,7 +587,7 @@ Sinon, il vous sera utile d&#8217;ouvrir la javadoc du package (TODO lien pkg el
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Ecrivez les implémentations des méthodes de la classe <code>fr.devoxx.niveau2.exo1.etape4.ClassSuperClassExplorer</code>.</p>
+<p>Écrivez les implémentations des méthodes de la classe <code>fr.devoxx.niveau2.exo1.etape4.ClassSuperClassExplorer</code>.</p>
 </div>
 </td>
 </tr>
@@ -597,13 +597,13 @@ Sinon, il vous sera utile d&#8217;ouvrir la javadoc du package (TODO lien pkg el
 </div>
 </div>
 <div class="sect1">
-<h2 id="_exo_2_contenu_d_une_classe_interface">exo 2 : contenu d&#8217;une classe/interface</h2>
+<h2 id="_exercice_2_contenu_d_une_classe_interface">Exercice 2 : contenu d&#8217;une classe/interface</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Cette exercice se focalise sur l&#8217;exploration du contenu d&#8217;une classe ou d&#8217;une méthode.</p>
 </div>
 <div class="sect2">
-<h3 id="_étape_1_les_méthodes">étape 1 : les méthodes</h3>
+<h3 id="_Étape_1_les_méthodes">Étape 1 : les méthodes</h3>
 <div class="paragraph">
 <p>La première étape consiste à découvrir comment récupérer les méthodes et constructeurs d&#8217;une classe et en sélectionner des sous ensembles (les constructeurs, les fonctions publiques, une méthode spécifique, etc.). On verra aussi comment explorer la signature d&#8217;une méthode (nom, annotations, type de retour et paramètres).</p>
 </div>
@@ -615,7 +615,7 @@ Sinon, il vous sera utile d&#8217;ouvrir la javadoc du package (TODO lien pkg el
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Ecrivez les implémentations des méthodes de la classe <code>fr.devoxx.niveau2.exo2.etape1.MethodsExplorer</code>.</p>
+<p>Écrivez les implémentations des méthodes de la classe <code>fr.devoxx.niveau2.exo2.etape1.MethodsExplorer</code>.</p>
 </div>
 <div class="paragraph">
 <p>Les deux premières méthodes s&#8217;écrivent en une ligne, les autres peuvent rester très succinctes si on fait bon usage d&#8217;un stream et de courtes lambdas.</p>
@@ -646,7 +646,7 @@ Sinon, il vous sera utile d&#8217;ouvrir la javadoc du package (TODO lien pkg el
 </div>
 </div>
 <div class="sect2">
-<h3 id="_étape_3_bonus_et_avec_l_héritage">étape 3 : bonus, et avec l&#8217;héritage ?</h3>
+<h3 id="_Étape_3_bonus_et_avec_l_héritage">Étape 3, bonus : et avec l&#8217;héritage ?</h3>
 <div class="paragraph">
 <p>La troisième étape consiste à prendre en compte l&#8217;héritage lorsque l&#8217;on récupère les méthodes et les champs d&#8217;une classe, comment identifier les méthodes d&#8217;une classe qui surcharge une méthode définie par une classe parent, etc.</p>
 </div>
@@ -673,7 +673,7 @@ Sinon, il vous sera utile d&#8217;ouvrir la javadoc du package (TODO lien pkg el
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-03-10 23:21:35 CET
+Last updated 2015-03-15 16:05:34 CET
 </div>
 </div>
 </body>
