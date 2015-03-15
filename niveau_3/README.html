@@ -416,17 +416,17 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Niveau 3</div>
 <ul class="sectlevel1">
-<li><a href="#_exo_1_interrompre_la_compilation">exo 1 : interrompre la compilation</a>
+<li><a href="#_exercice_1_interrompre_la_compilation">Exercice 1 : interrompre la compilation</a>
 <ul class="sectlevel2">
-<li><a href="#_étape_1_lever_une_erreur">étape 1 : lever une erreur</a></li>
-<li><a href="#_étape_2_indiquer_le_fichier">étape 2 : indiquer le fichier</a></li>
-<li><a href="#_étape_3_indiquer_l_annotation">étape 3 : indiquer l&#8217;annotation</a></li>
+<li><a href="#_Étape_1_lever_une_erreur">Étape 1 : lever une erreur</a></li>
+<li><a href="#_Étape_2_indiquer_le_fichier">Étape 2 : indiquer le fichier</a></li>
+<li><a href="#_Étape_3_indiquer_l_annotation">Étape 3 : indiquer l&#8217;annotation</a></li>
 </ul>
 </li>
-<li><a href="#_exo_2_générer_un_fichier">exo 2 : générer un fichier</a>
+<li><a href="#_exercice_2_générer_un_fichier">Exercice 2 : générer un fichier</a>
 <ul class="sectlevel2">
-<li><a href="#_étape_1_récupérer_une_annotation">étape 1 : récupérer une annotation</a></li>
-<li><a href="#_étape_2_écrire_un_fichier">étape 2 : écrire un fichier</a></li>
+<li><a href="#_Étape_1_récupérer_une_annotation">Étape 1 : récupérer une annotation</a></li>
+<li><a href="#_Étape_2_écrire_un_fichier">Étape 2 : écrire un fichier</a></li>
 </ul>
 </li>
 </ul>
@@ -441,7 +441,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="_exo_1_interrompre_la_compilation">exo 1 : interrompre la compilation</h2>
+<h2 id="_exercice_1_interrompre_la_compilation">Exercice 1 : interrompre la compilation</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>L&#8217;objectif de cet exercice est de créer un processor qui lèvera une erreur de compilation s&#8217;il existe un champs annotée avec <code>javax.inject.Inject</code>.</p>
@@ -463,7 +463,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Ainsi, si vous compilez le projet <code>processor</code> sans les tests unitaires (<code>(cd processor &amp;&amp; mvn clean install -DskipTests)</code>) et qu&#8217;ensuite vous compilez le projet <code>subject</code> (<code>(cd subject &amp;&amp; mvn clean install)</code>), vous constaterez que ce dernier compile sans problème.</p>
 </div>
 <div class="sect2">
-<h3 id="_étape_1_lever_une_erreur">étape 1 : lever une erreur</h3>
+<h3 id="_Étape_1_lever_une_erreur">Étape 1 : lever une erreur</h3>
 <div class="paragraph">
 <p>Comme il a été vu au niveau 1, le type de diagnostic <code>Diagnostic.Kind.ERROR</code> passé en argument des méthodes <code>javax.annotation.processing.Messager#printMessage</code> permet de remonter un diagnostique qui se traduira par une erreur de compilation et l&#8217;affichage d&#8217;un message dans les logs.</p>
 </div>
@@ -489,7 +489,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>récupérez le <code>TypeElement</code> de l&#8217;annotation <code>@Inject</code> parmis les paramètres de la méthode <code>init</code> (puisque le procesor n'"écoute" qu&#8217;une seule annotation, c&#8217;est très simple)</p>
 </li>
 <li>
-<p>récupérez l' <code>Element</code> d&#8217;au moins une propriété annotée avec <code>@Inject</code> du <code>RoundEnvironnement</code> courant (TODO lien DOC RoundEnvironnement)</p>
+<p>récupérez l' <code>Element</code> d&#8217;au moins une propriété annotée avec <code>@Inject</code> du <code>RoundEnvironnement</code> courant (cf. <a href="../doc/Jsr269-1.8/javax/annotation/processing/RoundEnvironment.html" class="external" target="_blank">RoundEnvironnement</a>)</p>
 </li>
 <li>
 <p>attention, l&#8217;annotation <code>@Inject</code> peut être utilisée sur des champs mais aussi des méthodes et des constructeurs</p>
@@ -513,7 +513,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="_étape_2_indiquer_le_fichier">étape 2 : indiquer le fichier</h3>
+<h3 id="_Étape_2_indiquer_le_fichier">Étape 2 : indiquer le fichier</h3>
 <div class="paragraph">
 <p>Comme il est frustrant de voir s&#8217;afficher une erreur de compilation sans aucune indication de l&#8217;endroit où se trouve l&#8217;erreur !</p>
 </div>
@@ -544,7 +544,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="_étape_3_indiquer_l_annotation">étape 3 : indiquer l&#8217;annotation</h3>
+<h3 id="_Étape_3_indiquer_l_annotation">Étape 3 : indiquer l&#8217;annotation</h3>
 <div class="paragraph">
 <p>Il est possible, très simplement, d&#8217;être encore plus précis. Si l&#8217;erreur provient d&#8217;une annotation (comme c&#8217;est le cas ici), il est possible d&#8217;indiquer la ligne sur laquelle se trouve cette annotation.</p>
 </div>
@@ -591,7 +591,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="_exo_2_générer_un_fichier">exo 2 : générer un fichier</h2>
+<h2 id="_exercice_2_générer_un_fichier">Exercice 2 : générer un fichier</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>L&#8217;objectif de cet exercice est de générer un fichier dans lequel figurera le prénom des personnages décédés du livre Game of Thrones.</p>
@@ -614,9 +614,9 @@ Chaque personnage est représenté par une classe, dont le nom est le prénom du
 <p>L&#8217;annotation <code>Character</code> définie un membre <code>dead</code> de type <code>boolean</code> qui permet de savoir si le personnage est mort (ou pas&#8230;&#8203; encore).</p>
 </div>
 <div class="sect2">
-<h3 id="_étape_1_récupérer_une_annotation">étape 1 : récupérer une annotation</h3>
+<h3 id="_Étape_1_récupérer_une_annotation">Étape 1 : récupérer une annotation</h3>
 <div class="paragraph">
-<p>Le première étape de l&#8217;exercice consiste à lire les informations contenues dans les sources dans le contexte d&#8217;un processor.</p>
+<p>La première étape de l&#8217;exercice consiste à lire les informations contenues dans les sources dans le contexte d&#8217;un processor.</p>
 </div>
 <div class="paragraph">
 <p>Les deux informations qui nous intéressent: la valeur du membre <code>dead</code> de l&#8217;annotation <code>Character</code> et le nom de la classe annotée.</p>
@@ -659,7 +659,7 @@ Chaque personnage est représenté par une classe, dont le nom est le prénom du
 </div>
 </div>
 <div class="sect2">
-<h3 id="_étape_2_écrire_un_fichier">étape 2 : écrire un fichier</h3>
+<h3 id="_Étape_2_écrire_un_fichier">Étape 2 : écrire un fichier</h3>
 <div class="paragraph">
 <p>La seconde étape de l&#8217;exercice se consacre à la génération du fichier <code>dead_characters.txt</code> dans le package <code>fr.devoxx.niveau3.exo2</code>.</p>
 </div>
@@ -705,7 +705,7 @@ Chaque personnage est représenté par une classe, dont le nom est le prénom du
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-03-13 21:14:24 CET
+Last updated 2015-03-15 20:36:22 CET
 </div>
 </div>
 </body>

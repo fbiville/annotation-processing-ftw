@@ -1,11 +1,12 @@
 = Niveau 3
+:linkattrs:	
 :toc: right
 :toc-title: Niveau 3
 :icons: font
 
 L’objet du niveau 3 est de découvrir l’API qui permet de faire ces choses que seuls les processeurs d'annotations peuvent faire: lever de nouvelles erreurs ou avertissements de compilation et/ou créer de nouveaux fichiers sources, classes ou ressources pendant la compilation.
 
-== exo 1 : interrompre la compilation
+== Exercice 1 : interrompre la compilation
 
 L'objectif de cet exercice est de créer un processor qui lèvera une erreur de compilation s'il existe un champs annotée avec `javax.inject.Inject`.
 
@@ -16,7 +17,7 @@ Dans le répertoire `exo1`, vous trouverez deux projets Maven:
 
 Ainsi, si vous compilez le projet `processor` sans les tests unitaires (`(cd processor && mvn clean install -DskipTests)`) et qu'ensuite vous compilez le projet `subject` (`(cd subject && mvn clean install)`), vous constaterez que ce dernier compile sans problème.
 
-=== étape 1 : lever une erreur
+=== Étape 1 : lever une erreur
 
 Comme il a été vu au niveau 1, le type de diagnostic `Diagnostic.Kind.ERROR` passé en argument des méthodes `javax.annotation.processing.Messager#printMessage` permet de remonter un diagnostique qui se traduira par une erreur de compilation et l'affichage d'un message dans les logs.
 
@@ -29,7 +30,7 @@ Dans la classe `InjectedPropertyProcessor`, implémentez la méthode `process`.
 Pour cela, vous devrez:
 
 1. récupérez le `TypeElement` de l'annotation `@Inject` parmis les paramètres de la méthode `init` (puisque le procesor n'"écoute" qu'une seule annotation, c'est très simple)
-2. récupérez l' `Element` d'au moins une propriété annotée avec `@Inject` du `RoundEnvironnement` courant (TODO lien DOC RoundEnvironnement)
+2. récupérez l' `Element` d'au moins une propriété annotée avec `@Inject` du `RoundEnvironnement` courant (cf. link:../doc/Jsr269-1.8/javax/annotation/processing/RoundEnvironment.html[RoundEnvironnement, role="external", window="_blank"])
 3. attention, l'annotation `@Inject` peut être utilisée sur des champs mais aussi des méthodes et des constructeurs
 4. lever une erreur de compilation avec le message attendu (cf. la constante `InjectedPropertyProcessor#COMPILATION_ERROR_MSG`) en utilisant la surcharge la plus simple de `Messager#printMessage`
 ====
@@ -40,7 +41,7 @@ Si votre implémentation est correcte, le test unitaire `Etape1Test` dans le pro
 [ERROR] Fields annotated with @Inject are not allowed
 ----
 
-=== étape 2 : indiquer le fichier
+=== Étape 2 : indiquer le fichier
 
 Comme il est frustrant de voir s'afficher une erreur de compilation sans aucune indication de l'endroit où se trouve l'erreur !
 
@@ -58,7 +59,7 @@ Si ensuite vous compilez le projet `subject`, la compilation échouera avec le m
 [ERROR] [some path]/niveau_3/exo1/subject/src/main/java/fr/devoxx/niveau3/exo1/SomeService.java:[12,23] Fields annotated with @Inject are not allowed
 ----
 
-=== étape 3 : indiquer l'annotation
+=== Étape 3 : indiquer l'annotation
 
 Il est possible, très simplement, d'être encore plus précis. Si l'erreur provient d'une annotation (comme c'est le cas ici), il est possible d'indiquer la ligne sur laquelle se trouve cette annotation.
 
@@ -80,7 +81,7 @@ Si ensuite vous compilez le projet `subject`, la compilation échouera avec le m
 [ERROR] [some path]/niveau_3/exo1/subject/src/main/java/fr/devoxx/niveau3/exo1/SomeService.java:[11,3] Fields annotated with @Inject are not allowed
 ----
 
-== exo 2 : générer un fichier
+== Exercice 2 : générer un fichier
 
 L'objectif de cet exercice est de générer un fichier dans lequel figurera le prénom des personnages décédés du livre Game of Thrones.
 
@@ -92,9 +93,9 @@ Dans le répertoire `exo2`, vous trouverez un projet Maven constitué de deux so
 
 L'annotation `Character` définie un membre `dead` de type `boolean` qui permet de savoir si le personnage est mort (ou pas... encore).
 
-=== étape 1 : récupérer une annotation
+=== Étape 1 : récupérer une annotation
 
-Le première étape de l'exercice consiste à lire les informations contenues dans les sources dans le contexte d'un processor.
+La première étape de l'exercice consiste à lire les informations contenues dans les sources dans le contexte d'un processor.
 
 Les deux informations qui nous intéressent: la valeur du membre `dead` de l'annotation `Character` et le nom de la classe annotée.
 
@@ -112,7 +113,7 @@ Pour cela, vous devrez:
 Si votre implémentation est correcte, le test unitaire `DeadCharacterSetTest` sera passant.
 ====
 
-=== étape 2 : écrire un fichier
+=== Étape 2 : écrire un fichier
 
 La seconde étape de l'exercice se consacre à la génération du fichier `dead_characters.txt` dans le package `fr.devoxx.niveau3.exo2`.
 
