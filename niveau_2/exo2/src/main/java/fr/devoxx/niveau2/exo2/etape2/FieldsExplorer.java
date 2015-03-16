@@ -2,15 +2,11 @@ package fr.devoxx.niveau2.exo2.etape2;
 
 import java.util.List;
 import javax.annotation.Nonnull;
-import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
-import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
-
-import static java.util.stream.Collectors.toList;
 
 /**
  * FieldsExplorer -
@@ -43,7 +39,7 @@ public class FieldsExplorer {
    * @return la liste des champs de la classe sous forme de {@link javax.lang.model.element.VariableElement}
    */
   public List<VariableElement> extractFields(@Nonnull TypeElement cowTypeElement) {
-    return ElementFilter.fieldsIn(cowTypeElement.getEnclosedElements());
+    throw new UnsupportedOperationException();
   }
 
   /**
@@ -59,12 +55,7 @@ public class FieldsExplorer {
    * {@link fr.devoxx.niveau2.exo2.etape2.Cow}.
    */
   public TypeMirror extractNameFieldType(@Nonnull TypeElement cowTypeElement) {
-    return extractFields(cowTypeElement)
-        .stream()
-        .filter(field -> field.getSimpleName().contentEquals("name"))
-        .map(field -> field.asType())
-        .findFirst()
-        .get();
+    throw new UnsupportedOperationException();
   }
 
   /**
@@ -76,10 +67,7 @@ public class FieldsExplorer {
    * @return la liste des champs privés ou package protected de la classe sous la forme de {@link VariableElement}s
    */
   public List<VariableElement> extractPrivateAndPackageProtectedFields(@Nonnull TypeElement cowTypeElement) {
-    return extractFields(cowTypeElement)
-        .stream()
-        .filter(field -> field.getModifiers().isEmpty() || field.getModifiers().contains(Modifier.PRIVATE))
-        .collect(toList());
+    throw new UnsupportedOperationException();
   }
 
   /**
@@ -91,9 +79,6 @@ public class FieldsExplorer {
    * @return la liste des champs déprécié de la classe sous la forme de {@link VariableElement}s
    */
   public List<VariableElement> extractDeprecatedField(@Nonnull TypeElement cowTypeElement) {
-    return extractFields(cowTypeElement)
-        .stream()
-        .filter(field -> field.getAnnotation(Deprecated.class) != null)
-        .collect(toList());
+    throw new UnsupportedOperationException();
   }
 }

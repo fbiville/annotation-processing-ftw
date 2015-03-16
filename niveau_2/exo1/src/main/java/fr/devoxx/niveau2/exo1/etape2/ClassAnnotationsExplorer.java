@@ -32,7 +32,7 @@ public class ClassAnnotationsExplorer {
    * puis un représentant l'annotation {@link Meta}
    */
   public List<? extends AnnotationMirror> extractAnnotations(@Nonnull Element annotatedClassElement) {
-    return annotatedClassElement.getAnnotationMirrors();
+    throw new UnsupportedOperationException();
   }
 
   /**
@@ -43,7 +43,7 @@ public class ClassAnnotationsExplorer {
    * @return l'instance de {@link Meta} sur la classe {@link fr.devoxx.niveau2.exo1.etape2.AnnotatedClass}
    */
   public Meta extractMetaAnnotation(@Nonnull Element annotatedClassElement) {
-    return annotatedClassElement.getAnnotation(Meta.class);
+    throw new UnsupportedOperationException();
   }
 
   /**
@@ -54,7 +54,7 @@ public class ClassAnnotationsExplorer {
    * @return "La robe est blanc et or, moi je te dis !"
    */
   public String extractMetaAnnotationValue(@Nonnull Element annotatedClassElement) {
-    return annotatedClassElement.getAnnotation(Meta.class).value();
+    throw new UnsupportedOperationException();
   }
 
   /**
@@ -72,7 +72,7 @@ public class ClassAnnotationsExplorer {
    * @return -99812
    */
   public int extractMetaAnnotationId(@Nonnull Element annotatedClassElement) {
-    return annotatedClassElement.getAnnotation(Meta.class).id();
+    throw new UnsupportedOperationException();
   }
 
 }

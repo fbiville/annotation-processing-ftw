@@ -8,7 +8,6 @@ import javax.lang.model.element.Name;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
-import javax.lang.model.util.SimpleElementVisitor6;
 import javax.lang.model.util.Types;
 
 /**
@@ -36,7 +35,7 @@ public class ClassDeclarationExplorer {
    * @return "BasicClass" sous forme de {@link javax.lang.model.element.Name}
    */
   public Name extractClassName(@Nonnull Element basicClassElement) {
-    return basicClassElement.getSimpleName();
+    throw new UnsupportedOperationException();
   }
 
   /**
@@ -55,14 +54,7 @@ public class ClassDeclarationExplorer {
    * @return un {@link javax.lang.model.element.TypeElement} ou {@code null}
    */
   public TypeElement asTypeElement(@Nonnull Element element) {
-    return element.accept(
-        new SimpleElementVisitor6<TypeElement, Void>() {
-          @Override
-          public TypeElement visitType(TypeElement e, Void o) {
-            return e;
-          }
-        }, null
-    );
+    throw new UnsupportedOperationException();
   }
 
   /**
@@ -78,7 +70,7 @@ public class ClassDeclarationExplorer {
    * @return "fr.devoxx.niveau2.exo1.etape1.BasicClass" sous forme de {@link javax.lang.model.element.Name}
    */
   public Name extractClassQualifiedName(@Nonnull Element basicClassElement) {
-    return asTypeElement(basicClassElement).getQualifiedName();
+    throw new UnsupportedOperationException();
   }
 
   /**
@@ -96,7 +88,7 @@ public class ClassDeclarationExplorer {
    * @return "etape1" sous forme de {@link javax.lang.model.element.Name}
    */
   public PackageElement extractPackage(@Nonnull TypeElement basicClassTypeElement) {
-    return elementUtils.getPackageOf(basicClassTypeElement);
+    throw new UnsupportedOperationException();
   }
 
   /**
@@ -109,7 +101,7 @@ public class ClassDeclarationExplorer {
    * @return "fr.devoxx.niveau2.exo1.etape1" sous forme de {@link javax.lang.model.element.Name}
    */
   public Name extractPackageName(@Nonnull TypeElement basicClassTypeElement) {
-    return extractPackage(basicClassTypeElement).getQualifiedName();
+    throw new UnsupportedOperationException();
   }
 
   /**
@@ -123,7 +115,7 @@ public class ClassDeclarationExplorer {
    * {@link java.util.Set}
    */
   public Set<Modifier> extractModifiers(@Nonnull TypeElement basicClassTypeElement) {
-    return basicClassTypeElement.getModifiers();
+    throw new UnsupportedOperationException();
   }
 
 }

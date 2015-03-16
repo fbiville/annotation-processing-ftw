@@ -1,12 +1,9 @@
 package fr.devoxx.niveau2.exo2.etape3;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
-import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 
@@ -40,7 +37,7 @@ public class DeepExplorer {
    * {@link fr.devoxx.niveau2.exo2.etape3.Citizen} et {@link java.lang.Object} sous forme de {@link ExecutableElement}
    */
   public List<ExecutableElement> extractAllMethods(@Nonnull TypeElement employeeTypeElement) {
-    return ElementFilter.methodsIn(elementUtils.getAllMembers(employeeTypeElement));
+    throw new UnsupportedOperationException();
   }
 
   /**
@@ -61,14 +58,7 @@ public class DeepExplorer {
    * {@link java.lang.Object} sous forme de {@link ExecutableElement}
    */
   public List<ExecutableElement> extractInheritedMethods(@Nonnull TypeElement employeeTypeElement) {
-    return elementUtils.getAllMembers(employeeTypeElement)
-                       .stream()
-                       .filter(executableElement -> executableElement.getKind() == ElementKind.METHOD)
-                       .filter(
-                           executableElement -> !executableElement.getEnclosingElement().equals(employeeTypeElement)
-                       )
-                       .map(ExecutableElement.class::cast)
-                       .collect(Collectors.toList());
+    throw new UnsupportedOperationException();
   }
 
   /**
@@ -86,16 +76,7 @@ public class DeepExplorer {
    * {@link fr.devoxx.niveau2.exo2.etape3.Citizen} sous forme de {@link ExecutableElement}
    */
   public List<ExecutableElement> extractInheritedMethodsButObjects(@Nonnull TypeElement employeeTypeElement) {
-    return extractInheritedMethods(employeeTypeElement)
-        .stream()
-        .filter(
-            executableElement -> {
-              TypeElement objectTypeElement = elementUtils.getTypeElement("java.lang.Object");
-
-              return !executableElement.getEnclosingElement().equals(objectTypeElement);
-            }
-        )
-        .collect(Collectors.toList());
+    throw new UnsupportedOperationException();
   }
 
 }

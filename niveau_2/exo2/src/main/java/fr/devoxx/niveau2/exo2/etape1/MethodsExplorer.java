@@ -1,23 +1,14 @@
 package fr.devoxx.niveau2.exo2.etape1;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
-import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.Elements;
-import javax.lang.model.util.SimpleElementVisitor6;
 import javax.lang.model.util.Types;
-
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
 
 /**
  * MethodsExplorer -
@@ -51,7 +42,7 @@ public class MethodsExplorer {
    * @return la liste des méthodes (ie. pas les constructeurs) sous forme de {@link ExecutableElement}
    */
   public List<ExecutableElement> extractMethods(@Nonnull TypeElement homerTypeElement) {
-    return ElementFilter.methodsIn(homerTypeElement.getEnclosedElements());
+    throw new UnsupportedOperationException();
   }
 
 
@@ -68,7 +59,7 @@ public class MethodsExplorer {
    * {@link ExecutableElement}
    */
   public List<ExecutableElement> extractConstructors(@Nonnull TypeElement homerTypeElement) {
-    return ElementFilter.constructorsIn(homerTypeElement.getEnclosedElements());
+    throw new UnsupportedOperationException();
   }
 
   /**
@@ -84,12 +75,7 @@ public class MethodsExplorer {
    * {@link fr.devoxx.niveau2.exo2.etape1.Homer} sous forme de {@link ExecutableElement}
    */
   public List<ExecutableElement> extractPublicMethodsAndConstructors(@Nonnull TypeElement homerTypeElement) {
-    return homerTypeElement.getEnclosedElements()
-                           .stream()
-                           .filter(s -> s.getModifiers().contains(Modifier.PUBLIC))
-                           .map(this::asExecutableElement)
-                           .filter(Objects::nonNull)
-                           .collect(toList());
+    throw new UnsupportedOperationException();
   }
 
   /**
@@ -102,10 +88,7 @@ public class MethodsExplorer {
    * de {@link ExecutableElement}
    */
   public List<ExecutableElement> extractPublicFunctions(@Nonnull TypeElement homerTypeElement) {
-    return extractPublicMethodsAndConstructors(homerTypeElement)
-        .stream()
-        .filter(s -> s.getReturnType().getKind() == TypeKind.VOID)
-        .collect(toList());
+    throw new UnsupportedOperationException();
   }
 
   /**
@@ -118,12 +101,7 @@ public class MethodsExplorer {
    * {@link ExecutableElement}
    */
   public List<ExecutableElement> extractEatDonutsMethods(@Nonnull TypeElement homerTypeElement) {
-    return homerTypeElement.getEnclosedElements()
-                           .stream()
-                           .map(this::asExecutableElement)
-                           .filter(Objects::nonNull)
-                           .filter(s -> s.getSimpleName().contentEquals("eatDonuts"))
-                           .collect(toList());
+    throw new UnsupportedOperationException();
   }
 
   /**
@@ -135,11 +113,7 @@ public class MethodsExplorer {
    * @return le {@link ExecutableElement} qui représente la surcharge non dépréciée de la méthode "eatDonuts"
    */
   public ExecutableElement extractCurrentEatDonutsMethod(@Nonnull TypeElement homerTypeElement) {
-    return extractEatDonutsMethods(homerTypeElement)
-        .stream()
-        .filter(s -> s.getAnnotation(Deprecated.class) == null)
-        .findFirst()
-        .get();
+    throw new UnsupportedOperationException();
   }
 
   /**
@@ -155,24 +129,7 @@ public class MethodsExplorer {
    * {@link fr.devoxx.niveau2.exo2.etape1.Homer.Flavor}
    */
   public Set<TypeMirror> extractTypeOfNullableParameters(@Nonnull TypeElement homerTypeElement) {
-    return homerTypeElement.getEnclosedElements()
-                           .stream()
-                           .map(this::asExecutableElement)
-                           .filter(Objects::nonNull)
-                           .flatMap(method -> method.getParameters().stream())
-                           .filter(parameter -> parameter.getAnnotation(Nullable.class) != null)
-                           .map(parameter -> parameter.asType())
-                           .collect(toSet());
+    throw new UnsupportedOperationException();
   }
 
-  private ExecutableElement asExecutableElement(@Nonnull Element methodElement) {
-    return methodElement.accept(
-        new SimpleElementVisitor6<ExecutableElement, Void>() {
-          @Override
-          public ExecutableElement visitExecutable(ExecutableElement e, Void aVoid) {
-            return e;
-          }
-        }, null
-    );
-  }
 }

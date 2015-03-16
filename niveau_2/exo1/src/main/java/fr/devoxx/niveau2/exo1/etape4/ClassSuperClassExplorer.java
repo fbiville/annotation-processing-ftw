@@ -7,7 +7,6 @@ import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
-import javax.lang.model.util.SimpleTypeVisitor6;
 import javax.lang.model.util.Types;
 
 /**
@@ -33,7 +32,7 @@ public class ClassSuperClassExplorer {
    * {@link fr.devoxx.niveau2.exo1.etape4.MyListClass}
    */
   public TypeMirror extractSuperClass(@Nonnull TypeElement myListClassTypeElement) {
-    return myListClassTypeElement.getSuperclass();
+    throw new UnsupportedOperationException();
   }
 
   /**
@@ -43,7 +42,7 @@ public class ClassSuperClassExplorer {
    * @return
    */
   public DeclaredType asDeclaredType(@Nonnull TypeMirror arrayListTypeMirror) {
-    return asDeclaredTypeImpl(arrayListTypeMirror);
+    throw new UnsupportedOperationException();
   }
 
   /**
@@ -67,8 +66,7 @@ public class ClassSuperClassExplorer {
    * {@code extends ArrayList<String>"}
    */
   public TypeMirror extractSuperClassTypeArgument(@Nonnull TypeElement myListClassTypeElement) {
-    DeclaredType declaredType = asDeclaredTypeImpl(myListClassTypeElement.getSuperclass());
-    return declaredType.getTypeArguments().iterator().next();
+    throw new UnsupportedOperationException();
   }
 
   /**
@@ -91,19 +89,7 @@ public class ClassSuperClassExplorer {
    * {@link java.util.ArrayList}
    */
   public Name extractSuperClassTypeParameterName(@Nonnull TypeElement myListClassTypeElement) {
-    DeclaredType declaredType = asDeclaredTypeImpl(myListClassTypeElement.getSuperclass());
-    return ((TypeElement) declaredType.asElement()).getTypeParameters().iterator().next().getSimpleName();
-  }
-
-  private DeclaredType asDeclaredTypeImpl(TypeMirror typeMirror) {
-    return typeMirror.accept(
-        new SimpleTypeVisitor6<DeclaredType, Void>() {
-          @Override
-          public DeclaredType visitDeclared(DeclaredType t, Void o) {
-            return t;
-          }
-        }, null
-    );
+    throw new UnsupportedOperationException();
   }
 
 }

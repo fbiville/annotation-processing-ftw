@@ -1,14 +1,11 @@
 package fr.devoxx.niveau2.exo1.etape3;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
-import javax.lang.model.util.SimpleElementVisitor6;
 import javax.lang.model.util.Types;
 
 /**
@@ -38,7 +35,7 @@ public class ClassInterfacesExplorer {
    * {@link fr.devoxx.niveau2.exo1.etape3.ImplementsInterfacesClass}
    */
   public List<? extends TypeMirror> extractInterfaces(@Nonnull TypeElement implementsInterfacesClassTypeElement) {
-    return implementsInterfacesClassTypeElement.getInterfaces();
+    throw new UnsupportedOperationException();
   }
 
   /**
@@ -58,12 +55,7 @@ public class ClassInterfacesExplorer {
    * {@link java.lang.Comparable}
    */
   public List<TypeElement> extractInterfaceAsTypeElements(@Nonnull TypeElement implementsInterfacesClassTypeElement) {
-    return implementsInterfacesClassTypeElement.getInterfaces()
-                                               .stream()
-                                               .map(typeUtils::asElement)
-                                               .map(this::asTypeElement)
-                                               .filter(Objects::nonNull)
-                                               .collect(Collectors.toList());
+    throw new UnsupportedOperationException();
   }
 
   /**
@@ -81,22 +73,7 @@ public class ClassInterfacesExplorer {
    * @return le {@link TypeElement} qui représente l'interface {@link java.io.Serializable}
    */
   public TypeMirror extractSerializableInterface(@Nonnull List<? extends TypeMirror> interfaces) {
-    return interfaces
-        .stream()
-        .filter(s -> asTypeElement(typeUtils.asElement(s)).getQualifiedName().contentEquals("java.io.Serializable"))
-        .findFirst()
-        .get();
-  }
-
-  private TypeElement asTypeElement(Element implementsInterfacesClassTypeElement) {
-    return implementsInterfacesClassTypeElement.accept(
-        new SimpleElementVisitor6<TypeElement, Void>() {
-          @Override
-          public TypeElement visitType(TypeElement e, Void o) {
-            return e;
-          }
-        }, null
-    );
+    throw new UnsupportedOperationException();
   }
 
 }
