@@ -28,7 +28,7 @@ public class ClassAnnotationsExplorer {
    *
    * @param annotatedClassElement le {@link Element} de {@link fr.devoxx.niveau2.exo1.etape2.AnnotatedClass}
    *
-   * @return une liste contenu un {@link AnnotationMirror} représentant l'annotation {@link fr.devoxx.niveau2.exo1.Flag}
+   * @return une liste contenant un {@link AnnotationMirror} représentant l'annotation {@link fr.devoxx.niveau2.exo1.Flag}
    * puis un représentant l'annotation {@link Meta}
    */
   public List<? extends AnnotationMirror> extractAnnotations(@Nonnull Element annotatedClassElement) {

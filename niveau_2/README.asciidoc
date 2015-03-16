@@ -100,9 +100,9 @@ La première étape consiste à découvrir comment récupérer les méthodes et 
 Les deux premières méthodes s'écrivent en une ligne, les autres peuvent rester très succinctes si on fait bon usage d'un stream et de courtes lambdas.
 ====
 
-=== étape 2 : les champs
+=== Étape 2 : les champs
 
-La seconde étape consite à découvrir comment récupérer les champs d'une classe (ou d'une enum) et explorer les informations qu'ils portent: nom, attributs, type, annotations.
+La seconde étape consiste à découvrir comment récupérer les champs d'une classe (ou d'une enum) et explorer les informations qu'ils portent: nom, attributs, type, annotations.
 
 [IMPORTANT]
 ====

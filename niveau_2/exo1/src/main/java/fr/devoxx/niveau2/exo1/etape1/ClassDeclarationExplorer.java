@@ -79,7 +79,7 @@ public class ClassDeclarationExplorer {
    * <p>
    * Vous pouvez essayer de récupérer le package d'une classe à partir de son {@link TypeElement} en remontant
    * la hiérarchie des élements via le lien {@link Element#getEnclosingElement()} mais ce besoin est tellement
-   * commun que {@link Elements} propose une
+   * commun que {@link Elements} propose une méthode {@link Elements#getPackageOf}
    * </p>
    *
    * @param basicClassTypeElement le {@link javax.lang.model.element.TypeElement} de
