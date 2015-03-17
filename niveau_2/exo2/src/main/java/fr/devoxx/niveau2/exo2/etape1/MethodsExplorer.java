@@ -79,7 +79,7 @@ public class MethodsExplorer {
   }
 
   /**
-   * Extrait la liste des méthodes et constructeurs publics définis par la classe qui retournent {@code void}
+   * Extrait la liste des fonctions publiques (ie. méthodes qui ne retourne pas {@code void}) définies par la classe
    * {@link fr.devoxx.niveau2.exo2.etape1.Homer} à partir du {@link TypeElement} qui la représente.
    *
    * @param homerTypeElement le {@link TypeElement} de la class {@link fr.devoxx.niveau2.exo2.etape1.Homer}
