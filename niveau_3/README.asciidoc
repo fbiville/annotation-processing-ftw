@@ -1,10 +1,11 @@
 = Niveau 3
-:linkattrs:	
+:linkattrs:
 :toc: right
 :toc-title: Niveau 3
 :icons: font
 
 L’objet du niveau 3 est de découvrir l’API qui permet de faire ces choses que seuls les processeurs d'annotations peuvent faire: lever de nouvelles erreurs ou avertissements de compilation et/ou créer de nouveaux fichiers sources, classes ou ressources pendant la compilation.
+
 
 == Exercice 1 : interrompre la compilation
 
@@ -131,3 +132,124 @@ Pour cela, vous devrez:
 
 Si votre implémentation est correcte, le test unitaire `DeadCharacterFileTest` sera passant.
 ====
+
+== Exercice 3 : petit processing entre ennemis
+
+Le but du jeu ici consiste à prendre en main l'API d'écriture de
+sources Java avec l'API link:../doc/javapoet/README.html[JavaPoet, role="external", window="_blank"]
+dans le contexte d'un processor d'`@Erbfeind` que l'on va également écrire.
+
+
+=== Erbfeind?
+[quote, dict.leo.org]
+____
+der Erbfeind (pl.: die Erbfeinde) [DE]: ennemi héréditaire [FR]
+____
+
+=== Étape 1 : on s'active
+
+[IMPORTANT]
+====
+1. observez l'implémentation initiale de `ErbfeindGenerator`
+2. compilez le projet `exo3-processor` puis `exo3-subject` sans les tests (`mvn clean install -DskipTests`)
+====
+
+
+À ce stade, "What's going on here?" aurait du apparaître
+dans les logs affichés lors de la compilation.
+
+Ou peut-être pas. Remémorez-vous l'ensemble des déclarations
+auxquelles doit procéder un processor.
+
+Vous ne voyez toujours pas ?
+
+Nous avons prétendu jusqu'ici qu'il s'agissait d'un processor
+d'`@Erbfeind` mais le processor l'a-t-il correctement déclaré ?
+
+[IMPORTANT]
+====
+Complétez la classe `ErbfeindGenerator` afin qu'il déclare
+être en mesure de traiter les annotations `Erbfeind`.
+====
+
+
+=== Étape 2 : un peu de poésie dans les sources !
+
+Il est temps de générer à tout berzingue avec
+link:../doc/javapoet/README.html[JavaPoet, role="external", window="_blank"].
+
+L'idée à cette étape est de générer la ou les classes définies par l'annotation `@Erbfeind`.
+
+En d'autres termes, si une classe `com.acme.A` est annotée `@Erbfeind({"B", "C"})`, alors les classes `com.acme.B` et `com.acme.C`, pour le moment vides, doivent être générées.
+
+N'hésitez pas à regarder le répertoire `src/test/resources` du processor pour bien comprendre ce qui est demandé.
+
+[IMPORTANT]
+====
+Complétez la classe `ErbfeindGenerator` de `exo3-processor` afin de faire passer les tests définis dans `Etape2Test`.
+====
+
+
+=== Étape 3 : l'ennemi de mon ennemi est mon ami ?
+
+==== 3.1 : l'ennemi de mon ennemi ?
+
+Bon, bon, bon, c'est bien sympa de générer des classes vides, mais c'est un peu limité, non ?
+
+Corsons un peu l'affaire avec cette difficulté supplémentaire : chaque "Erbfeind" généré doit lui-même être annoté avec son Erbfeind correspondant.
+
+Pour reprendre l'exemple précédent, si `com.acme.A` est annotée `@Erbfeind({"B", "C"})` alors les classes `com.acme.B` et `com.acme.C`, maintenant correctement générées, doivent être annotées `@Erbfeind("A")`.
+
+[IMPORTANT]
+====
+`ErbfeindGenerator` doit être modifié de façon non compatible.
+Il est donc nécessaire de:
+
+1. commenter avec `@Ignore` le test `Etape2Test#at_last_erbfeind_generates_simple_erbfeind_classes` pour désactiver le test
+2. supprimer le `@Ignore` sur `Etape3Test#at_last_erbfeind_generates_annotated_erbfeind_classes` pour activer.
+====
+
+
+
+[IMPORTANT]
+====
+Complétez `ErbfeindGenerator`.
+
+Petite subtilité : si vous vous référez à la documentation de link:../doc/javapoet/README.html[JavaPoet, role="external", window="_blank"], vous devez générer comme valeur pour `@Erbfeind` (`AnnotationSpec.builder` est votre ami) un code de type `String` (i.e. `"$S"`)
+
+Constatez le problème ;)
+====
+
+==== 3.2. : Don't overwrite the sources, Luke
+
+À ce stade, vous devriez obtenir une sortie similaire à la suivante :
+
+```
+What's going on here?
+What's going on here?
+
+java.lang.RuntimeException: java.lang.RuntimeException: Attempt to recreate a file for type i.can.haz.generation.A
+	at com.sun.tools.javac.main.Main.compile(Main.java:553)
+	at com.sun.tools.javac.api.JavacTaskImpl.doCall(JavacTaskImpl.java:129)
+	at com.sun.tools.javac.api.JavacTaskImpl.call(JavacTaskImpl.java:138)
+	[...]
+```
+
+Avant de lire la suite, prenez le temps de réfléchir à la cause du problème.
+
+Comme l'indique la présence double du log "What's going on here?", `ErbfeindGenerator` a visiblement été invoqué deux fois avant de crasher lamentablement (vous pouvez activer les logs de compilation pour avoir plus de détails).
+
+Le premier round de compilation est logique : `Etape3Test` inclut d'entrée une classe `A` annotée `Erbfeind`. À cette étape, le processor génère donc les classes `B` et `C`, maintenant annotées elles aussi `@Erbfeind`.
+
+Le second round est donc simplement initiée parce qu'il est nécessaire de traiter les classes `B` et `C` puisqu'elles sont annotées `Erbfeind`. C'est là que le bât blesse : `ErbfeindGenerator` va maintenant essayer de générer le fichier source de `A`. Problème de taille : ce fichier existe déjà et la spécification interdit formellement de modifier (écraser...) des classes existantes.
+
+
+[IMPORTANT]
+====
+Corrigez la méthode write d'ErbfeindGenerator.
+
+Indice : si une classe donnée existe, alors c'est que l'on peut récupérer son `TypeElement` associé par son nom qualifié (`javax.lang.model.util.Elements` a.k.a. `elementUtils` est votre ami).
+====
+
+Vous pouvez maintenant compiler le projet `subject` et admirer les sources générées (même `Scala` compile!).
+

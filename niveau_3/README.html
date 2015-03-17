@@ -429,6 +429,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_Étape_2_écrire_un_fichier">Étape 2 : écrire un fichier</a></li>
 </ul>
 </li>
+<li><a href="#_exercice_3_petit_processing_entre_ennemis">Exercice 3 : petit processing entre ennemis</a>
+<ul class="sectlevel2">
+<li><a href="#_erbfeind">Erbfeind?</a></li>
+<li><a href="#_Étape_1_on_s_active">Étape 1 : on s&#8217;active</a></li>
+<li><a href="#_Étape_2_un_peu_de_poésie_dans_les_sources">Étape 2 : un peu de poésie dans les sources !</a></li>
+<li><a href="#_Étape_3_l_ennemi_de_mon_ennemi_est_mon_ami">Étape 3 : l&#8217;ennemi de mon ennemi est mon ami ?</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -702,10 +710,227 @@ Chaque personnage est représenté par une classe, dont le nom est le prénom du
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_exercice_3_petit_processing_entre_ennemis">Exercice 3 : petit processing entre ennemis</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Le but du jeu ici consiste à prendre en main l&#8217;API d&#8217;écriture de
+sources Java avec l&#8217;API <a href="../doc/javapoet/README.html" class="external" target="_blank">JavaPoet</a>
+dans le contexte d&#8217;un processor d'`@Erbfeind` que l&#8217;on va également écrire.</p>
+</div>
+<div class="sect2">
+<h3 id="_erbfeind">Erbfeind?</h3>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>der Erbfeind (pl.: die Erbfeinde) [DE]: ennemi héréditaire [FR]</p>
+</div>
+</blockquote>
+<div class="attribution">
+&#8212; dict.leo.org
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_Étape_1_on_s_active">Étape 1 : on s&#8217;active</h3>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>observez l&#8217;implémentation initiale de <code>ErbfeindGenerator</code></p>
+</li>
+<li>
+<p>compilez le projet <code>exo3-processor</code> puis <code>exo3-subject</code> sans les tests (<code>mvn clean install -DskipTests</code>)</p>
+</li>
+</ol>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>À ce stade, "What&#8217;s going on here?" aurait du apparaître
+dans les logs affichés lors de la compilation.</p>
+</div>
+<div class="paragraph">
+<p>Ou peut-être pas. Remémorez-vous l&#8217;ensemble des déclarations
+auxquelles doit procéder un processor.</p>
+</div>
+<div class="paragraph">
+<p>Vous ne voyez toujours pas ?</p>
+</div>
+<div class="paragraph">
+<p>Nous avons prétendu jusqu&#8217;ici qu&#8217;il s&#8217;agissait d&#8217;un processor
+d'`@Erbfeind` mais le processor l&#8217;a-t-il correctement déclaré ?</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Complétez la classe <code>ErbfeindGenerator</code> afin qu&#8217;il déclare
+être en mesure de traiter les annotations <code>Erbfeind</code>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_Étape_2_un_peu_de_poésie_dans_les_sources">Étape 2 : un peu de poésie dans les sources !</h3>
+<div class="paragraph">
+<p>Il est temps de générer à tout berzingue avec
+<a href="../doc/javapoet/README.html" class="external" target="_blank">JavaPoet</a>.</p>
+</div>
+<div class="paragraph">
+<p>L&#8217;idée à cette étape est de générer la ou les classes définies par l&#8217;annotation <code>@Erbfeind</code>.</p>
+</div>
+<div class="paragraph">
+<p>En d&#8217;autres termes, si une classe <code>com.acme.A</code> est annotée <code>@Erbfeind({"B", "C"})</code>, alors les classes <code>com.acme.B</code> et <code>com.acme.C</code>, pour le moment vides, doivent être générées.</p>
+</div>
+<div class="paragraph">
+<p>N&#8217;hésitez pas à regarder le répertoire <code>src/test/resources</code> du processor pour bien comprendre ce qui est demandé.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Complétez la classe <code>ErbfeindGenerator</code> de <code>exo3-processor</code> afin de faire passer les tests définis dans <code>Etape2Test</code>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_Étape_3_l_ennemi_de_mon_ennemi_est_mon_ami">Étape 3 : l&#8217;ennemi de mon ennemi est mon ami ?</h3>
+<div class="sect3">
+<h4 id="_3_1_l_ennemi_de_mon_ennemi">3.1 : l&#8217;ennemi de mon ennemi ?</h4>
+<div class="paragraph">
+<p>Bon, bon, bon, c&#8217;est bien sympa de générer des classes vides, mais c&#8217;est un peu limité, non ?</p>
+</div>
+<div class="paragraph">
+<p>Corsons un peu l&#8217;affaire avec cette difficulté supplémentaire : chaque "Erbfeind" généré doit lui-même être annoté avec son Erbfeind correspondant.</p>
+</div>
+<div class="paragraph">
+<p>Pour reprendre l&#8217;exemple précédent, si <code>com.acme.A</code> est annotée <code>@Erbfeind({"B", "C"})</code> alors les classes <code>com.acme.B</code> et <code>com.acme.C</code>, maintenant correctement générées, doivent être annotées <code>@Erbfeind("A")</code>.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><code>ErbfeindGenerator</code> doit être modifié de façon non compatible.
+Il est donc nécessaire de:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>commenter avec <code>@Ignore</code> le test <code>Etape2Test#at_last_erbfeind_generates_simple_erbfeind_classes</code> pour désactiver le test</p>
+</li>
+<li>
+<p>supprimer le <code>@Ignore</code> sur <code>Etape3Test#at_last_erbfeind_generates_annotated_erbfeind_classes</code> pour activer.</p>
+</li>
+</ol>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Complétez <code>ErbfeindGenerator</code>.</p>
+</div>
+<div class="paragraph">
+<p>Petite subtilité : si vous vous référez à la documentation de <a href="../doc/javapoet/README.html" class="external" target="_blank">JavaPoet</a>, vous devez générer comme valeur pour <code>@Erbfeind</code> (<code>AnnotationSpec.builder</code> est votre ami) un code de type <code>String</code> (i.e. <code>"$S"</code>)</p>
+</div>
+<div class="paragraph">
+<p>Constatez le problème ;)</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_3_2_don_t_overwrite_the_sources_luke">3.2. : Don&#8217;t overwrite the sources, Luke</h4>
+<div class="paragraph">
+<p>À ce stade, vous devriez obtenir une sortie similaire à la suivante :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>What's going on here?
+What's going on here?
+
+java.lang.RuntimeException: java.lang.RuntimeException: Attempt to recreate a file for type i.can.haz.generation.A
+	at com.sun.tools.javac.main.Main.compile(Main.java:553)
+	at com.sun.tools.javac.api.JavacTaskImpl.doCall(JavacTaskImpl.java:129)
+	at com.sun.tools.javac.api.JavacTaskImpl.call(JavacTaskImpl.java:138)
+	[...]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Avant de lire la suite, prenez le temps de réfléchir à la cause du problème.</p>
+</div>
+<div class="paragraph">
+<p>Comme l&#8217;indique la présence double du log "What&#8217;s going on here?", <code>ErbfeindGenerator</code> a visiblement été invoqué deux fois avant de crasher lamentablement (vous pouvez activer les logs de compilation pour avoir plus de détails).</p>
+</div>
+<div class="paragraph">
+<p>Le premier round de compilation est logique : <code>Etape3Test</code> inclut d&#8217;entrée une classe <code>A</code> annotée <code>Erbfeind</code>. À cette étape, le processor génère donc les classes <code>B</code> et <code>C</code>, maintenant annotées elles aussi <code>@Erbfeind</code>.</p>
+</div>
+<div class="paragraph">
+<p>Le second round est donc simplement initiée parce qu&#8217;il est nécessaire de traiter les classes <code>B</code> et <code>C</code> puisqu&#8217;elles sont annotées <code>Erbfeind</code>. C&#8217;est là que le bât blesse : <code>ErbfeindGenerator</code> va maintenant essayer de générer le fichier source de <code>A</code>. Problème de taille : ce fichier existe déjà et la spécification interdit formellement de modifier (écraser&#8230;&#8203;) des classes existantes.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Corrigez la méthode write d&#8217;ErbfeindGenerator.</p>
+</div>
+<div class="paragraph">
+<p>Indice : si une classe donnée existe, alors c&#8217;est que l&#8217;on peut récupérer son <code>TypeElement</code> associé par son nom qualifié (<code>javax.lang.model.util.Elements</code> a.k.a. <code>elementUtils</code> est votre ami).</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Vous pouvez maintenant compiler le projet <code>subject</code> et admirer les sources générées (même <code>Scala</code> compile!).</p>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-03-15 20:36:22 CET
+Last updated 2015-04-08 10:00:55 CEST
 </div>
 </div>
 </body>
