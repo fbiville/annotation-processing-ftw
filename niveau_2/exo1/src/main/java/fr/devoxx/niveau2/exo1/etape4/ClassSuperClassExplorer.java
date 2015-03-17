@@ -36,10 +36,19 @@ public class ClassSuperClassExplorer {
   }
 
   /**
+   * Transforme un {@link TypeMirror} en un {@link DeclaredType} si applicable, autrement retourne {@code null}.
+   * <p>
+   * L'usage de {@code instanceof}, bien que pouvant fonctionner, n'est pas la méthode préconisée par l'API mais l'usage
+   * d'un {@link javax.lang.model.type.TypeVisitor} et de
+   * {@link javax.lang.model.type.TypeMirror#accept(javax.lang.model.type.TypeVisitor, Object)}
+   * (astuce: {@link javax.lang.model.util.SimpleTypeVisitor6} fournit un adapteur qui réduira la taille de votre
+   * code).
+   * </p>
+   *
    * @param arrayListTypeMirror le {@link TypeMirror} de la déclaration de {@link java.util.ArrayList} comme super
    *                            classe de {@link fr.devoxx.niveau2.exo1.etape4.MyListClass}
    *
-   * @return
+   * @return le {@link TypeMirror} en paramètre sous forme de {@link DeclaredType} le cas échéant, sinon {@code null}
    */
   public DeclaredType asDeclaredType(@Nonnull TypeMirror arrayListTypeMirror) {
     throw new UnsupportedOperationException();
