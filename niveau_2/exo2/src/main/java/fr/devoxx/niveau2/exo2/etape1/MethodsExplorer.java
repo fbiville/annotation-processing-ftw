@@ -117,7 +117,7 @@ public class MethodsExplorer {
   }
 
   /**
-   * Extrait les paramètres de méthode portant l'annotation {@link javax.annotation.Nullable} définis par la classe
+   * Extrait les paramètres portant l'annotation {@link javax.annotation.Nullable} des méthodes définies par la classe
    * {@link fr.devoxx.niveau2.exo2.etape1.Homer} à partir du {@link TypeElement} qui la représente.
    * <p>
    * (indice: on peut obtenir le {@link TypeMirror} de tout {@link Element} via la méthode {@code asType()})
