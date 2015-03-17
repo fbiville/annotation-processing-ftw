@@ -47,7 +47,7 @@ abstract class DontLookAtThisClass_MethodsExplorerTest extends DontLookAtThisCla
   protected List<ExecutableElement> expectedExtractPublicFunctions(TypeElement typeElement) {
     return expectedExtractPublicMethodsAndConstructors(typeElement)
         .stream()
-        .filter(s -> s.getReturnType().getKind() == TypeKind.VOID)
+        .filter(s -> s.getReturnType().getKind() != TypeKind.VOID)
         .collect(toList());
   }
 
