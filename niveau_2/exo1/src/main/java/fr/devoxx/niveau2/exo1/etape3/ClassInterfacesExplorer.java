@@ -27,14 +27,14 @@ public class ClassInterfacesExplorer {
   /**
    * Extrait les interfaces implémentées par la classe à partir du {@link TypeElement} qui la représente.
    *
-   * @param implementsInterfacesClassTypeElement le {@link Element} de
+   * @param interfaces le {@link Element} de
    *                                             {@link fr.devoxx.niveau2.exo1.etape3.ImplementsInterfacesClass}
    *
    * @return une liste contenant les {@link TypeMirror} représentant les interfaces {@link java.io.Serializable} et
    * {@link java.lang.Comparable} implémentées par la classe
    * {@link fr.devoxx.niveau2.exo1.etape3.ImplementsInterfacesClass}
    */
-  public List<? extends TypeMirror> extractInterfaces(@Nonnull TypeElement implementsInterfacesClassTypeElement) {
+  public List<? extends TypeMirror> extractInterfaces(@Nonnull TypeElement interfaces) {
     throw new UnsupportedOperationException();
   }
 
@@ -48,13 +48,13 @@ public class ClassInterfacesExplorer {
    * (rappel: la tranformation de {@link Element} à {@link TypeElement} a été couverte lors de l'étape 1).
    * </p>
    *
-   * @param implementsInterfacesClassTypeElement le {@link TypeElement} de
+   * @param interfaces le {@link TypeElement} de
    *                                             {@link fr.devoxx.niveau2.exo1.etape3.ImplementsInterfacesClass}
    *
    * @return une liste contenant les {@link TypeElement} des interfaces {@link java.io.Serializable} et
    * {@link java.lang.Comparable}
    */
-  public List<TypeElement> extractInterfaceAsTypeElements(@Nonnull TypeElement implementsInterfacesClassTypeElement) {
+  public List<TypeElement> extractInterfaceAsTypeElements(@Nonnull TypeElement interfaces) {
     throw new UnsupportedOperationException();
   }
 
