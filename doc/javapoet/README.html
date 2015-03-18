@@ -1,0 +1,535 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+  </style>
+</head>
+<body>
+<h1 id="javapoet">JavaPoet</h1>
+<p><code>JavaPoet</code> is a Java API for generating <code>.java</code> source files.</p>
+<p>Source file generation can useful when doing things such as annotation processing or interacting with metadata files (e.g., database schemas, protocol formats). By generating code, you eliminate the need to write boilerplate while also keeping a single source of truth for the metadata.</p>
+<h3 id="example">Example</h3>
+<p>Here's a (boring) <code>HelloWorld</code> class:</p>
+<pre class="sourceCode java"><code class="sourceCode java"><span class="kw">package com.example.helloworld;</span>
+
+<span class="kw">public</span> <span class="dt">final</span> <span class="kw">class</span> HelloWorld {
+  <span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">main</span>(String[] args) {
+    System.<span class="fu">out</span>.<span class="fu">println</span>(<span class="st">&quot;Hello, JavaPoet!&quot;</span>);
+  }
+}</code></pre>
+<p>And this is the (exciting) code to generate it with JavaPoet:</p>
+<pre class="sourceCode java"><code class="sourceCode java">MethodSpec main = MethodSpec.<span class="fu">methodBuilder</span>(<span class="st">&quot;main&quot;</span>)
+    .<span class="fu">addModifiers</span>(Modifier.<span class="fu">PUBLIC</span>, Modifier.<span class="fu">STATIC</span>)
+    .<span class="fu">returns</span>(<span class="dt">void</span>.<span class="fu">class</span>)
+    .<span class="fu">addParameter</span>(String[].<span class="fu">class</span>, <span class="st">&quot;args&quot;</span>)
+    .<span class="fu">addStatement</span>(<span class="st">&quot;$T.out.println($S)&quot;</span>, System.<span class="fu">class</span>, <span class="st">&quot;Hello, JavaPoet!&quot;</span>)
+    .<span class="fu">build</span>();
+
+TypeSpec helloWorld = TypeSpec.<span class="fu">classBuilder</span>(<span class="st">&quot;HelloWorld&quot;</span>)
+    .<span class="fu">addModifiers</span>(Modifier.<span class="fu">PUBLIC</span>, Modifier.<span class="fu">FINAL</span>)
+    .<span class="fu">addMethod</span>(main)
+    .<span class="fu">build</span>();
+
+JavaFile javaFile = JavaFile.<span class="fu">builder</span>(<span class="st">&quot;com.example.helloworld&quot;</span>, helloWorld)
+    .<span class="fu">build</span>();
+
+javaFile.<span class="fu">emit</span>(System.<span class="fu">out</span>);</code></pre>
+<p>To declare the main method, we've created a <code>MethodSpec</code> &quot;main&quot; configured with modifiers, return type, parameters and code statements. We add the main method to a <code>HelloWorld</code> class, and then add that to a <code>HelloWorld.java</code> file.</p>
+<p>In this case we write the file to <code>System.out</code>, but we could also get it as a string (<code>JavaFile.toString()</code>) or write it to the file system (<code>JavaPoet.writeTo()</code>).</p>
+<h3 id="code-control-flow">Code &amp; Control Flow</h3>
+<p>Most of JavaPoet's API uses plain old immutable Java objects. There's also builders, method chaining and varargs to make the API friendly. JavaPoet offers models for classes &amp; interfaces (<code>TypeSpec</code>), fields (<code>FieldSpec</code>), methods &amp; constructors (<code>MethodSpec</code>), parameters (<code>ParameterSpec</code>) and annotations (<code>AnnotationSpec</code>).</p>
+<p>But the <em>body</em> of methods and constructors is not modeled. There's no expression class, no statement class or syntax tree nodes. Instead, JavaPoet uses strings for code blocks:</p>
+<pre class="sourceCode java"><code class="sourceCode java">MethodSpec main = MethodSpec.<span class="fu">methodBuilder</span>(<span class="st">&quot;main&quot;</span>)
+    .<span class="fu">addCode</span>(<span class="st">&quot;&quot;</span>
+        + <span class="st">&quot;int total = 0;</span><span class="ch">\n</span><span class="st">&quot;</span>
+        + <span class="st">&quot;for (int i = 0; i &lt; 10; i++) {</span><span class="ch">\n</span><span class="st">&quot;</span>
+        + <span class="st">&quot;  total += i;</span><span class="ch">\n</span><span class="st">&quot;</span>
+        + <span class="st">&quot;}</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    .<span class="fu">build</span>();</code></pre>
+<p>Which generates this:</p>
+<pre class="sourceCode java"><code class="sourceCode java"><span class="dt">void</span> <span class="fu">main</span>() {
+  <span class="dt">int</span> total = <span class="dv">0</span>;
+  <span class="kw">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; <span class="dv">10</span>; i++) {
+    total += i;
+  }
+}</code></pre>
+<p>The manual semicolons, line wrapping, and indentation are tedious and so JavaPoet offers APIs to make it easier. There's <code>addStatement()</code> which takes care of semicolons and newline, and <code>beginControlFlow()</code> + <code>endControlFlow()</code> which are used together for braces, newlines, and indentation:</p>
+<pre class="sourceCode java"><code class="sourceCode java">MethodSpec main = MethodSpec.<span class="fu">methodBuilder</span>(<span class="st">&quot;main&quot;</span>)
+    .<span class="fu">addStatement</span>(<span class="st">&quot;int total = 0&quot;</span>)
+    .<span class="fu">beginControlFlow</span>(<span class="st">&quot;for (int i = 0; i &lt; 10; i++)&quot;</span>)
+    .<span class="fu">addStatement</span>(<span class="st">&quot;total += i&quot;</span>)
+    .<span class="fu">endControlFlow</span>()
+    .<span class="fu">build</span>();</code></pre>
+<p>This example is lame because the generated code is constant! Suppose instead of just adding 0 to 10, we want to make the operation and range configurable. Here's a method that generates a method:</p>
+<pre class="sourceCode java"><code class="sourceCode java"><span class="kw">private</span> MethodSpec <span class="fu">computeRange</span>(String name, <span class="dt">int</span> from, <span class="dt">int</span> to, String op) {
+  <span class="kw">return</span> MethodSpec.<span class="fu">methodBuilder</span>(name)
+      .<span class="fu">returns</span>(<span class="dt">int</span>.<span class="fu">class</span>)
+      .<span class="fu">addStatement</span>(<span class="st">&quot;int result = 0&quot;</span>)
+      .<span class="fu">beginControlFlow</span>(<span class="st">&quot;for (int i = &quot;</span> + from + <span class="st">&quot;; i &lt; &quot;</span> + to + <span class="st">&quot;; i++)&quot;</span>)
+      .<span class="fu">addStatement</span>(<span class="st">&quot;result = result &quot;</span> + op + <span class="st">&quot; i&quot;</span>)
+      .<span class="fu">endControlFlow</span>()
+      .<span class="fu">addStatement</span>(<span class="st">&quot;return result&quot;</span>)
+      .<span class="fu">build</span>();
+}</code></pre>
+<p>And here's what we get when we call <code>computeRange(&quot;multiply10to20&quot;, 10, 20, &quot;*&quot;)</code>:</p>
+<pre class="sourceCode java"><code class="sourceCode java"><span class="dt">int</span> <span class="fu">multiply10to20</span>() {
+  <span class="dt">int</span> result = <span class="dv">0</span>;
+  <span class="kw">for</span> (<span class="dt">int</span> i = <span class="dv">10</span>; i &lt; <span class="dv">20</span>; i++) {
+    result = result * i;
+  }
+  <span class="kw">return</span> result;
+}</code></pre>
+<p>Methods generating methods! And since JavaPoet generates source instead of bytecode, you can read through it to make sure it's right.</p>
+<h3 id="l-for-literals">$L for Literals</h3>
+<p>The string-concatenation in calls to <code>beginControlFlow()</code> and <code>addStatement</code> is distracting. Too many operators. To address this, JavaPoet offers a syntax inspired-by but incompatible-with <a href="http://developer.android.com/reference/java/util/Formatter.html"><code>String.format()</code></a>. It accepts <strong><code>$L</code></strong> to emit a <strong>literal</strong> value in the output. This works just like <code>Formatter</code>'s <code>%s</code>:</p>
+<pre class="sourceCode java"><code class="sourceCode java"><span class="kw">private</span> MethodSpec <span class="fu">computeRange</span>(String name, <span class="dt">int</span> from, <span class="dt">int</span> to, String op) {
+  <span class="kw">return</span> MethodSpec.<span class="fu">methodBuilder</span>(name)
+      .<span class="fu">returns</span>(<span class="dt">int</span>.<span class="fu">class</span>)
+      .<span class="fu">addStatement</span>(<span class="st">&quot;int result = 0&quot;</span>)
+      .<span class="fu">beginControlFlow</span>(<span class="st">&quot;for (int i = $L; i &lt; $L; i++)&quot;</span>, from, to)
+      .<span class="fu">addStatement</span>(<span class="st">&quot;result = result $L i&quot;</span>, op)
+      .<span class="fu">endControlFlow</span>()
+      .<span class="fu">addStatement</span>(<span class="st">&quot;return result&quot;</span>)
+      .<span class="fu">build</span>();
+}</code></pre>
+<p>Literals are emitted directly to the output code with no escaping. Arguments for literals may be strings, primitives, and a few JavaPoet types described below.</p>
+<h3 id="s-for-strings">$S for Strings</h3>
+<p>When emitting code that includes string literals, we can use <strong><code>$S</code></strong> to emit a <strong>string</strong>, complete with wrapping quotation marks and escaping. Here's a program that emits 3 methods, each of which returns its own name:</p>
+<pre class="sourceCode java"><code class="sourceCode java"><span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">main</span>(String[] args) <span class="kw">throws</span> Exception {
+  TypeSpec helloWorld = TypeSpec.<span class="fu">classBuilder</span>(<span class="st">&quot;HelloWorld&quot;</span>)
+      .<span class="fu">addModifiers</span>(Modifier.<span class="fu">PUBLIC</span>, Modifier.<span class="fu">FINAL</span>)
+      .<span class="fu">addMethod</span>(<span class="fu">whatsMyName</span>(<span class="st">&quot;slimShady&quot;</span>))
+      .<span class="fu">addMethod</span>(<span class="fu">whatsMyName</span>(<span class="st">&quot;eminem&quot;</span>))
+      .<span class="fu">addMethod</span>(<span class="fu">whatsMyName</span>(<span class="st">&quot;marshallMathers&quot;</span>))
+      .<span class="fu">build</span>();
+      
+  JavaFile javaFile = JavaFile.<span class="fu">builder</span>(<span class="st">&quot;com.example.helloworld&quot;</span>, helloWorld)
+      .<span class="fu">build</span>();
+      
+  javaFile.<span class="fu">emit</span>(System.<span class="fu">out</span>);
+}
+
+<span class="kw">private</span> <span class="dt">static</span> MethodSpec <span class="fu">whatsMyName</span>(String name) {
+  <span class="kw">return</span> MethodSpec.<span class="fu">methodBuilder</span>(name)
+      .<span class="fu">returns</span>(String.<span class="fu">class</span>)
+      .<span class="fu">addStatement</span>(<span class="st">&quot;return $S&quot;</span>, name)
+      .<span class="fu">build</span>();
+}</code></pre>
+<p>In this case, using <code>$S</code> gives us quotation marks:</p>
+<pre class="sourceCode java"><code class="sourceCode java"><span class="kw">public</span> <span class="dt">final</span> <span class="kw">class</span> HelloWorld {
+  String <span class="fu">slimShady</span>() {
+    <span class="kw">return</span> <span class="st">&quot;slimShady&quot;</span>;
+  }
+
+  String <span class="fu">eminem</span>() {
+    <span class="kw">return</span> <span class="st">&quot;eminem&quot;</span>;
+  }
+
+  String <span class="fu">marshallMathers</span>() {
+    <span class="kw">return</span> <span class="st">&quot;marshallMathers&quot;</span>;
+  }
+}</code></pre>
+<h3 id="t-for-types">$T for Types</h3>
+<p>We Java programmers love our types: they make our code easier to understand. And JavaPoet is on board. It has rich built-in support for types, including automatic generation of <code>import</code> statements. Just use <strong><code>$T</code></strong> to reference <strong>types</strong>:</p>
+<pre class="sourceCode java"><code class="sourceCode java">MethodSpec today = MethodSpec.<span class="fu">methodBuilder</span>(<span class="st">&quot;today&quot;</span>)
+    .<span class="fu">returns</span>(Date.<span class="fu">class</span>)
+    .<span class="fu">addStatement</span>(<span class="st">&quot;return new $T()&quot;</span>, Date.<span class="fu">class</span>)
+    .<span class="fu">build</span>();
+    
+TypeSpec helloWorld = TypeSpec.<span class="fu">classBuilder</span>(<span class="st">&quot;HelloWorld&quot;</span>)
+    .<span class="fu">addModifiers</span>(Modifier.<span class="fu">PUBLIC</span>, Modifier.<span class="fu">FINAL</span>)
+    .<span class="fu">addMethod</span>(today)
+    .<span class="fu">build</span>();
+    
+JavaFile javaFile = JavaFile.<span class="fu">builder</span>(<span class="st">&quot;com.example.helloworld&quot;</span>, helloWorld)
+    .<span class="fu">build</span>();
+    
+javaFile.<span class="fu">emit</span>(System.<span class="fu">out</span>);</code></pre>
+<p>That generates the following <code>.java</code> file, complete with the necessary <code>import</code>:</p>
+<pre class="sourceCode java"><code class="sourceCode java"><span class="kw">package com.example.helloworld;</span>
+
+<span class="kw">import java.util.Date;</span>
+
+<span class="kw">public</span> <span class="dt">final</span> <span class="kw">class</span> HelloWorld {
+  Date <span class="fu">today</span>() {
+    <span class="kw">return</span> <span class="kw">new</span> Date();
+  }
+}</code></pre>
+<p>We passed <code>Date.class</code> to reference a class that just-so-happens to be available when we're generating code. This doesn't need to be the case. Here's a similar example, but this one references a class that doesn't exist (yet):</p>
+<pre class="sourceCode java"><code class="sourceCode java">ClassName hoverboard = ClassName.<span class="fu">get</span>(<span class="st">&quot;com.mattel&quot;</span>, <span class="st">&quot;Hoverboard&quot;</span>);
+
+MethodSpec today = MethodSpec.<span class="fu">methodBuilder</span>(<span class="st">&quot;tomorrow&quot;</span>)
+    .<span class="fu">returns</span>(hoverboard)
+    .<span class="fu">addStatement</span>(<span class="st">&quot;return new $T()&quot;</span>, hoverboard)
+    .<span class="fu">build</span>();</code></pre>
+<p>And that not-yet-existent class is imported as well:</p>
+<pre class="sourceCode java"><code class="sourceCode java"><span class="kw">package com.example.helloworld;</span>
+
+<span class="kw">import com.mattel.Hoverboard;</span>
+
+<span class="kw">public</span> <span class="dt">final</span> <span class="kw">class</span> HelloWorld {
+  Hoverboard <span class="fu">tomorrow</span>() {
+    <span class="kw">return</span> <span class="kw">new</span> <span class="fu">Hoverboard</span>();
+  }
+}</code></pre>
+<p>The <code>ClassName</code> type is very important, and you'll need it frequently when you're using JavaPoet. It can identify any <em>declared</em> class. Declared types are just the beginning of Java's rich type system: we also have arrays, parameterized types, wildcard types, and type variables. JavaPoet has classes for building each of these:</p>
+<pre class="sourceCode java"><code class="sourceCode java">ClassName hoverboard = ClassName.<span class="fu">get</span>(<span class="st">&quot;com.mattel&quot;</span>, <span class="st">&quot;Hoverboard&quot;</span>);
+ClassName list = ClassName.<span class="fu">get</span>(<span class="st">&quot;java.util&quot;</span>, <span class="st">&quot;List&quot;</span>);
+ClassName arrayList = ClassName.<span class="fu">get</span>(<span class="st">&quot;java.util&quot;</span>, <span class="st">&quot;ArrayList&quot;</span>);
+TypeName listOfHoverboards = ParameterizedTypeName.<span class="fu">get</span>(list, hoverboard);
+
+MethodSpec today = MethodSpec.<span class="fu">methodBuilder</span>(<span class="st">&quot;beyond&quot;</span>)
+    .<span class="fu">returns</span>(listOfHoverboards)
+    .<span class="fu">addStatement</span>(<span class="st">&quot;$T result = new $T&lt;&gt;()&quot;</span>, listOfHoverboards, arrayList)
+    .<span class="fu">addStatement</span>(<span class="st">&quot;result.add(new $T())&quot;</span>, hoverboard)
+    .<span class="fu">addStatement</span>(<span class="st">&quot;result.add(new $T())&quot;</span>, hoverboard)
+    .<span class="fu">addStatement</span>(<span class="st">&quot;result.add(new $T())&quot;</span>, hoverboard)
+    .<span class="fu">addStatement</span>(<span class="st">&quot;return result&quot;</span>)
+    .<span class="fu">build</span>();</code></pre>
+<p>JavaPoet will decompose each type and import its components where possible.</p>
+<pre class="sourceCode java"><code class="sourceCode java"><span class="kw">package com.example.helloworld;</span>
+
+<span class="kw">import com.mattel.Hoverboard;</span>
+<span class="kw">import java.util.ArrayList;</span>
+<span class="kw">import java.util.List;</span>
+
+<span class="kw">public</span> <span class="dt">final</span> <span class="kw">class</span> HelloWorld {
+  List&lt;Hoverboard&gt; <span class="fu">beyond</span>() {
+    List&lt;Hoverboard&gt; result = <span class="kw">new</span> ArrayList&lt;&gt;();
+    result.<span class="fu">add</span>(<span class="kw">new</span> <span class="fu">Hoverboard</span>());
+    result.<span class="fu">add</span>(<span class="kw">new</span> <span class="fu">Hoverboard</span>());
+    result.<span class="fu">add</span>(<span class="kw">new</span> <span class="fu">Hoverboard</span>());
+    <span class="kw">return</span> result;
+  }
+}</code></pre>
+<h3 id="n-for-names">$N for Names</h3>
+<p>Generated code is often self-referential. Use <strong><code>$N</code></strong> to refer to another generated declaration by its name. Here's a method that calls another:</p>
+<pre class="sourceCode java"><code class="sourceCode java"><span class="kw">public</span> String <span class="fu">byteToHex</span>(<span class="dt">int</span> b) {
+  <span class="dt">char</span>[] result = <span class="kw">new</span> <span class="dt">char</span>[<span class="dv">2</span>];
+  result[<span class="dv">0</span>] = <span class="fu">hexDigit</span>((b &gt;&gt;&gt; <span class="dv">4</span>) &amp; <span class="bn">0xf</span>);
+  result[<span class="dv">1</span>] = <span class="fu">hexDigit</span>(b &amp; <span class="bn">0xf</span>);
+  <span class="kw">return</span> <span class="kw">new</span> String(result);
+}
+
+<span class="kw">public</span> <span class="dt">char</span> <span class="fu">hexDigit</span>(<span class="dt">int</span> i) {
+  <span class="kw">return</span> (<span class="dt">char</span>) (i &lt; <span class="dv">10</span> ? i + &#39;<span class="dv">0</span>&#39; : i - <span class="dv">10</span> + &#39;a&#39;);
+}</code></pre>
+<p>When generating the code above, we pass the <code>hexDigit()</code> method as an argument to the <code>byteToHex()</code> method using <code>$N</code>:</p>
+<pre class="sourceCode java"><code class="sourceCode java">MethodSpec hexDigit = MethodSpec.<span class="fu">methodBuilder</span>(<span class="st">&quot;hexDigit&quot;</span>)
+    .<span class="fu">addParameter</span>(<span class="dt">int</span>.<span class="fu">class</span>, <span class="st">&quot;i&quot;</span>)
+    .<span class="fu">returns</span>(<span class="dt">char</span>.<span class="fu">class</span>)
+    .<span class="fu">addStatement</span>(<span class="st">&quot;return (char) (i &lt; 10 ? i + &#39;0&#39; : i - 10 + &#39;a&#39;)&quot;</span>)
+    .<span class="fu">build</span>();
+    
+MethodSpec byteToHex = MethodSpec.<span class="fu">methodBuilder</span>(<span class="st">&quot;byteToHex&quot;</span>)
+    .<span class="fu">addParameter</span>(<span class="dt">int</span>.<span class="fu">class</span>, <span class="st">&quot;b&quot;</span>)
+    .<span class="fu">returns</span>(String.<span class="fu">class</span>)
+    .<span class="fu">addStatement</span>(<span class="st">&quot;char[] result = new char[2]&quot;</span>)
+    .<span class="fu">addStatement</span>(<span class="st">&quot;result[0] = $N((b &gt;&gt;&gt; 4) &amp; 0xf)&quot;</span>, hexDigit)
+    .<span class="fu">addStatement</span>(<span class="st">&quot;result[1] = $N(b &amp; 0xf)&quot;</span>, hexDigit)
+    .<span class="fu">addStatement</span>(<span class="st">&quot;return new String(result)&quot;</span>)
+    .<span class="fu">build</span>();</code></pre>
+<h3 id="methods">Methods</h3>
+<p>All of the above methods have a code body. Use <code>Modifiers.ABSTRACT</code> to get a method without any body. This is only legal if the enclosing class is either abstract or an interface.</p>
+<pre class="sourceCode java"><code class="sourceCode java">MethodSpec flux = MethodSpec.<span class="fu">methodBuilder</span>(<span class="st">&quot;flux&quot;</span>)
+    .<span class="fu">addModifiers</span>(Modifier.<span class="fu">ABSTRACT</span>, Modifier.<span class="fu">PROTECTED</span>)
+    .<span class="fu">build</span>();
+    
+TypeSpec helloWorld = TypeSpec.<span class="fu">classBuilder</span>(<span class="st">&quot;HelloWorld&quot;</span>)
+    .<span class="fu">addModifiers</span>(Modifier.<span class="fu">PUBLIC</span>, Modifier.<span class="fu">ABSTRACT</span>)
+    .<span class="fu">addMethod</span>(flux)
+    .<span class="fu">build</span>();</code></pre>
+<p>Which generates this:</p>
+<pre class="sourceCode java"><code class="sourceCode java"><span class="kw">public</span> <span class="kw">abstract</span> <span class="kw">class</span> HelloWorld {
+  <span class="kw">protected</span> <span class="kw">abstract</span> <span class="dt">void</span> <span class="fu">flux</span>();
+}</code></pre>
+<p>The other modifiers work where permitted. Note that when specifying modifiers, JavaPoet uses <a href="http://docs.oracle.com/javase/8/docs/api/javax/lang/model/element/Modifier.html"><code>javax.lang.model.element.Modifier</code></a>, a class that is not available on Android. This limitation applies to code-generating-code only; the output code runs everywhere: JVMs, Android, and GWT.</p>
+<p>Methods also have parameters, exceptions, varargs, Javadoc, annotations, type variables, and a return type. All of these are configured with <code>MethodSpec.Builder</code>.</p>
+<h3 id="constructors">Constructors</h3>
+<p><code>MethodSpec</code> is a slight misnomer; it is also be used for constructors:</p>
+<pre class="sourceCode java"><code class="sourceCode java">MethodSpec flux = MethodSpec.<span class="fu">constructorBuilder</span>()
+    .<span class="fu">addModifiers</span>(Modifier.<span class="fu">PUBLIC</span>)
+    .<span class="fu">addParameter</span>(String.<span class="fu">class</span>, <span class="st">&quot;greeting&quot;</span>)
+    .<span class="fu">addStatement</span>(<span class="st">&quot;this.$N = $N&quot;</span>, <span class="st">&quot;greeting&quot;</span>, <span class="st">&quot;greeting&quot;</span>)
+    .<span class="fu">build</span>();
+    
+TypeSpec helloWorld = TypeSpec.<span class="fu">classBuilder</span>(<span class="st">&quot;HelloWorld&quot;</span>)
+    .<span class="fu">addModifiers</span>(Modifier.<span class="fu">PUBLIC</span>)
+    .<span class="fu">addField</span>(String.<span class="fu">class</span>, <span class="st">&quot;greeting&quot;</span>, Modifier.<span class="fu">PRIVATE</span>, Modifier.<span class="fu">FINAL</span>)
+    .<span class="fu">addMethod</span>(flux)
+    .<span class="fu">build</span>();</code></pre>
+<p>Which generates this:</p>
+<pre class="sourceCode java"><code class="sourceCode java"><span class="kw">public</span> <span class="kw">class</span> HelloWorld {
+  <span class="kw">private</span> <span class="dt">final</span> String greeting;
+
+  <span class="kw">public</span> <span class="fu">HelloWorld</span>(String greeting) {
+    <span class="kw">this</span>.<span class="fu">greeting</span> = greeting;
+  }
+}</code></pre>
+<p>For the most part, constructors work just like methods. When emitting code, JavaPoet will place constructors before methods in the output file.</p>
+<h3 id="parameters">Parameters</h3>
+<p>Declare parameters on methods and constructors with either <code>ParameterSpec.builder()</code> or <code>MethodSpec</code>'s convenient <code>addParameter()</code> API:</p>
+<pre class="sourceCode java"><code class="sourceCode java">ParameterSpec android = ParameterSpec.<span class="fu">builder</span>(String.<span class="fu">class</span>, <span class="st">&quot;android&quot;</span>)
+    .<span class="fu">addModifiers</span>(Modifier.<span class="fu">FINAL</span>)
+    .<span class="fu">build</span>();
+
+MethodSpec welcomeOverlords = MethodSpec.<span class="fu">methodBuilder</span>(<span class="st">&quot;welcomeOverlords&quot;</span>)
+    .<span class="fu">addParameter</span>(android)
+    .<span class="fu">addParameter</span>(String.<span class="fu">class</span>, <span class="st">&quot;robot&quot;</span>, Modifier.<span class="fu">FINAL</span>)
+    .<span class="fu">build</span>();</code></pre>
+<p>Though the code above to generate <code>android</code> and <code>robot</code> parameters is different, the output is the same:</p>
+<pre class="sourceCode java"><code class="sourceCode java"><span class="dt">void</span> <span class="fu">welcomeOverlords</span>(<span class="dt">final</span> String android, <span class="dt">final</span> String robot) {
+}</code></pre>
+<p>The extended <code>Builder</code> form is necessary when the parameter has annotations (such as <code>@Nullable</code>).</p>
+<h3 id="fields">Fields</h3>
+<p>Like parameters, fields can be created either with builders or by using convenient helper methods:</p>
+<pre class="sourceCode java"><code class="sourceCode java">FieldSpec android = FieldSpec.<span class="fu">builder</span>(String.<span class="fu">class</span>, <span class="st">&quot;android&quot;</span>)
+    .<span class="fu">addModifiers</span>(Modifier.<span class="fu">PRIVATE</span>, Modifier.<span class="fu">FINAL</span>)
+    .<span class="fu">build</span>();
+    
+TypeSpec helloWorld = TypeSpec.<span class="fu">classBuilder</span>(<span class="st">&quot;HelloWorld&quot;</span>)
+    .<span class="fu">addModifiers</span>(Modifier.<span class="fu">PUBLIC</span>)
+    .<span class="fu">addField</span>(android)
+    .<span class="fu">addField</span>(String.<span class="fu">class</span>, <span class="st">&quot;robot&quot;</span>, Modifier.<span class="fu">PRIVATE</span>, Modifier.<span class="fu">FINAL</span>)
+    .<span class="fu">build</span>();</code></pre>
+<p>Which generates:</p>
+<pre class="sourceCode java"><code class="sourceCode java"><span class="kw">public</span> <span class="kw">class</span> HelloWorld {
+  <span class="kw">private</span> <span class="dt">final</span> String android;
+
+  <span class="kw">private</span> <span class="dt">final</span> String robot;
+}</code></pre>
+<p>The extended <code>Builder</code> form is necessary when a field has Javadoc, annotations, or a field initializer. Field initializers use the same <a href="http://developer.android.com/reference/java/util/Formatter.html"><code>String.format()</code></a>-like syntax as the code blocks above:</p>
+<pre class="sourceCode java"><code class="sourceCode java">FieldSpec android = FieldSpec.<span class="fu">builder</span>(String.<span class="fu">class</span>, <span class="st">&quot;android&quot;</span>)
+    .<span class="fu">addModifiers</span>(Modifier.<span class="fu">PRIVATE</span>, Modifier.<span class="fu">FINAL</span>)
+    .<span class="fu">initializer</span>(<span class="st">&quot;$S + $L&quot;</span>, <span class="st">&quot;Lollipop v.&quot;</span>, <span class="fl">5.</span>0d)
+    .<span class="fu">build</span>();</code></pre>
+<p>Which generates:</p>
+<pre class="sourceCode java"><code class="sourceCode java"><span class="kw">private</span> <span class="dt">final</span> String android = <span class="st">&quot;Lollipop v.&quot;</span> + <span class="fl">5.0</span>;</code></pre>
+<h3 id="interfaces">Interfaces</h3>
+<p>JavaPoet has no trouble with interfaces. Note that interface methods must always be <code>PUBLIC ABSTRACT</code> and interface fields must always be <code>PUBLIC STATIC FINAL</code>. These modifiers are necessary when defining the interface:</p>
+<pre class="sourceCode java"><code class="sourceCode java">TypeSpec helloWorld = TypeSpec.<span class="fu">interfaceBuilder</span>(<span class="st">&quot;HelloWorld&quot;</span>)
+    .<span class="fu">addModifiers</span>(Modifier.<span class="fu">PUBLIC</span>)
+    .<span class="fu">addField</span>(FieldSpec.<span class="fu">builder</span>(String.<span class="fu">class</span>, <span class="st">&quot;ONLY_THING_THAT_IS_CONSTANT&quot;</span>)
+        .<span class="fu">addModifiers</span>(Modifier.<span class="fu">PUBLIC</span>, Modifier.<span class="fu">STATIC</span>, Modifier.<span class="fu">FINAL</span>)
+        .<span class="fu">initializer</span>(<span class="st">&quot;$S&quot;</span>, <span class="st">&quot;change&quot;</span>)
+        .<span class="fu">build</span>())
+    .<span class="fu">addMethod</span>(MethodSpec.<span class="fu">methodBuilder</span>(<span class="st">&quot;beep&quot;</span>)
+        .<span class="fu">addModifiers</span>(Modifier.<span class="fu">PUBLIC</span>, Modifier.<span class="fu">ABSTRACT</span>)
+        .<span class="fu">build</span>())
+    .<span class="fu">build</span>();</code></pre>
+<p>But these modifiers are omitted when the code is generated. These are the defaults so we don't need to include them for <code>javac</code>'s benefit!</p>
+<pre class="sourceCode java"><code class="sourceCode java"><span class="kw">public</span> <span class="kw">interface</span> HelloWorld {
+  String ONLY_THING_THAT_IS_CONSTANT = <span class="st">&quot;change&quot;</span>;
+
+  <span class="dt">void</span> <span class="fu">beep</span>();
+}</code></pre>
+<h3 id="enums">Enums</h3>
+<p>Use <code>enumBuilder</code> to create the enum type, and <code>addEnumConstant()</code> for each value:</p>
+<pre class="sourceCode java"><code class="sourceCode java">TypeSpec helloWorld = TypeSpec.<span class="fu">enumBuilder</span>(<span class="st">&quot;Roshambo&quot;</span>)
+    .<span class="fu">addModifiers</span>(Modifier.<span class="fu">PUBLIC</span>)
+    .<span class="fu">addEnumConstant</span>(<span class="st">&quot;ROCK&quot;</span>)
+    .<span class="fu">addEnumConstant</span>(<span class="st">&quot;SCISSORS&quot;</span>)
+    .<span class="fu">addEnumConstant</span>(<span class="st">&quot;PAPER&quot;</span>)
+    .<span class="fu">build</span>();</code></pre>
+<p>To generate this:</p>
+<pre class="sourceCode java"><code class="sourceCode java"><span class="kw">public</span> <span class="kw">enum</span> Roshambo {
+  ROCK,
+
+  SCISSORS,
+
+  PAPER
+}</code></pre>
+<p>Fancy enums are supported, where the enum values override methods or call a superclass constructor. Here's a comprehensive example:</p>
+<pre class="sourceCode java"><code class="sourceCode java">TypeSpec helloWorld = TypeSpec.<span class="fu">enumBuilder</span>(<span class="st">&quot;Roshambo&quot;</span>)
+    .<span class="fu">addModifiers</span>(Modifier.<span class="fu">PUBLIC</span>)
+    .<span class="fu">addEnumConstant</span>(<span class="st">&quot;ROCK&quot;</span>, TypeSpec.<span class="fu">anonymousClassBuilder</span>(<span class="st">&quot;$S&quot;</span>, <span class="st">&quot;fist&quot;</span>)
+        .<span class="fu">addMethod</span>(MethodSpec.<span class="fu">methodBuilder</span>(<span class="st">&quot;toString&quot;</span>)
+            .<span class="fu">addAnnotation</span>(Override.<span class="fu">class</span>)
+            .<span class="fu">addModifiers</span>(Modifier.<span class="fu">PUBLIC</span>)
+            .<span class="fu">addStatement</span>(<span class="st">&quot;return $S&quot;</span>, <span class="st">&quot;avalanche!&quot;</span>)
+            .<span class="fu">build</span>())
+        .<span class="fu">build</span>())
+    .<span class="fu">addEnumConstant</span>(<span class="st">&quot;SCISSORS&quot;</span>, TypeSpec.<span class="fu">anonymousClassBuilder</span>(<span class="st">&quot;$S&quot;</span>, <span class="st">&quot;peace&quot;</span>)
+        .<span class="fu">build</span>())
+    .<span class="fu">addEnumConstant</span>(<span class="st">&quot;PAPER&quot;</span>, TypeSpec.<span class="fu">anonymousClassBuilder</span>(<span class="st">&quot;$S&quot;</span>, <span class="st">&quot;flat&quot;</span>)
+        .<span class="fu">build</span>())
+    .<span class="fu">addField</span>(String.<span class="fu">class</span>, <span class="st">&quot;handsign&quot;</span>, Modifier.<span class="fu">PRIVATE</span>, Modifier.<span class="fu">FINAL</span>)
+    .<span class="fu">addMethod</span>(MethodSpec.<span class="fu">constructorBuilder</span>()
+        .<span class="fu">addParameter</span>(String.<span class="fu">class</span>, <span class="st">&quot;handsign&quot;</span>)
+        .<span class="fu">addStatement</span>(<span class="st">&quot;this.$N = $N&quot;</span>, <span class="st">&quot;handsign&quot;</span>, <span class="st">&quot;handsign&quot;</span>)
+        .<span class="fu">build</span>())
+    .<span class="fu">build</span>();</code></pre>
+<p>Which generates this:</p>
+<pre class="sourceCode java"><code class="sourceCode java"><span class="kw">public</span> <span class="kw">enum</span> Roshambo {
+  <span class="fu">ROCK</span>(<span class="st">&quot;fist&quot;</span>) {
+    <span class="fu">@Override</span>
+    <span class="kw">public</span> <span class="dt">void</span> <span class="fu">toString</span>() {
+      <span class="kw">return</span> <span class="st">&quot;avalanche!&quot;</span>;
+    }
+  },
+
+  <span class="fu">SCISSORS</span>(<span class="st">&quot;peace&quot;</span>),
+
+  <span class="fu">PAPER</span>(<span class="st">&quot;flat&quot;</span>);
+
+  <span class="kw">private</span> <span class="dt">final</span> String handsign;
+
+  <span class="fu">Roshambo</span>(String handsign) {
+    <span class="kw">this</span>.<span class="fu">handsign</span> = handsign;
+  }
+}</code></pre>
+<h3 id="anonymous-inner-classes">Anonymous Inner Classes</h3>
+<p>In the enum code, we used <code>Types.anonymousInnerClass()</code>. Anonymous inner classes can also be used in code blocks. They are values that can be referenced with <code>$L</code>:</p>
+<pre class="sourceCode java"><code class="sourceCode java">TypeSpec comparator = TypeSpec.<span class="fu">anonymousClassBuilder</span>(<span class="st">&quot;&quot;</span>)
+    .<span class="fu">addSuperinterface</span>(ParameterizedTypeName.<span class="fu">get</span>(Comparator.<span class="fu">class</span>, String.<span class="fu">class</span>))
+    .<span class="fu">addMethod</span>(MethodSpec.<span class="fu">methodBuilder</span>(<span class="st">&quot;compare&quot;</span>)
+        .<span class="fu">addAnnotation</span>(Override.<span class="fu">class</span>)
+        .<span class="fu">addModifiers</span>(Modifier.<span class="fu">PUBLIC</span>)
+        .<span class="fu">addParameter</span>(String.<span class="fu">class</span>, <span class="st">&quot;a&quot;</span>)
+        .<span class="fu">addParameter</span>(String.<span class="fu">class</span>, <span class="st">&quot;b&quot;</span>)
+        .<span class="fu">addStatement</span>(<span class="st">&quot;return $N.length() - $N.length()&quot;</span>, <span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>)
+        .<span class="fu">build</span>())
+    .<span class="fu">build</span>();
+
+TypeSpec helloWorld = TypeSpec.<span class="fu">classBuilder</span>(<span class="st">&quot;HelloWorld&quot;</span>)
+    .<span class="fu">addMethod</span>(MethodSpec.<span class="fu">methodBuilder</span>(<span class="st">&quot;sortByLength&quot;</span>)
+        .<span class="fu">addParameter</span>(ParameterizedTypeName.<span class="fu">get</span>(List.<span class="fu">class</span>, String.<span class="fu">class</span>), <span class="st">&quot;strings&quot;</span>)
+        .<span class="fu">addStatement</span>(<span class="st">&quot;$T.sort($N, $L)&quot;</span>, Collections.<span class="fu">class</span>, <span class="st">&quot;strings&quot;</span>, comparator)
+        .<span class="fu">build</span>())
+    .<span class="fu">build</span>();</code></pre>
+<p>This generates a method that contains a class that contains a method:</p>
+<pre class="sourceCode java"><code class="sourceCode java"><span class="dt">void</span> <span class="fu">sortByLength</span>(List&lt;String&gt; strings) {
+  Collections.<span class="fu">sort</span>(strings, <span class="kw">new</span> Comparator&lt;String&gt;() {
+    <span class="fu">@Override</span>
+    <span class="kw">public</span> <span class="dt">void</span> <span class="fu">compare</span>(String a, String b) {
+      <span class="kw">return</span> a.<span class="fu">length</span>() - b.<span class="fu">length</span>();
+    }
+  });
+}</code></pre>
+<p>One particularly tricky part of defining anonymous inner classes is the arguments to the superclass constructor. In the above code we're passing the empty string for no arguments: <code>TypeSpec.anonymousClassBuilder(&quot;&quot;)</code>. To pass different parameters use JavaPoet's code block syntax with commas to separate arguments.</p>
+<h3 id="annotations">Annotations</h3>
+<p>Simple annotations are easy:</p>
+<pre class="sourceCode java"><code class="sourceCode java">MethodSpec toString = MethodSpec.<span class="fu">methodBuilder</span>(<span class="st">&quot;toString&quot;</span>)
+    .<span class="fu">addAnnotation</span>(Override.<span class="fu">class</span>)
+    .<span class="fu">returns</span>(String.<span class="fu">class</span>)
+    .<span class="fu">addModifiers</span>(Modifier.<span class="fu">PUBLIC</span>)
+    .<span class="fu">addStatement</span>(<span class="st">&quot;return $S&quot;</span>, <span class="st">&quot;Hoverboard&quot;</span>)
+    .<span class="fu">build</span>();</code></pre>
+<p>Which generates this method with an <code>@Override</code> annotation:</p>
+<pre class="sourceCode java"><code class="sourceCode java">  <span class="fu">@Override</span>
+  <span class="kw">public</span> String <span class="fu">toString</span>() {
+    <span class="kw">return</span> <span class="st">&quot;Hoverboard&quot;</span>;
+  }</code></pre>
+<p>Use <code>AnnotationSpec.builder()</code> to set properties on annotations:</p>
+<pre class="sourceCode java"><code class="sourceCode java">MethodSpec logRecord = MethodSpec.<span class="fu">methodBuilder</span>(<span class="st">&quot;recordEvent&quot;</span>)
+    .<span class="fu">addModifiers</span>(Modifier.<span class="fu">PUBLIC</span>, Modifier.<span class="fu">ABSTRACT</span>)
+    .<span class="fu">addAnnotation</span>(AnnotationSpec.<span class="fu">builder</span>(Headers.<span class="fu">class</span>)
+        .<span class="fu">addMember</span>(<span class="st">&quot;accept&quot;</span>, <span class="st">&quot;$S&quot;</span>, <span class="st">&quot;application/json; charset=utf-8&quot;</span>)
+        .<span class="fu">addMember</span>(<span class="st">&quot;userAgent&quot;</span>, <span class="st">&quot;$S&quot;</span>, <span class="st">&quot;Square Cash&quot;</span>)
+        .<span class="fu">build</span>())
+    .<span class="fu">addParameter</span>(LogRecord.<span class="fu">class</span>, <span class="st">&quot;logRecord&quot;</span>)
+    .<span class="fu">returns</span>(LogReceipt.<span class="fu">class</span>)
+    .<span class="fu">build</span>();</code></pre>
+<p>Which generates this annotation with <code>accept</code> and <code>userAgent</code> properties:</p>
+<pre class="sourceCode java"><code class="sourceCode java"><span class="fu">@Headers</span>(
+    accept = <span class="st">&quot;application/json; charset=utf-8&quot;</span>,
+    userAgent = <span class="st">&quot;Square Cash&quot;</span>
+)
+LogReceipt <span class="fu">recordEvent</span>(LogRecord logRecord);</code></pre>
+<p>When you get fancy, annotation values can be annotations themselves. Use <code>$L</code> for embedded annotations:</p>
+<pre class="sourceCode java"><code class="sourceCode java">MethodSpec logRecord = MethodSpec.<span class="fu">methodBuilder</span>(<span class="st">&quot;recordEvent&quot;</span>)
+    .<span class="fu">addModifiers</span>(Modifier.<span class="fu">PUBLIC</span>, Modifier.<span class="fu">ABSTRACT</span>)
+    .<span class="fu">addAnnotation</span>(AnnotationSpec.<span class="fu">builder</span>(HeaderList.<span class="fu">class</span>)
+        .<span class="fu">addMember</span>(<span class="st">&quot;value&quot;</span>, <span class="st">&quot;$L&quot;</span>, AnnotationSpec.<span class="fu">builder</span>(Header.<span class="fu">class</span>)
+            .<span class="fu">addMember</span>(<span class="st">&quot;name&quot;</span>, <span class="st">&quot;$S&quot;</span>, <span class="st">&quot;Accept&quot;</span>)
+            .<span class="fu">addMember</span>(<span class="st">&quot;value&quot;</span>, <span class="st">&quot;$S&quot;</span>, <span class="st">&quot;application/json; charset=utf-8&quot;</span>)
+            .<span class="fu">build</span>())
+        .<span class="fu">addMember</span>(<span class="st">&quot;value&quot;</span>, <span class="st">&quot;$L&quot;</span>, AnnotationSpec.<span class="fu">builder</span>(Header.<span class="fu">class</span>)
+            .<span class="fu">addMember</span>(<span class="st">&quot;name&quot;</span>, <span class="st">&quot;$S&quot;</span>, <span class="st">&quot;User-Agent&quot;</span>)
+            .<span class="fu">addMember</span>(<span class="st">&quot;value&quot;</span>, <span class="st">&quot;$S&quot;</span>, <span class="st">&quot;Square Cash&quot;</span>)
+            .<span class="fu">build</span>())
+        .<span class="fu">build</span>())
+    .<span class="fu">addParameter</span>(LogRecord.<span class="fu">class</span>, <span class="st">&quot;logRecord&quot;</span>)
+    .<span class="fu">returns</span>(LogReceipt.<span class="fu">class</span>)
+    .<span class="fu">build</span>();</code></pre>
+<p>Which generates this:</p>
+<pre class="sourceCode java"><code class="sourceCode java"><span class="fu">@HeaderList</span>({
+    <span class="fu">@Header</span>(name = <span class="st">&quot;Accept&quot;</span>, value = <span class="st">&quot;application/json; charset=utf-8&quot;</span>),
+    <span class="fu">@Header</span>(name = <span class="st">&quot;User-Agent&quot;</span>, value = <span class="st">&quot;Square Cash&quot;</span>)
+})
+LogReceipt <span class="fu">recordEvent</span>(LogRecord logRecord);</code></pre>
+<p>Note that you can call <code>addMember()</code> multiple times with the same property name to populate a list of values for that property.</p>
+<h3 id="javadoc">Javadoc</h3>
+<p>Fields, methods and types can be documented with Javadoc:</p>
+<pre class="sourceCode java"><code class="sourceCode java">MethodSpec dismiss = MethodSpec.<span class="fu">methodBuilder</span>(<span class="st">&quot;dismiss&quot;</span>)
+    .<span class="fu">addJavadoc</span>(<span class="st">&quot;Hides {@code message} from the caller&#39;s history. Other</span><span class="ch">\n</span><span class="st">&quot;</span>
+        + <span class="st">&quot;participants in the conversation will continue to see the</span><span class="ch">\n</span><span class="st">&quot;</span>
+        + <span class="st">&quot;message in their own history unless they also delete it.</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    .<span class="fu">addJavadoc</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    .<span class="fu">addJavadoc</span>(<span class="st">&quot;&lt;p&gt;Use {@link #delete($T)} to delete the entire</span><span class="ch">\n</span><span class="st">&quot;</span>
+        + <span class="st">&quot;conversation for all participants.</span><span class="ch">\n</span><span class="st">&quot;</span>, Conversation.<span class="fu">class</span>)
+    .<span class="fu">addModifiers</span>(Modifier.<span class="fu">PUBLIC</span>, Modifier.<span class="fu">ABSTRACT</span>)
+    .<span class="fu">addParameter</span>(Message.<span class="fu">class</span>, <span class="st">&quot;message&quot;</span>)
+    .<span class="fu">build</span>();</code></pre>
+<p>Which generates this:</p>
+<pre class="sourceCode java"><code class="sourceCode java">  <span class="co">/**</span>
+<span class="co">   * Hides </span><span class="kw">{@code message}</span><span class="co"> from the caller&#39;s history. Other</span>
+<span class="co">   * participants in the conversation will continue to see the</span>
+<span class="co">   * message in their own history unless they also delete it.</span>
+<span class="co">   *</span>
+<span class="er">   * &lt;p&gt;Use {@link #delete(Conversation)} to delete the entire</span>
+<span class="co">   * conversation for all participants.</span>
+<span class="co">   */</span>
+  <span class="dt">void</span> <span class="fu">dismiss</span>(Message message);</code></pre>
+<p>Use <code>$T</code> when referencing types in Javadoc to get automatic imports.</p>
+<h2 id="download">Download</h2>
+<p>Download <a href="https://search.maven.org/remote_content?g=com.squareup&amp;a=javapoet&amp;v=LATEST">the latest .jar</a> or depend via Maven:</p>
+<pre class="sourceCode xml"><code class="sourceCode xml"><span class="kw">&lt;dependency&gt;</span>
+  <span class="kw">&lt;groupId&gt;</span>com.squareup<span class="kw">&lt;/groupId&gt;</span>
+  <span class="kw">&lt;artifactId&gt;</span>javapoet<span class="kw">&lt;/artifactId&gt;</span>
+  <span class="kw">&lt;version&gt;</span>1.0.0<span class="kw">&lt;/version&gt;</span>
+<span class="kw">&lt;/dependency&gt;</span></code></pre>
+<p>or Gradle:</p>
+<pre class="groovy"><code>compile &#39;com.squareup:javapoet:1.0.0&#39;</code></pre>
+<p>Snapshots of the development version are available in <a href="https://oss.sonatype.org/content/repositories/snapshots/">Sonatype's <code>snapshots</code> repository</a>.</p>
+<h2 id="license">License</h2>
+<pre><code>Copyright 2015 Square, Inc.
+
+Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</code></pre>
+<h1 id="javawriter">JavaWriter</h1>
+<p>JavaPoet is the successor to <a href="https://github.com/square/javapoet/tree/javawriter_2">JavaWriter</a>. New projects should prefer JavaPoet because it has a stronger code model: it understands types and can manage imports automatically. JavaPoet is also better suited to composition: rather than streaming the contents of a <code>.java</code> file top-to-bottom in a single pass, a file can be assembled as a tree of declarations.</p>
+<p>JavaWriter continues to be available in <a href="https://github.com/square/javapoet/tree/javawriter_2">GitHub</a> and <a href="http://search.maven.org/#artifactdetails%7Ccom.squareup%7Cjavawriter%7C2.5.1%7Cjar">Maven Central</a>.</p>
+</body>
+</html>
