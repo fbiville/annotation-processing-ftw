@@ -1,8 +1,12 @@
 package fr.devoxx.niveau2.exo1.etape3;
 
-import org.testng.annotations.Test;
+import java.util.List;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.testng.annotations.Test;
 
 /**
  * ClassInterfacesExplorerTest -
@@ -13,23 +17,32 @@ public class ClassInterfacesExplorerTest extends DontLookAtThisClass_ClassInterf
 
   @Test
   public void extractInterfaces() {
-    ClassInterfacesExplorerWrapper wrapper = createWrapperAndProcess();
+    ProcessorTask<List<? extends TypeMirror>> actual = processorTask(
+        (Elements elements, Types typeUtils, TypeElement typeElement) ->
+            new ClassInterfacesExplorer(elements, typeUtils).extractInterfaces(typeElement)
+    );
 
-    assertThat(wrapper.extractInterfaces()).isEqualTo(expectedExtractInterfaces(wrapper));
+    assertThat(actual).isEqualTo(processorTask(this::expectedExtractInterfaces));
   }
 
   @Test
   public void extractInterfaceAsTypeElements() {
-    ClassInterfacesExplorerWrapper wrapper = createWrapperAndProcess();
+    ProcessorTask<List<TypeElement>> actual = processorTask(
+        (Elements elements, Types typeUtils, TypeElement typeElement) ->
+            new ClassInterfacesExplorer(elements, typeUtils).extractInterfaceAsTypeElements(typeElement)
+    );
 
-    assertThat(wrapper.extractInterfaceAsTypeElements()).isEqualTo(expectedExtractInterfacesAsTypeElements(wrapper));
+    assertThat(actual).isEqualTo(processorTask(this::expectedExtractInterfacesAsTypeElements));
   }
 
   @Test
   public void extractSerializableInterface() {
-    ClassInterfacesExplorerWrapper wrapper = createWrapperAndProcess();
+    ProcessorTask<TypeMirror> actual = processorTask(
+        (Elements elements, Types typeUtils, TypeElement typeElement) ->
+            new ClassInterfacesExplorer(elements, typeUtils).extractSerializableInterface(typeElement.getInterfaces())
+    );
 
-    assertThat(wrapper.extractSerializableInterface()).isEqualTo(expectedExtractSerializableInterface(wrapper));
+    assertThat(actual).isEqualTo(processorTask(this::expectedExtractSerializableInterface));
   }
 
 }

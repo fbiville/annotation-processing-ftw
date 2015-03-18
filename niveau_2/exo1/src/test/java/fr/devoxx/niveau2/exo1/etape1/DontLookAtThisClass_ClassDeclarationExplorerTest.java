@@ -1,11 +1,11 @@
 package fr.devoxx.niveau2.exo1.etape1;
 
 import java.util.Set;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.Name;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.util.Elements;
 
 import fr.devoxx.niveau2.exo1.DontLookAtThisClass;
 
@@ -14,69 +14,30 @@ import fr.devoxx.niveau2.exo1.DontLookAtThisClass;
  *
  * @author Sébastien Lesaint
  */
-abstract class DontLookAtThisClass_ClassDeclarationExplorerTest
- extends DontLookAtThisClass<DontLookAtThisClass_ClassDeclarationExplorerTest.ClassDeclarationExplorerWrapper> {
+abstract class DontLookAtThisClass_ClassDeclarationExplorerTest extends DontLookAtThisClass {
 
-  protected ClassDeclarationExplorerWrapper createWrapperAndProcess() {
-    return processWithWrapper(new ClassDeclarationExplorerWrapper(), "BasicClass");
+  public DontLookAtThisClass_ClassDeclarationExplorerTest() {
+    super("BasicClass");
   }
 
-  protected Name expectedExtractClassName(ClassDeclarationExplorerWrapper wrapper) {
-    return wrapper.getTypeElement().getSimpleName();
+  protected Name expectedExtractClassName(TypeElement typeElement) {
+    return typeElement.getSimpleName();
   }
 
-  protected Name expectedExtractClassQualifiedName(ClassDeclarationExplorerWrapper wrapper) {
-    return wrapper.getTypeElement().getQualifiedName();
+  protected Name expectedExtractClassQualifiedName(TypeElement typeElement) {
+    return typeElement.getQualifiedName();
   }
 
-  protected Set<Modifier> expectedExtractModifiers(ClassDeclarationExplorerWrapper wrapper) {
-    return wrapper.getTypeElement().getModifiers();
+  protected Set<Modifier> expectedExtractModifiers(TypeElement typeElement) {
+    return typeElement.getModifiers();
   }
 
-  protected PackageElement expectedExtractPackage(ClassDeclarationExplorerWrapper wrapper) {
-    return wrapper.getElementUtils().getPackageOf(wrapper.getTypeElement());
+  protected PackageElement expectedExtractPackage(Elements elementUtils, TypeElement typeElement) {
+    return elementUtils.getPackageOf(typeElement);
   }
 
-  protected Name expectedExtractPackageName(ClassDeclarationExplorerWrapper wrapper) {
-    return expectedExtractPackage(wrapper).getQualifiedName();
+  protected Name expectedExtractPackageName(Elements elementUtils, TypeElement typeElement) {
+    return expectedExtractPackage(elementUtils, typeElement).getQualifiedName();
   }
 
-  protected static class ClassDeclarationExplorerWrapper extends DontLookAtThisClass.AbstractWrapperProcessor {
-
-    private ClassDeclarationExplorer classDeclarationExplorer;
-
-    @Override
-    public void init(ProcessingEnvironment processingEnv) {
-      super.init(processingEnv);
-      this.classDeclarationExplorer = new ClassDeclarationExplorer(getElementUtils(), getTypeUtils());
-    }
-
-    ///////////////////////////////////////////
-    // ClassDeclarationExplorer delegated methods
-    ///////////////////////////////////////////
-
-    public TypeElement asTypeElement() {
-      return classDeclarationExplorer.asTypeElement(getTypeElement());
-    }
-
-    public Name extractClassName() {
-      return classDeclarationExplorer.extractClassName(getTypeElement());
-    }
-
-    public Name extractClassQualifiedName() {
-      return classDeclarationExplorer.extractClassQualifiedName(getTypeElement());
-    }
-
-    public Set<Modifier> extractModifiers() {
-      return classDeclarationExplorer.extractModifiers(getTypeElement());
-    }
-
-    public PackageElement extractPackage() {
-      return classDeclarationExplorer.extractPackage(getTypeElement());
-    }
-
-    public Name extractPackageName() {
-      return classDeclarationExplorer.extractPackageName(getTypeElement());
-    }
-  }
 }

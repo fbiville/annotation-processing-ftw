@@ -1,10 +1,15 @@
 package fr.devoxx.niveau2.exo1.etape1;
 
+import java.util.Set;
+import javax.lang.model.element.Modifier;
+import javax.lang.model.element.Name;
+import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 
+import org.assertj.core.api.Assertions;
 import org.testng.annotations.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * ClassDeclarationExplorerTest -
@@ -14,43 +19,63 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ClassDeclarationExplorerTest extends DontLookAtThisClass_ClassDeclarationExplorerTest {
   @Test
   public void asTypeElement() {
-    ClassDeclarationExplorerWrapper wrapper = createWrapperAndProcess();
+    ProcessorTask<TypeElement> actual = processorTask(
+        (Elements elements, Types typeUtils, TypeElement typeElement) ->
+            new ClassDeclarationExplorer(elements, typeUtils).asTypeElement(typeElement)
+    );
 
-    assertThat(wrapper.asTypeElement()).isInstanceOf(TypeElement.class);
+    processWithWrapper(actual);
+
+    Assertions.assertThat(actual.getTaskResult()).isInstanceOf(TypeElement.class);
   }
   @Test
   public void extractClassName() {
-    ClassDeclarationExplorerWrapper wrapper = createWrapperAndProcess();
+    ProcessorTask<Name> actual = processorTask(
+        (Elements elements, Types typeUtils, TypeElement typeElement) ->
+            new ClassDeclarationExplorer(elements, typeUtils).extractClassName(typeElement)
+    );
 
-    assertThat(wrapper.extractClassName()).isEqualTo(expectedExtractClassName(wrapper));
+    assertThat(actual).isEqualTo(processorTask(this::expectedExtractClassName));
   }
 
   @Test
   public void extractClassQualifiedName() {
-    ClassDeclarationExplorerWrapper wrapper = createWrapperAndProcess();
+    ProcessorTask<Name> actual = processorTask(
+        (Elements elements, Types typeUtils, TypeElement typeElement) ->
+            new ClassDeclarationExplorer(elements, typeUtils).extractClassQualifiedName(typeElement)
+    );
 
-    assertThat(wrapper.extractClassQualifiedName()).isEqualTo(expectedExtractClassQualifiedName(wrapper));
+    assertThat(actual).isEqualTo(processorTask(this::expectedExtractClassQualifiedName));
   }
 
   @Test
   public void extractModifiers() {
-    ClassDeclarationExplorerWrapper wrapper = createWrapperAndProcess();
+    ProcessorTask<Set<Modifier>> actual = processorTask(
+        (Elements elements, Types typeUtils, TypeElement typeElement) ->
+            new ClassDeclarationExplorer(elements, typeUtils).extractModifiers(typeElement)
+    );
 
-    assertThat(wrapper.extractModifiers()).isEqualTo(expectedExtractModifiers(wrapper));
+    assertThat(actual).isEqualTo(processorTask(this::expectedExtractModifiers));
   }
 
   @Test
   public void extractPackage() {
-    ClassDeclarationExplorerWrapper wrapper = createWrapperAndProcess();
+    ProcessorTask<PackageElement> actual = processorTask(
+        (Elements elements, Types typeUtils, TypeElement typeElement) ->
+            new ClassDeclarationExplorer(elements, typeUtils).extractPackage(typeElement)
+    );
 
-    assertThat(wrapper.extractPackage()).isEqualTo(expectedExtractPackage(wrapper));
+    assertThat(actual).isEqualTo(processorTask(this::expectedExtractPackage));
   }
 
   @Test
   public void extractPackageName() {
-    ClassDeclarationExplorerWrapper wrapper = createWrapperAndProcess();
+    ProcessorTask<Name> actual = processorTask(
+        (Elements elements, Types typeUtils, TypeElement typeElement) ->
+            new ClassDeclarationExplorer(elements, typeUtils).extractPackageName(typeElement)
+    );
 
-    assertThat(wrapper.extractPackageName()).isEqualTo(expectedExtractPackageName(wrapper));
+    assertThat(actual).isEqualTo(processorTask(this::expectedExtractPackageName));
   }
 
 }

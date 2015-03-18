@@ -1,8 +1,12 @@
 package fr.devoxx.niveau2.exo1.etape4;
 
-import org.testng.annotations.Test;
+import javax.lang.model.element.Name;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.testng.annotations.Test;
 
 /**
  * ClassSuperClassExplorerTest -
@@ -13,33 +17,42 @@ public class ClassSuperClassExplorerTest extends DontLookAtThisClass_ClassSuperC
 
   @Test
   public void extractSuperClass() {
-    ClassSuperClassExplorerWrapper wrapper = createWrapperAndProcess();
+    ProcessorTask<TypeMirror> actual = processorTask(
+        (Elements elements, Types typeUtils, TypeElement typeElement) ->
+            new ClassSuperClassExplorer(elements, typeUtils).extractSuperClass(typeElement)
+    );
 
-    assertThat(wrapper.extractSuperClass()).isEqualTo(expectedExtractSuperClass(wrapper));
+    assertThat(actual).isEqualTo(processorTask(this::expectedExtractSuperClass));
   }
 
   @Test
   public void asDeclaredType() {
-    ClassSuperClassExplorerWrapper wrapper = createWrapperAndProcess();
+    ProcessorTask<TypeMirror> actual = processorTask(
+        (Elements elements, Types typeUtils, TypeElement typeElement) ->
+            new ClassSuperClassExplorer(elements, typeUtils).asDeclaredType(typeElement.getSuperclass())
+    );
 
-    assertThat(wrapper.asDeclaredType()).isEqualTo(expectedAsDeclaredType(wrapper));
+    assertThat(actual).isEqualTo(processorTask(this::expectedAsDeclaredType));
   }
 
   @Test
   public void extractSuperClassTypeArgument() {
-    ClassSuperClassExplorerWrapper wrapper = createWrapperAndProcess();
+    ProcessorTask<TypeMirror> actual = processorTask(
+        (Elements elements, Types typeUtils, TypeElement typeElement) ->
+            new ClassSuperClassExplorer(elements, typeUtils).extractSuperClassTypeArgument(typeElement)
+    );
 
-    assertThat(wrapper.extractSuperClassTypeArgument()).isEqualTo(expectedExtractSuperClassTypeArgument(wrapper));
+    assertThat(actual).isEqualTo(processorTask(this::expectedExtractSuperClassTypeArgument));
   }
 
   @Test
   public void extractSuperClassTypeParameterName() {
-    ClassSuperClassExplorerWrapper wrapper = createWrapperAndProcess();
+    ProcessorTask<Name> actual = processorTask(
+        (Elements elements, Types typeUtils, TypeElement typeElement) ->
+            new ClassSuperClassExplorer(elements, typeUtils).extractSuperClassTypeParameterName(typeElement)
+    );
 
-    assertThat(wrapper.extractSuperClassTypeParameterName())
-        .isEqualTo(
-            expectedExtractSuperClassTypeParameterName(wrapper)
-        );
+    assertThat(actual).isEqualTo(processorTask(this::expectedExtractSuperClassTypeParameterName));
   }
 
 }

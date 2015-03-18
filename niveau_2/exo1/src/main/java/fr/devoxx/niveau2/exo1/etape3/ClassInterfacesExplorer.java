@@ -47,8 +47,7 @@ public class ClassInterfacesExplorer {
    * (rappel: la tranformation de {@link Element} à {@link TypeElement} a été couverte lors de l'étape 1).
    * </p>
    *
-   * @param typeElement le {@link TypeElement} de
-   *                                             {@link fr.devoxx.niveau2.exo1.etape3.ImplementsInterfacesClass}
+   * @param typeElement le {@link TypeElement} de {@link fr.devoxx.niveau2.exo1.etape3.ImplementsInterfacesClass}
    *
    * @return une liste contenant les {@link TypeElement} des interfaces {@link java.io.Serializable} et
    * {@link java.lang.Comparable}
@@ -61,9 +60,17 @@ public class ClassInterfacesExplorer {
    * Extrait le {@link TypeMirror} qui représente l'interface {@link java.io.Serializable} à partir du
    * {@link TypeElement} représentant la classe.
    * <p>
-   * Pour identifier le bon {@link TypeMirror}, il convient de filtrer sur le nom qualifié de la classe
-   * (ici "java.io.Serializable"). Cette information est portée par le {@link TypeElement} "référencé" par le
-   * {@link TypeMirror}. Les transformations vues lors des exercices prédécents vous seront donc utiles.
+   * Pour identifier le bon {@link TypeMirror}, il convient de tester si son {@link Element} est celui de
+   * {@link java.io.Serializable}.
+   * </p>
+   * <p>
+   * (remarque: comme indiqué dans la Javadoc de {@link javax.lang.model.element.Element}, deux instances doivent
+   * être comparée par leur méthode {@link java.lang.Object#equals(Object)}).
+   * </p>
+   * <p>
+   * (astuce: une instance de {@link javax.lang.model.element.Element} représentant n'importe qu'elle classe/interface
+   * disponible dans le class loader du Processor peut être récupérée grâce à la méthode
+   * {@link javax.lang.model.util.Elements#getTypeElement(CharSequence)})
    * </p>
    *
    * @param typeMirrors la liste des {@link TypeMirror} des interfaces implémentées par

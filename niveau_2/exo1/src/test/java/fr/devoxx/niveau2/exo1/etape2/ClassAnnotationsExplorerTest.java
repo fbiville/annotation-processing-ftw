@@ -1,8 +1,12 @@
 package fr.devoxx.niveau2.exo1.etape2;
 
-import org.testng.annotations.Test;
+import java.util.List;
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.testng.annotations.Test;
 
 /**
  * ClassAnnotationsExplorerTest -
@@ -13,30 +17,42 @@ public class ClassAnnotationsExplorerTest extends DontLookAtThisClass_ClassAnnot
 
   @Test
   public void extractAnnotations() {
-    ClassAnnotationsExplorerWrapper wrapper = createWrapperAndProcess();
+    ProcessorTask<List<? extends AnnotationMirror>> actual = processorTask(
+        (Elements elements, Types typeUtils, TypeElement typeElement) ->
+            new ClassAnnotationsExplorer(elements, typeUtils).extractAnnotations(typeElement)
+    );
 
-    assertThat(wrapper.extractAnnotations()).isEqualTo(expectedExtractAnnotations(wrapper));
+    assertThat(actual).isEqualTo(processorTask(this::expectedExtractAnnotations));
   }
 
   @Test
   public void extractMetaAnnotation() {
-    ClassAnnotationsExplorerWrapper wrapper = createWrapperAndProcess();
+    ProcessorTask<Meta> actual = processorTask(
+        (Elements elements, Types typeUtils, TypeElement typeElement) ->
+            new ClassAnnotationsExplorer(elements, typeUtils).extractMetaAnnotation(typeElement)
+    );
 
-    assertThat(wrapper.extractMetaAnnotation()).isEqualTo(expectedExtractMetaAnnotation(wrapper));
+    assertThat(actual).isEqualTo(processorTask(this::expectedExtractMetaAnnotation));
   }
 
   @Test
   public void extractMetaAnnotationValue() throws Exception {
-    ClassAnnotationsExplorerWrapper wrapper = createWrapperAndProcess();
+    ProcessorTask<String> actual = processorTask(
+        (Elements elements, Types typeUtils, TypeElement typeElement) ->
+            new ClassAnnotationsExplorer(elements, typeUtils).extractMetaAnnotationValue(typeElement)
+    );
 
-    assertThat(wrapper.extractMetaAnnotationValue()).isEqualTo(expectedExtractMetaAnnotationValue(wrapper));
+    assertThat(actual).isEqualTo(processorTask(this::expectedExtractMetaAnnotationValue));
   }
 
   @Test
   public void extractMetaAnnotationId() throws Exception {
-    ClassAnnotationsExplorerWrapper wrapper = createWrapperAndProcess();
+    ProcessorTask<Integer> actual = processorTask(
+        (Elements elements, Types typeUtils, TypeElement typeElement) ->
+            new ClassAnnotationsExplorer(elements, typeUtils).extractMetaAnnotationId(typeElement)
+    );
 
-    assertThat(wrapper.extractMetaAnnotationId()).isEqualTo(expectedExtractMetaAnnotationId(wrapper));
+    assertThat(actual).isEqualTo(processorTask(this::expectedExtractMetaAnnotationId));
   }
 
 }
