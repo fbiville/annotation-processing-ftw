@@ -9,5 +9,5 @@ import fr.devoxx.niveau2.exo1.Flag;
  */
 @Flag
 @Meta("La robe est blanc et or, moi je te dis !")
-public final class AnnotatedClass {
+public final class AnnotatedClass extends AnnotatedSuperClass {
 }
