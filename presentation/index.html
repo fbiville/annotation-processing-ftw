@@ -284,9 +284,49 @@
 
 						<p>Définit 2 APIs</p>
 						<ol>
-							<li>API modèle du language Java</li>
-							<li>API pour écrire un processeur d'annotation</li>
+							<li>
+								API modèle du language Java
+								<ul>
+									<li>javax.lang.model.element.Element</li>
+									<li>javax.lang.model.type.TypeMirror</li>
+								</ul>
+							</li>
+							<li>
+								API pour écrire un processeur d'annotation
+								<ul>
+									<li>Processor</li>
+									<li>ProcessingEnvironment, RoundEnvironment</li>
+									<li>Filer, Messager</li>
+								</ul>
+							</li>
 						</ol>
+
+						<aside class="notes">
+							<ul>
+								<li>
+									javax.lang.model.element : les éléments du langage Java
+									<ul>
+										<li>package</li>
+										<li>interface, classe, annotation</li>
+										<li>méthode, propriété</li>
+										<li>paramètre de méthode, d'exception</li>
+										<li>variable</li>
+										<li>paramètre générique</li>
+									</ul>
+								</li>
+								<li>
+									javax.lang.model.type : les types du langage Java
+									<ul>
+										<li>types primitifs</li>
+										<li>classes, interface, annotation</li>
+										<li>tableaux</li>
+										<li>variable générique</li>
+										<li>null, *</li>
+										<li>méthode, variable, </li>
+									</ul>
+								</li>
+							</ul>
+						</aside>
 					</section>
 				</section>
 
