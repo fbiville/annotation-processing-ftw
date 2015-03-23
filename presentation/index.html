@@ -224,10 +224,69 @@
 				<section>
 					<section>
 						<h2>Le traitement d'annotation, c'est quoi ?</h2>
+
+						<p>&nbsp;</p>
+						<p>La possibilité d'écrire des plugins pour le compilateur Java pour en étendre les capacités : avertissements ou erreurs de compilation, génération de code source, de classe ou tout autre ressource</p>
 					</section>
 
 					<section>
-						<h2></h2>
+						<h2>Un peu d'histoire</h2>
+
+						<ul>
+							<li>Java 5, outil externe : APT</li>
+							<li>Java 6, intégré à Javac : JSR-269</li>
+							<li>Java 7 : APT deprecated</li>
+						</ul>
+
+						<p class="fragment">Aahh ! mais en fait c'est vieux !</p>
+
+						<aside class="notes">
+							<ul>
+								<li>annotations introduites avec Java 5 (30 septembre 2004 !)</li>
+								<li>déjà un outil pour en coder le traitement, mais à lancer à la main ou intégré au build</li>
+								<li>dès Java 6 (11 décembre 2006), intégré à Javac</li>
+								<li>API renommées, complétées un peu</li>
+							</ul>
+					    </aside>
+					</section>
+
+					<section>
+						<h2>Mais qui s'en sert ?</h2>
+
+						<ul>
+							<li>AutoValue, Immutables, FreeBuilder, ...</li>
+							<li>AutoService</li>
+							<li>Butter Knife</li>
+							<li>Byte Buddy</li>
+							<li>Dagger 2</li>
+							<li>jax-rs-linker</li>
+							<li>JMH</li>
+							<li>Selma, MapStruct, DAMapping, ...</li>
+							<li>...</li>
+						</ul>
+
+						<aside class="notes">
+							<ul>
+								<li>AutoValue, Immutables, FreeBuilder, ... : value/immutable classes</li>
+								<li>AutoService : inception ! </li>
+								<li>Butter Knife : View "injection" library for Android</li>
+								<li>Byte Buddy : runtime code generation for the Java platform</li>
+								<li>Dagger 2 : Dependency injection</li>
+								<li>jax-rs-linker</li>
+								<li>JMH : reference benchmarking framework for Java</li>
+								<li>Selma, MapStruct, DAMapping, ... : mapping d'objet</li>
+							</ul>
+						</aside>
+					</section>
+
+					<section>
+						<h2>JSR 269</h2>
+
+						<p>Définit 2 APIs</p>
+						<ol>
+							<li>API modèle du language Java</li>
+							<li>API pour écrire un processeur d'annotation</li>
+						</ol>
 					</section>
 				</section>
 
