@@ -1,0 +1,634 @@
+<!doctype html>
+<html lang="fr">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Annotation Processing: @Nailed("it")</title>
+
+		<meta name="description" content="Présentation du Hands-on Devoxx France 2015 Annotation Processing: @Nailed(&quot;it&quot;)">
+		<meta name="author" content="Florent Biville">
+		<meta name="author" content="Sébastien Lesaint">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/night.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h2>
+						Annotation Processing<br/>
+						@Nailed("it")
+					</h2>
+					<p>&nbsp;</p>
+					<p>&nbsp;</p>
+					<p>
+						<small>
+							Hands-on Devoxx France - mercredi 8 avril 2015<br/>
+							créé et animé par <a href="http://twitter.com/fbiville">Florent Biville</a> et <a href="http://twitter.com/LesaintSeb">Sébastien Lesaint</a>
+						</small>
+					</p>
+				</section>
+
+				<section>
+					<section>
+						<h2>Mais qui sont-ils ?</h2>
+						<h4>
+							Florent Biville<br/>
+							<small>
+								<a href="http://twitter.com/fbiville">@fbiville</a><br/>
+								ingénieur chez Vidal<br/>
+								a créé jax-rs-linker
+							</small>
+						</h4>
+						<h4>
+							Sébastien Lesaint<br/>
+							<small>
+								<a href="http://twitter.com/LesaintSeb">@LesaintSeb</a><br/>
+								ingénieur chez SonarSource<br/>
+								a créé le DAMapping framework
+							</small>
+						</h4>
+					</section>
+					<section>
+						<h2>Mais pourquoi font-ils cela ?</h2>
+						<ul>
+							<li class="fragment">
+								parce que l'annotation processing (AP)
+								<ul>
+									<li>c'est pratique</li>
+									<li>c'est puissant</li>
+									<li>c'est clean</li>
+								</ul>
+							</li>
+							<li class="fragment">mais...
+								<ul>
+									<li>ce n'est pas trivial</li>
+									<li>peu ou d'obscures ressources</li>
+									<li>une bonne marche d'apprentissage</li>
+								</ul>
+							</li>
+							<li class="fragment">et qu'on veut vous éviter ce qu'on a vécu :)</li>
+						</ul>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Que faites-vous là ?</h2>
+
+						<aside class="notes">
+							sondage rapide sur ce que les gens ont compris de ce qu'ils vont faire pendant ce hands-on
+					    </aside>
+					</section>
+
+					<section>
+						<h2>Vous êtes là pour coder ...</h2>
+
+						<aside class="notes">
+							réexpliquer rapidement le concept de hands-on
+							<ol>
+								<li>un ordi par personne ou mettez vous en binômes</li>
+								<li>récupérer les sources</li>
+								<li>suivez les instructions dans les README pour résoudre une série d'exercices, en codant !</li>
+							</ol>
+					    </aside>
+					</section>
+
+					<section>
+						<h2>... afin de comprendre ...</h2>
+
+						<ul>
+							<li>à quoi ça sert</li>
+							<li>comment ça marche</li>
+							<li>ce que ça peut et ne peut pas faire</li>
+						</ul>
+
+						<aside class="notes">
+							<li>
+								comprendre ce que peut faire un processeur
+								<ul>
+									<li>afficher des warnings, stoper la compilation</li>
+									<li>générer des sources, des classes, n'importe quel fichier</li>
+								</ul>
+							</li>
+							<li>
+								apprendre à coder un processeur
+								<ul>
+									<li></li>
+									<li>tips &amp; tricks</li>
+								</ul>
+							</li>
+					    </aside>
+					</section>
+
+					<section>
+						<h2>... et apprendre !</h2>
+
+						<ul>
+							<li>à coder un processeur</li>
+							<li>quelques bonnes pratiques</li>
+							<li>éviter (pas mal) les pièges</li>
+						</ul>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Le hands-on</h2>
+					</section>
+
+					<section>
+						<h2>Prérequis</h2>
+						<ul>
+							<li>un terminal</li>
+							<li>Java 8</li>
+							<li>Maven 3.1.1, 3.2.5 ou 3.3.1</li>
+							<li>l'IDE de votre choix</li>
+						</ul>
+
+						<aside class="notes">
+							informer que :
+							<ul>
+								<li>instructions d'installation dans le README principal</li>
+								<li>binaires diponibles dans les sources</li>
+							</ul>
+					    </aside>
+					</section>
+
+					<section>
+						<h2>Les sources</h2>
+						<ul>
+							<li>Fork it !<br/>
+								<pre>git clone https://github.com/fbiville/annotation-processing-ftw.git</pre></li>
+							<li>ou copie d'une des clés USB qui circulent</li>
+						</ul>
+					</section>
+
+					<section>
+						<h2>Structure des sources</h2>
+
+						<pre>
+├── presentation
+│   └── index.html  <------------------ code source de cette présentation
+├── README.html  <--------------------- README principal du hands-on
+├── bin  <----------------------------- binaires pour installer Java et Maven
+├── doc  <----------------------------- documentation hors ligne et liens
+│   ├── README.html  <----------------- index de la documentation hors-ligne
+│   └── [...]
+├── niveau_1
+│   ├── README.html  <----------------- instructions pour résoudre les exercices du niveau 1
+│   ├── exo1
+│   ├── exo2
+│   ├── exo3
+│   └── exo4
+├── niveau_2
+│   ├── README.html  <----------------- instructions pour résoudre les exercices du niveau 2
+│   ├── exo1
+│   └── exo2
+└── niveau_3
+    ├── README.html  <----------------- instructions pour résoudre les exercices du niveau 3
+    ├── exo1
+    ├── exo2
+    └── exo3
+						</pre>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Le traitement d'annotation, c'est quoi ?</h2>
+
+						<p>&nbsp;</p>
+						<p>La possibilité d'écrire des plugins pour le compilateur Java pour en étendre les capacités : avertissements ou erreurs de compilation, génération de code source, de classe ou tout autre ressource</p>
+					</section>
+
+					<section>
+						<h2>Un peu d'histoire</h2>
+
+						<ul>
+							<li>Java 5, outil externe : APT</li>
+							<li>Java 6, intégré à Javac : JSR-269</li>
+							<li>Java 7 : APT deprecated</li>
+						</ul>
+
+						<p class="fragment">Aahh ! mais en fait c'est vieux !</p>
+
+						<aside class="notes">
+							<ul>
+								<li>annotations introduites avec Java 5 (30 septembre 2004 !)</li>
+								<li>déjà un outil pour en coder le traitement, mais à lancer à la main ou intégré au build</li>
+								<li>dès Java 6 (11 décembre 2006), intégré à Javac</li>
+								<li>API renommées, complétées un peu</li>
+							</ul>
+					    </aside>
+					</section>
+
+					<section>
+						<h2>Mais qui s'en sert ?</h2>
+
+						<ul>
+							<li>AutoValue, Immutables, FreeBuilder, ...</li>
+							<li>AutoService</li>
+							<li>Butter Knife</li>
+							<li>Byte Buddy</li>
+							<li>Dagger 2</li>
+							<li>jax-rs-linker</li>
+							<li>JMH</li>
+							<li>Selma, MapStruct, DAMapping, ...</li>
+							<li>...</li>
+						</ul>
+
+						<aside class="notes">
+							<ul>
+								<li>AutoValue, Immutables, FreeBuilder, ... : value/immutable classes</li>
+								<li>AutoService : inception ! </li>
+								<li>Butter Knife : View "injection" library for Android</li>
+								<li>Byte Buddy : runtime code generation for the Java platform</li>
+								<li>Dagger 2 : Dependency injection</li>
+								<li>jax-rs-linker</li>
+								<li>JMH : reference benchmarking framework for Java</li>
+								<li>Selma, MapStruct, DAMapping, ... : mapping d'objet</li>
+							</ul>
+						</aside>
+					</section>
+
+					<section>
+						<h2>JSR 269</h2>
+
+						<p>Définit 2 APIs</p>
+						<ol>
+							<li>
+								API modèle du language Java
+								<ul>
+									<li>javax.lang.model.element.Element</li>
+									<li>javax.lang.model.type.TypeMirror</li>
+								</ul>
+							</li>
+							<li>
+								API pour écrire un processeur d'annotation
+								<ul>
+									<li>Processor</li>
+									<li>ProcessingEnvironment, RoundEnvironment</li>
+									<li>Filer, Messager</li>
+								</ul>
+							</li>
+						</ol>
+
+						<aside class="notes">
+							<ul>
+								<li>
+									javax.lang.model.element : les éléments du langage Java
+									<ul>
+										<li>package</li>
+										<li>interface, classe, annotation</li>
+										<li>méthode, propriété</li>
+										<li>paramètre de méthode, d'exception</li>
+										<li>variable</li>
+										<li>paramètre générique</li>
+									</ul>
+								</li>
+								<li>
+									javax.lang.model.type : les types du langage Java
+									<ul>
+										<li>types primitifs</li>
+										<li>classes, interface, annotation</li>
+										<li>tableaux</li>
+										<li>variable générique</li>
+										<li>null, *</li>
+										<li>méthode, variable, </li>
+									</ul>
+								</li>
+							</ul>
+						</aside>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>introduction au niveau 1</h2>
+						<h5>exécuter un annotation processor</h5>
+					</section>
+<!--
+					<section>
+						<h2>Comment ça marche ?</h2>
+
+						<ol>
+							<li>écrire une classe javax.annotation.processing.Processor</li>
+							<li>la compiler</li>
+							<li>compiler d'autres sources en passant le processeur au compilateur</li>
+							<li>le compilateur creée une instance de notre classe Processor</li>
+							<li>fait une série de passe de traitement</li>
+						</ol>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>introduction au niveau 2</h2>
+						<h5>le modèle Java</h5>
+					</section>
+
+					<section>
+						<h2></h2>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>introduction au niveau 3</h2>
+						<h5>utiliser un annotation processor</h5>
+					</section>
+				</section>
+-->
+				<!--
+				<section>
+					<section>
+						<h2>Vertical Slides</h2>
+						<p>Slides can be nested inside of each other.</p>
+						<p>Use the <em>Space</em> key to navigate through all slides.</p>
+						<br>
+						<a href="#" class="navigate-down">
+							<img width="178" height="238" data-src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
+						</a>
+					</section>
+					<section>
+						<h2>Basement Level 1</h2>
+						<p>Nested slides are useful for adding additional detail underneath a high level horizontal slide.</p>
+					</section>
+					<section>
+						<h2>Basement Level 2</h2>
+						<p>That's it, time to go back up.</p>
+						<br>
+						<a href="#/2">
+							<img width="178" height="238" data-src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Up arrow" style="-webkit-transform: rotate(180deg);">
+						</a>
+					</section>
+				</section>
+
+				<section>
+					<h2>Slides</h2>
+					<p>
+						Not a coder? Not a problem. There's a fully-featured visual editor for authoring these, try it out at <a href="http://slides.com" target="_blank">http://slides.com</a>.
+					</p>
+				</section>
+
+				<section>
+					<h2>Point of View</h2>
+					<p>
+						Press <strong>ESC</strong> to enter the slide overview.
+					</p>
+					<p>
+						Hold down alt and click on any element to zoom in on it using <a href="http://lab.hakim.se/zoom-js">zoom.js</a>. Alt + click anywhere to zoom back out.
+					</p>
+				</section>
+
+				<section>
+					<h2>Touch Optimized</h2>
+					<p>
+						Presentations look great on touch devices, like mobile phones and tablets. Simply swipe through your slides.
+					</p>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## Markdown support
+
+						Write content using inline or external Markdown.
+						Instructions and more info available in the [readme](https://github.com/hakimel/reveal.js#markdown).
+
+						```
+						<section data-markdown>
+						  ## Markdown support
+
+						  Write content using inline or external Markdown.
+						  Instructions and more info available in the [readme](https://github.com/hakimel/reveal.js#markdown).
+						</section>
+						```
+					</script>
+				</section>
+
+				<section>
+					<section id="fragments">
+						<h2>Fragments</h2>
+						<p>Hit the next arrow...</p>
+						<p class="fragment">... to step through ...</p>
+						<p><span class="fragment">... a</span> <span class="fragment">fragmented</span> <span class="fragment">slide.</span></p>
+
+						<aside class="notes">
+							This slide has fragments which are also stepped through in the notes window.
+						</aside>
+					</section>
+					<section>
+						<h2>Fragment Styles</h2>
+						<p>There's different types of fragments, like:</p>
+						<p class="fragment grow">grow</p>
+						<p class="fragment shrink">shrink</p>
+						<p class="fragment roll-in">roll-in</p>
+						<p class="fragment fade-out">fade-out</p>
+						<p class="fragment current-visible">current-visible</p>
+						<p class="fragment highlight-red">highlight-red</p>
+						<p class="fragment highlight-blue">highlight-blue</p>
+					</section>
+				</section>
+
+				<section data-transition="slide" data-background="#b5533c" data-background-transition="zoom">
+					<h2>Background Transitions</h2>
+					<p>
+						You can override background transitions per-slide.
+					</p>
+					<pre><code style="word-wrap: break-word;">&lt;section data-background-transition="zoom"&gt;</code></pre>
+				</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				<section>
+					<h2>Pretty Code</h2>
+					<pre><code data-trim contenteditable>
+function linkify( selector ) {
+  if( supports3DTransforms ) {
+
+    var nodes = document.querySelectorAll( selector );
+
+    for( var i = 0, len = nodes.length; i &lt; len; i++ ) {
+      var node = nodes[i];
+
+      if( !node.className ) {
+        node.className += ' roll';
+      }
+    }
+  }
+}
+					</code></pre>
+					<p>Code syntax highlighting courtesy of <a href="http://softwaremaniacs.org/soft/highlight/en/description/">highlight.js</a>.</p>
+				</section>
+
+				<section>
+					<h2>Marvelous List</h2>
+					<ul>
+						<li>No order here</li>
+						<li>Or here</li>
+						<li>Or here</li>
+						<li>Or here</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Fantastic Ordered List</h2>
+					<ol>
+						<li>One is smaller than...</li>
+						<li>Two is smaller than...</li>
+						<li>Three!</li>
+					</ol>
+				</section>
+
+				<section>
+					<h2>Tabular Tables</h2>
+					<table>
+						<thead>
+							<tr>
+								<th>Item</th>
+								<th>Value</th>
+								<th>Quantity</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Apples</td>
+								<td>$1</td>
+								<td>7</td>
+							<tr>
+							<tr>
+								<td>Lemonade</td>
+								<td>$2</td>
+								<td>18</td>
+							<tr>
+							<tr>
+								<td>Bread</td>
+								<td>$3</td>
+								<td>2</td>
+							<tr>
+						</tbody>
+					</table>
+				</section>
+
+				<section>
+					<h2>Clever Quotes</h2>
+					<p>
+						These guys come in two forms, inline: <q cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations">
+						&ldquo;The nice thing about standards is that there are so many to choose from&rdquo;</q> and block:
+					</p>
+					<blockquote cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations">
+						&ldquo;For years there has been a theory that millions of monkeys typing at random on millions of typewriters would
+						reproduce the entire works of Shakespeare. The Internet has proven this theory to be untrue.&rdquo;
+					</blockquote>
+				</section>
+
+				<section>
+					<h2>Intergalactic Interconnections</h2>
+					<p>
+						You can link between slides internally,
+						<a href="#/2/3">like this</a>.
+					</p>
+				</section>
+
+				<section>
+					<h2>Speaker View</h2>
+					<p>There's a <a href="https://github.com/hakimel/reveal.js#speaker-notes">speaker view</a>. It includes a timer, preview of the upcoming slide as well as your speaker notes.</p>
+					<p>Press the <em>S</em> key to try it out.</p>
+
+					<aside class="notes">
+						Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you open the speaker notes window (hit 's' on your keyboard).
+					</aside>
+				</section>
+
+				<section>
+					<h2>Export to PDF</h2>
+					<p>Presentations can be <a href="https://github.com/hakimel/reveal.js#pdf-export">exported to PDF</a>, here's an example:</p>
+					<iframe src="//www.slideshare.net/slideshow/embed_code/42840540" width="445" height="355" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:3px solid #666; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe>
+				</section>
+				-->
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				// Parallax background image
+			    parallaxBackgroundImage: 'img/devoxx_fond_1920px1.png', // e.g. "https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg"
+
+			    // Parallax background size
+			    parallaxBackgroundSize: '1920px 1080px', // CSS syntax, e.g. "2100px 900px" - currently only pixels are supported (don't use % or auto)
+
+			    // This slide transition gives best results:
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
