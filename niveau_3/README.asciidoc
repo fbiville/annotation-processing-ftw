@@ -1,0 +1,133 @@
+= Niveau 3
+:linkattrs:	
+:toc: right
+:toc-title: Niveau 3
+:icons: font
+
+L’objet du niveau 3 est de découvrir l’API qui permet de faire ces choses que seuls les processeurs d'annotations peuvent faire: lever de nouvelles erreurs ou avertissements de compilation et/ou créer de nouveaux fichiers sources, classes ou ressources pendant la compilation.
+
+== Exercice 1 : interrompre la compilation
+
+L'objectif de cet exercice est de créer un processor qui lèvera une erreur de compilation s'il existe un champs annotée avec `javax.inject.Inject`.
+
+Dans le répertoire `exo1`, vous trouverez deux projets Maven:
+
+* dans le sous-répertoire `processor`, le projet comporte le processor `InjectedPropertyProcessor` et un test unitaire pour chacune des étapes ci-dessous
+* dans le sous-répertoire `subject`, le projet comporte quelques sources utilisant l'annotation `@Inject` ce qui vous permettra de constater le comportement de `InjectedPropertyProcessor`
+
+Ainsi, si vous compilez le projet `processor` sans les tests unitaires (`(cd processor && mvn clean install -DskipTests)`) et qu'ensuite vous compilez le projet `subject` (`(cd subject && mvn clean install)`), vous constaterez que ce dernier compile sans problème.
+
+=== Étape 1 : lever une erreur
+
+Comme il a été vu au niveau 1, le type de diagnostic `Diagnostic.Kind.ERROR` passé en argument des méthodes `javax.annotation.processing.Messager#printMessage` permet de remonter un diagnostique qui se traduira par une erreur de compilation et l'affichage d'un message dans les logs.
+
+L'objectif de cette étape est d'implémenter la méthode `process` du processor `fr.devoxx.niveau3.exo1.InjectedPropertyProcessor` de sorte que la compilation s'arrète avec le message "Fields annotated with @Inject are not allowed".
+
+[IMPORTANT]
+====
+Dans la classe `InjectedPropertyProcessor`, implémentez la méthode `process`.
+
+Pour cela, vous devrez:
+
+1. récupérez le `TypeElement` de l'annotation `@Inject` parmis les paramètres de la méthode `init` (puisque le procesor n'"écoute" qu'une seule annotation, c'est très simple)
+2. récupérez l' `Element` d'au moins une propriété annotée avec `@Inject` du `RoundEnvironnement` courant (cf. link:../doc/Jsr269-1.8/javax/annotation/processing/RoundEnvironment.html[RoundEnvironnement, role="external", window="_blank"])
+3. attention, l'annotation `@Inject` peut être utilisée sur des champs mais aussi des méthodes et des constructeurs
+4. lever une erreur de compilation avec le message attendu (cf. la constante `InjectedPropertyProcessor#COMPILATION_ERROR_MSG`) en utilisant la surcharge la plus simple de `Messager#printMessage`
+====
+
+Si votre implémentation est correcte, le test unitaire `Etape1Test` dans le projet `processor` sera passant. Si ensuite vous compilez le projet `subject`, la compilation échouera avec le message suivant:
+
+----
+[ERROR] Fields annotated with @Inject are not allowed
+----
+
+=== Étape 2 : indiquer le fichier
+
+Comme il est frustrant de voir s'afficher une erreur de compilation sans aucune indication de l'endroit où se trouve l'erreur !
+
+
+[IMPORTANT]
+====
+Dans la classe `InjectedPropertyProcessor`, améliorez l'implémentation de la méthode `process` en utilisant la surcharge de la méthode `Messager#printMessage` qui prend un `Element`.
+====
+
+Pour vérifier votre implémentation, activez les tests de la classe `Etape2Test` (mettez à `true` le membre `enable` des annotations `@Test`) et constatez que celui-ci est passant.
+
+Si ensuite vous compilez le projet `subject`, la compilation échouera avec le message suivant (indique une erreur à la ligne 12 de la classe `SomeService`) :
+
+----
+[ERROR] [some path]/niveau_3/exo1/subject/src/main/java/fr/devoxx/niveau3/exo1/SomeService.java:[12,23] Fields annotated with @Inject are not allowed
+----
+
+=== Étape 3 : indiquer l'annotation
+
+Il est possible, très simplement, d'être encore plus précis. Si l'erreur provient d'une annotation (comme c'est le cas ici), il est possible d'indiquer la ligne sur laquelle se trouve cette annotation.
+
+[TIP]
+====
+Pour trouver l' `AnnotationMirror` d'une annotation donnée sur un `Element`, la technique la plus simple est de comparer (via la méthode `equals`) l' `Element` de chaque `AnnotationMirror` à l' `Element` de l'annotation. Ce dernier aura été récupéré soit par la méthode adéquate de `javax.lang.model.util.Elements` soit via les paramètres de la méthode `Processor#process`.
+====
+
+[IMPORTANT]
+====
+Dans la classe `InjectedPropertyProcessor`, améliorez encore l'implémentation de la méthode `process` en utilisant la surcharge de la méthode `Messager#printMessage` qui prend un `AnnotationMirror`.
+====
+
+Pour vérifier votre implémentation, activez les tests de la classe `Etape3Test` (mettez à `true` le membre `enable` des annotations `@Test`) et constatez que celui-ci est passant.
+
+Si ensuite vous compilez le projet `subject`, la compilation échouera avec le message suivant (indique une erreur à la ligne 11, cad. celle de l'annotation) :
+
+----
+[ERROR] [some path]/niveau_3/exo1/subject/src/main/java/fr/devoxx/niveau3/exo1/SomeService.java:[11,3] Fields annotated with @Inject are not allowed
+----
+
+== Exercice 2 : générer un fichier
+
+L'objectif de cet exercice est de générer un fichier dans lequel figurera le prénom des personnages décédés du livre Game of Thrones.
+
+Dans le répertoire `exo2`, vous trouverez un projet Maven constitué de deux sous modules:
+
+* dans le module `processor` se trouvent l'annotation `Character` et le processor `UndertakerProcessor`
+* dans le module `subject` se trouvent les membres des familles Baratheon et Stark.
+ Chaque personnage est représenté par une classe, dont le nom est le prénom du personnage, annotée avec l'annotation `Character`.
+
+L'annotation `Character` définie un membre `dead` de type `boolean` qui permet de savoir si le personnage est mort (ou pas... encore).
+
+=== Étape 1 : récupérer une annotation
+
+La première étape de l'exercice consiste à lire les informations contenues dans les sources dans le contexte d'un processor.
+
+Les deux informations qui nous intéressent: la valeur du membre `dead` de l'annotation `Character` et le nom de la classe annotée.
+
+[IMPORTANT]
+====
+Dans la classe `UndertakerProcessor`, implémentez la méthode `collectDeadCharactersFirstNames`.
+
+Pour cela, vous devrez:
+
+1. récupérez le `TypeElement` de l'annotation `@Character` parmis les paramètres de la méthode `init` (puisque le procesor n'"écoute" qu'une seule annotation, c'est très simple)
+2. récupérez les `Element` des classes annotées avec `@Character` du `RoundEnvironnement` courant (TODO lien DOC RoundEnvironnement)
+3. récupérez l'annotation `@Character` de chaque element afin de savoir si le personnage courant est mort ou pas (TODO lien doc Element)
+4. récupérez le nom de la classe et l'ajouter à la propriété `deadCharacterFirstnames`
+
+Si votre implémentation est correcte, le test unitaire `DeadCharacterSetTest` sera passant.
+====
+
+=== Étape 2 : écrire un fichier
+
+La seconde étape de l'exercice se consacre à la génération du fichier `dead_characters.txt` dans le package `fr.devoxx.niveau3.exo2`.
+
+Dans le cadre du traitement d'annotations, l'écriture de fichiers (fichier source, classe ou ressource quelconque) se fait par le biais de l'interface `javax.annotation.processing.Filer`. Une instance peut être récupérée via la méthode `getFiler()` de l'instance de `javax.annotation.processing.ProcessingEnvironment` fournie en paramètre de la méthode `init(ProcessingEnvironment)` du processor.
+
+[IMPORTANT]
+====
+Dans la classe `UndertakerProcessor`, implémentez la méthode `generateListing`.
+
+Pour cela, vous devrez:
+
+1. créer une instance de `javax.tools.FileObject` grâce à une méthode de l'interface `javax.annotation.processing.Filer` pour le fichier `dead_characters.txt` dans le package `fr.devoxx.niveau3.exo2`
+2. ouvrir un `Writer` ou un `OutputStream`
+3. écrire chaques valeurs de la propriété `deadCharacterFirstnames` dans le fichier (une valeur par ligne)
+
+Si votre implémentation est correcte, le test unitaire `DeadCharacterFileTest` sera passant.
+====
