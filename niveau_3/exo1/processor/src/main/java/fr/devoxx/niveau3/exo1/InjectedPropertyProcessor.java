@@ -6,11 +6,7 @@ import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.lang.model.SourceVersion;
-import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.util.ElementFilter;
-import javax.tools.Diagnostic;
 import com.google.common.annotations.VisibleForTesting;
 
 import com.google.auto.service.AutoService;
@@ -29,31 +25,10 @@ public class InjectedPropertyProcessor extends AbstractProcessor {
   @Override
   public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
     if (!annotations.isEmpty()) {
-      TypeElement injectAnnotationTypeElement = annotations.iterator().next();
-      for (Element element : ElementFilter.fieldsIn(roundEnv.getElementsAnnotatedWith(injectAnnotationTypeElement))) {
-        processingEnv.getMessager().printMessage(
-            Diagnostic.Kind.ERROR,
-            COMPILATION_ERROR_MSG,
-            element,
-            retrieveInjectAnnotationMirror(element, injectAnnotationTypeElement)
-        );
-      }
+      // votre code ici
     }
 
     return false;
-  }
-
-  private static AnnotationMirror retrieveInjectAnnotationMirror(Element annotatedElement,
-                                                                 TypeElement injectAnnotationTypeElement) {
-    return annotatedElement.getAnnotationMirrors()
-                           .stream()
-                           .filter(
-                               annotationMirror -> annotationMirror.getAnnotationType()
-                                                                   .asElement()
-                                                                   .equals(injectAnnotationTypeElement)
-                           )
-                           .findFirst()
-                           .get();
   }
 
   @Override
