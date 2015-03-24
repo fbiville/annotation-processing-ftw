@@ -578,8 +578,17 @@ Vérifiez que les messages s&#8217;affichent si <code>getSupportedAnnotationType
 <div class="paragraph">
 <p>Vous pouvez vérifier le comportement de <code>javac</code> si vous spécifiez le nom d&#8217;un annotation processor qui ne se trouve pas dans le class path.</p>
 </div>
-<div class="paragraph">
-<p>Question subsidiaire : trouvez au moins un autre moyen de désactiver l&#8217;annotation processing avec <code>javac</code>.</p>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+question subsidiaire : trouvez au moins un autre moyen de désactiver l&#8217;annotation processing avec <code>javac</code>.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -597,7 +606,7 @@ Vérifiez que les messages s&#8217;affichent si <code>getSupportedAnnotationType
 <p>Dans le répertoire <code>exo2</code> se trouve le fichier <code>HelloWorldProcessor.java</code>.</p>
 </div>
 <div class="paragraph">
-<p>Cette classe est un processor mais notez qu&#8217;elle n&#8217;implémente pas l&#8217;interface <code>Processor</code> directement, elle étends la classe abstraite <code>javax.annotation.processing.AbstractProcessor</code>. Cette classe abstraite permet de simplifier l&#8217;écriture d&#8217;un Processor (cf. le source de <code>HelloWorldProcessor</code>).</p>
+<p>Cette classe est un processor mais notez qu&#8217;elle n&#8217;implémente pas l&#8217;interface <code>Processor</code> directement, elle étends la classe abstraite <code>javax.annotation.processing.AbstractProcessor</code>. Cette classe abstraite permet de simplifier l&#8217;écriture d&#8217;un Processor.</p>
 </div>
 <div class="sect2">
 <h3 id="_Étape_1_activer_les_logs_des_rounds">Étape 1 : activer les logs des rounds</h3>
@@ -1058,7 +1067,7 @@ Lors du build:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-03-24 22:18:23 CET
+Last updated 2015-03-24 22:19:00 CET
 </div>
 </div>
 </body>

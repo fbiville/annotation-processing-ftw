@@ -59,7 +59,7 @@ IMPORTANT: Vérifiez que les messages s'affichent si `getSupportedAnnotationType
 
 Vous pouvez vérifier le comportement de `javac` si vous spécifiez le nom d'un annotation processor qui ne se trouve pas dans le class path.
 
-Question subsidiaire : trouvez au moins un autre moyen de désactiver l'annotation processing avec `javac`.
+IMPORTANT: question subsidiaire : trouvez au moins un autre moyen de désactiver l'annotation processing avec `javac`.
 
 
 == Exercice 2 : rounds et cycle de vie
@@ -70,7 +70,7 @@ Ce comportement est en réalité lié au mécanisme de "round" de l'annotation p
 
 Dans le répertoire `exo2` se trouve le fichier `HelloWorldProcessor.java`.
 
-Cette classe est un processor mais notez qu'elle n'implémente pas l'interface `Processor` directement, elle étends la classe abstraite `javax.annotation.processing.AbstractProcessor`. Cette classe abstraite permet de simplifier l'écriture d'un Processor (cf. le source de `HelloWorldProcessor`).
+Cette classe est un processor mais notez qu'elle n'implémente pas l'interface `Processor` directement, elle étends la classe abstraite `javax.annotation.processing.AbstractProcessor`. Cette classe abstraite permet de simplifier l'écriture d'un Processor.
 
 === Étape 1 : activer les logs des rounds
 
