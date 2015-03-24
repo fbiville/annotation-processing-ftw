@@ -1,0 +1,121 @@
+= Niveau 2
+:linkattrs:
+:toc: right
+:toc-title: Niveau 2
+:icons: font
+
+L'objet du niveau 2 est de découvrir l'API qui modélise le code source Java sur lequel reposera tout traitement d'annotation (ou presque) via un Processor.
+
+== Organisation des exercices
+
+À l'instar de la seconde moitié du niveau 1, chaque exercice possède son répertoire (exercice 1 -> `exo1`, exercice 2 -> `exo2`, ...) dans lequel se trouve un projet Maven organisé comme suit.
+
+=== Un package et une classe "explorer"
+
+Dans les sources, vous trouverez un package par étape. Celui-ci se compose d'une classe "explorer", qui définit des méthodes vides, et d'une classe "à explorer". Il existe un test unitaire pour chaque classe "explorer".
+
+Chaque classe "explorer" est conçue pour vous faire explorer l'API qui modélise le code source Java par petits bouts. Ainsi, l'implémentation des méthodes restera courte (souvent une ligne, au plus une dizaine).
+Les méthodes sont également ordonnées pour vous guider (vous utiliserez parfois une méthode précédente pour implémenter la méthode courante).
+
+=== Faire passer les tests au vert
+
+L'objectif de chaque exercice est de faire passer progressivement tous les tests au vert en écrivant l'implémentation des méthodes vides. Ainsi, si vous lancez le build du projet d'un exercice, tous les tests échouent (`mvn clean install`).
+
+=== Javadoc
+
+L'objectif, le résultat attendu et des indices sont présentés dans la javadoc de chaque méthode des classes "explorer".
+
+Si votre IDE le permet, vous pourrez consulter les documentations des classes et interface de l'API directement dans les sources.
+Sinon, il vous sera utile d'ouvrir la javadoc du package correspondant (link:../doc/Jsr269-1.8/javax/lang/model/element/package-summary.html[javax.lang.model.element, role="external", window="_blank"], link:../doc/Jsr269-1.8/javax/lang/model/type/package-summary.html[javax.lang.model.type, role="external", window="_blank"]) hors ligne dans votre navigateur.
+
+=== Solution
+
+La solution des exercices est disponible dans le code, dans les tests unitaires.
+
+Libre à vous d'aller regarder les classes `DontLookAtThisClass` de chaque package si vous vous trouvez bloqués mais prenez le temps de chercher, on apprend beaucoup mieux par soi-même ;)
+
+
+== Exercice 1 : déclaration de classe
+
+Le premier exercice se concentre sur la modélisation de la déclaration d'une classe et la compréhension de la distinction entre `Element` et `TypeMirror`.
+
+Pour rappel, un `Element` représentera un élément du language Java (une classe, interface, package, un paramètre, ...) tandis qu'un `TypeMirror` représentera un usage d'un élément dans un autre (le type d'une propriété, d'un paramètre, ...).
+
+=== Étape 1 : nom(s), package et attribut(s)
+
+La première étape consiste à découvrir comment récupérer les noms (simple et qualifié), le package et les attributs d'une classe à partir de l' `Element` qui le représente. À cette étape, on fait également un petit écart pour aller explorer l'usage des `Visitor` pour connaître le sous-type exact d'un `Element` à l'exécution.
+
+[IMPORTANT]
+====
+Écrivez les implémentations des méthodes de la classe `fr.devoxx.niveau2.exo1.etape1.ClassDeclarationExplorer`.
+
+À l'exception (notable) de la méthode `asTypeElement(Element)`, toutes ces méthodes s'écrivent en une ligne.
+
+L'objectif de la méthode `asTypeElement(Element)` est de vous faire découvrir l'usage du pattern visiteur conseillé pour exploiter l'API (plutôt que l'usage de `instanceof` et de casts).
+====
+
+=== Étape 2 : annotation(s)
+
+La seconde étape consiste à découvrir comment récupérer les annotations, et leurs valeurs, d'une classe à partir du `Element` qui la représente.
+
+[IMPORTANT]
+====
+Ecrivez les implémentations des méthodes de la classe `fr.devoxx.niveau2.exo1.etape2.ClassAnnotationsExplorer`.
+
+Toutes ces méthodes s'écrivent en une ligne.
+====
+
+=== Étape 3 : interface(s)
+
+La troisième étape a pour obectif de faire découvrir la récupération des interfaces déclarées par une classe (ici `fr.devoxx.niveau2.exo1.etape3.ImplementsInterfacesClass`).
+
+[IMPORTANT]
+====
+Écrivez les implémentations des méthodes de la classe `fr.devoxx.niveau2.exo1.etape3.ClassInterfacesExplorer`.
+
+L'implémentation de ces méthodes peut paraître plus complexe mais elles peuvent tout de même s'écrire très succinctement si on fait bon usage d'un stream et de courtes lambdas.
+====
+
+=== Étape 4 : super classe
+
+La quatrième étape a pour obectif de faire découvrir la récupération de la super classe d'une classe (ici `fr.devoxx.niveau2.exo1.etape4.MyListClass`). À cette étape, on fait également un petit écart pour aller explorer l'usage des `Visitor` pour connaitre le sous type exact d'un `TypeMirror` à l'exécution.
+
+[IMPORTANT]
+====
+Écrivez les implémentations des méthodes de la classe `fr.devoxx.niveau2.exo1.etape4.ClassSuperClassExplorer`.
+====
+
+== Exercice 2 : contenu d'une classe/interface
+
+Cette exercice se focalise sur l'exploration du contenu d'une classe ou d'une méthode.
+
+=== Étape 1 : les méthodes
+
+La première étape consiste à découvrir comment récupérer les méthodes et constructeurs d'une classe et en sélectionner des sous ensembles (les constructeurs, les fonctions publiques, une méthode spécifique, etc.). On verra aussi comment explorer la signature d'une méthode (nom, annotations, type de retour et paramètres).
+
+[IMPORTANT]
+====
+Écrivez les implémentations des méthodes de la classe `fr.devoxx.niveau2.exo2.etape1.MethodsExplorer`.
+
+Les deux premières méthodes s'écrivent en une ligne, les autres peuvent rester très succinctes si on fait bon usage d'un stream et de courtes lambdas.
+====
+
+=== Étape 2 : les champs
+
+La seconde étape consiste à découvrir comment récupérer les champs d'une classe (ou d'une enum) et explorer les informations qu'ils portent: nom, attributs, type, annotations.
+
+[IMPORTANT]
+====
+Ecrivez les implémentations des méthodes de la classe `fr.devoxx.niveau2.exo2.etape2.FieldsExplorer`.
+====
+
+=== Étape 3, bonus : et avec l'héritage ?
+
+La troisième étape consiste à prendre en compte l'héritage lorsque l'on récupère les méthodes et les champs d'une classe, comment identifier les méthodes d'une classe qui surcharge une méthode définie par une classe parent, etc.
+
+[IMPORTANT]
+====
+Ecrivez les implémentations des méthodes de la classe `fr.devoxx.niveau2.exo2.etape3.DeepExplorer`.
+
+L'usage des streams et des lambdas est recommandé pour garder un code concis.
+====
