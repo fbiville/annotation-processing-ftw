@@ -109,7 +109,7 @@ IMPORTANT: Modifiez la classe `HelloWorldProcessor` de sorte que le message ne s
 
 === Étape 3 : supprimer le doublon proprement
 
-IMPORTANT: Corrigez le doublon en utilisant l'API (astuce: regardez du côté de `RoundEnvironment`).
+IMPORTANT: Corrigez le doublon en utilisant l'API (astuce: regardez du côté de link:../doc/Jsr269-1.8/javax/annotation/processing/RoundEnvironment.html[RoundEnvironment, role="external", window="_blank"]).
 
 == Exercice 3 : on refait le match ! (avec Maven)
 

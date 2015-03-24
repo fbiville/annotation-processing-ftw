@@ -12,6 +12,8 @@ La JSR 269 définit l'API d'Annotation Processing de Java. La spécification est
 ** link:Jsr269-1.8/index.html[index]
 ** link:Jsr269-1.8/javax/annotation/processing/Processor.html[l'interface processor]
 ** link:Jsr269-1.8/javax/annotation/processing/AbstractProcessor.html[la classe AbstractProcessor]
+** link:Jsr269-1.8/javax/annotation/processing/RoundEnvironment.html[l'interface RoundEnvironment]
+** link:Jsr269-1.8/javax/annotation/processing/ProcessingEnvironment.html[l'interface ProcessingEnvironment]
 ** link:Jsr269-1.8/javax/lang/model/util/Elements.html[l'interface Elements]
 ** link:Jsr269-1.8/javax/lang/model/util/Types.html[l'interface Types]
 ** link:Jsr269-1.8/javax/lang/model/element/package-summary.html[package javax.lang.model.element]
