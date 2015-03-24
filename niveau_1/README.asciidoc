@@ -21,15 +21,9 @@ Cette classe est un processor car elle implémente l'interface `javax.annotation
 La compilation d'un annotation processor est identique à n'importe quelle classe.
 
 [IMPORTANT]
-==== 
+====
 Compilez `StutteringHelloWorldProcessor.java` en utilisant `javac` en ligne de commande (le plus simple fonctionne).
 ====
-
-solution:
-----
-cd exo1
-javac StutteringHelloWorldProcessor
-----
 
 === Étape 2 : utiliser un annotation processor
 
@@ -47,14 +41,8 @@ Note: Hello world!
 ----
 ====
 
-solution:
-----
-cd exo1
-javac -processor StutteringHelloWorldProcessor SomeDeprecatedClass.java
-----
-
 [IMPORTANT]
-==== 
+====
 Maintenant, compilez en même temps `SomeDeprecatedClass.java` et `SomeOtherDeprecatedClass.java`.
 
 Constatez que le résultat dans la console est le même. Nous allons rechercher l'explication et corriger ce bégaiement dans le prochain exercice.
@@ -90,23 +78,11 @@ Une option de `javac` permet d'activer les logs des rounds d'annotations process
 
 IMPORTANT: Compilez `HelloWorldProcessor.java` dans le répertoire `exo2` puis `SomeDeprecatedClass` en activant les logs des rounds. (indice: link:../doc/README.html#_javac[documentation de javac, role="external", window="_blank"])
 
-solution:
----- 
-cd exo2
-javac -XprintRounds -processor HelloWorldProcessor SomeDeprecatedClass.java
-----
-
 Constatez qu'il y a deux rounds, ce qui explique l'affichage du "Hello world!" en doublon.
 
 Une autre option permet d'afficher pour chaque round quels sont les processors que javac fait participer.
 
 IMPORTANT: Compilez `SomeDeprecatedClass` en activant les deux options.
-
-solution:
-----
-cd exo2
-javac -XprintRounds -XprintProcessorInfo -processor HelloWorldProcessor SomeDeprecatedClass.java
-----
 
 === Étape 2 : supprimer le doublon à la bourrin
 
@@ -131,26 +107,9 @@ Notez néanmoins que l'aspect stateful d'un annotation processor peut également
 
 IMPORTANT: Modifiez la classe `HelloWorldProcessor` de sorte que le message ne s'affiche plus qu'une seule fois par compilation
 
-solution: 
-----
-il suffit d'un flag stocké en propriété de la classe `HelloWorldProcessor`.
-----
-
 === Étape 3 : supprimer le doublon proprement
 
 IMPORTANT: Corrigez le doublon en utilisant l'API (astuce: regardez du côté de `RoundEnvironment`).
-
-solution:
-[source,java]
-----
-  @Override
-  public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-    if (roundEnv.processingOver()) {
-      processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Hello world!");
-    }
-    return false;
-  }
-----
 
 == Exercice 3 : on refait le match ! (avec Maven)
 
@@ -176,31 +135,11 @@ Trouvez comment déclarer le processor `fr.devoxx.niveau1.exo3.HelloWorldProcess
 ----
 ====
 
-solution:
-ajout dans la configuration de `maven-compiler-plugin` des 3 lignes suivantes:
-
-[source,xml]
-----
-<annotationProcessors>
-  <annotationProcessor>fr.devoxx.niveau1.exo3.HelloWorldProcessor</annotationProcessor>
-</annotationProcessors>
-----
-
 === Étape 2 : activer les logs
 
 L'activation des logs liés au processing d'annotations passait par des options de ligne de commande, tout comme la déclaration d'un processor. Avec Maven donc, pour activer ces logs, on utilisera aussi des options de configuration du maven-compiler-plugin.
 
 IMPORTANT: modifiez le `pom.xml` de `exo3-subject` de sorte que les logs du processing d'annotations s'affichent dans les logs du build Maven.
-
-solution:
-
-[source,xml]
-----
-  <compilerArgs>
-    <compilerArg>-XprintRounds</compilerArg>
-    <compilerArg>-XprintProcessorInfo</compilerArg>
-  </compilerArgs>
-----
 
 === Étape 3 : les niveaux de diagnostic et Maven
 
@@ -211,8 +150,6 @@ IMPORTANT: Pour comprendre pourquoi, faites un test avec les valeurs `NOTE` puis
 Ce comportement est un "choix" du plugin `maven-compiler-plugin` pour réduire la quantité de logs Maven (sic!) durant la phase de compilation.
 
 IMPORTANT: Trouvez l'option du plugin permet l'affichage des warnings de compilation dans Maven (link:../doc/README.html#_maven_compiler_plugin[documentation, role="external", window="_blank"]).
-
-solution: ajouter `<showWarnings>true</showWarnings>` dans la configuration de `maven-compiler-plugin` pour afficher `WARNING`, `NOTES` et `OTHER` au niveau `[INFO]`.
 
 IMPORTANT: Tentez maintenant la compilation avec le niveau `ERROR`.
 
@@ -303,7 +240,7 @@ Constatez que le build échoue avec le message suivant:
 
 Cette erreur signifie que Java n'a pas trouvé un processor alors que celui-ci est référencé dans un fichier `META-INF/services/javax.annotation.processing.Processor`. Mais bon, forcément, il ne trouve pas un processor qu'il est censé compiler.
 
-L'explication de ce comportement n'est pas trivial, accrochez-vous. 
+L'explication de ce comportement n'est pas trivial, accrochez-vous.
 Lors du build:
 
 1. Maven copie les ressources dans le répertoire `exo4-processor1/target/classes`

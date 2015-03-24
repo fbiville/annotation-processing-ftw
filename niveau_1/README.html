@@ -490,15 +490,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>solution:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>cd exo1
-javac StutteringHelloWorldProcessor</pre>
-</div>
-</div>
 </div>
 <div class="sect2">
 <h3 id="_Étape_2_utiliser_un_annotation_processor">Étape 2 : utiliser un annotation processor</h3>
@@ -527,15 +518,6 @@ Note: Hello world!</pre>
 </td>
 </tr>
 </table>
-</div>
-<div class="paragraph">
-<p>solution:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>cd exo1
-javac -processor StutteringHelloWorldProcessor SomeDeprecatedClass.java</pre>
-</div>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -635,15 +617,6 @@ Compilez <code>HelloWorldProcessor.java</code> dans le répertoire <code>exo2</c
 </table>
 </div>
 <div class="paragraph">
-<p>solution:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>cd exo2
-javac -XprintRounds -processor HelloWorldProcessor SomeDeprecatedClass.java</pre>
-</div>
-</div>
-<div class="paragraph">
 <p>Constatez qu&#8217;il y a deux rounds, ce qui explique l&#8217;affichage du "Hello world!" en doublon.</p>
 </div>
 <div class="paragraph">
@@ -660,15 +633,6 @@ Compilez <code>SomeDeprecatedClass</code> en activant les deux options.
 </td>
 </tr>
 </table>
-</div>
-<div class="paragraph">
-<p>solution:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>cd exo2
-javac -XprintRounds -XprintProcessorInfo -processor HelloWorldProcessor SomeDeprecatedClass.java</pre>
-</div>
 </div>
 </div>
 <div class="sect2">
@@ -721,14 +685,6 @@ Modifiez la classe <code>HelloWorldProcessor</code> de sorte que le message ne s
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>solution:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>il suffit d'un flag stocké en propriété de la classe `HelloWorldProcessor`.</pre>
-</div>
-</div>
 </div>
 <div class="sect2">
 <h3 id="_Étape_3_supprimer_le_doublon_proprement">Étape 3 : supprimer le doublon proprement</h3>
@@ -743,20 +699,6 @@ Corrigez le doublon en utilisant l&#8217;API (astuce: regardez du côté de <cod
 </td>
 </tr>
 </table>
-</div>
-<div class="paragraph">
-<p>solution:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">  @Override
-  public boolean process(Set&lt;? extends TypeElement&gt; annotations, RoundEnvironment roundEnv) {
-    if (roundEnv.processingOver()) {
-      processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Hello world!");
-    }
-    return false;
-  }</code></pre>
-</div>
 </div>
 </div>
 </div>
@@ -816,17 +758,6 @@ Compilez le projet <code>exo3-processor</code> (pensez au <code>install</code>) 
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>solution:
-ajout dans la configuration de <code>maven-compiler-plugin</code> des 3 lignes suivantes:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;annotationProcessors&gt;
-  &lt;annotationProcessor&gt;fr.devoxx.niveau1.exo3.HelloWorldProcessor&lt;/annotationProcessor&gt;
-&lt;/annotationProcessors&gt;</code></pre>
-</div>
-</div>
 </div>
 <div class="sect2">
 <h3 id="_Étape_2_activer_les_logs">Étape 2 : activer les logs</h3>
@@ -844,17 +775,6 @@ modifiez le <code>pom.xml</code> de <code>exo3-subject</code> de sorte que les l
 </td>
 </tr>
 </table>
-</div>
-<div class="paragraph">
-<p>solution:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">  &lt;compilerArgs&gt;
-    &lt;compilerArg&gt;-XprintRounds&lt;/compilerArg&gt;
-    &lt;compilerArg&gt;-XprintProcessorInfo&lt;/compilerArg&gt;
-  &lt;/compilerArgs&gt;</code></pre>
-</div>
 </div>
 </div>
 <div class="sect2">
@@ -888,9 +808,6 @@ Trouvez l&#8217;option du plugin permet l&#8217;affichage des warnings de compil
 </td>
 </tr>
 </table>
-</div>
-<div class="paragraph">
-<p>solution: ajouter <code>&lt;showWarnings&gt;true&lt;/showWarnings&gt;</code> dans la configuration de <code>maven-compiler-plugin</code> pour afficher <code>WARNING</code>, <code>NOTES</code> et <code>OTHER</code> au niveau <code>[INFO]</code>.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -1141,7 +1058,7 @@ Lors du build:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-03-14 19:25:58 CET
+Last updated 2015-03-24 09:20:19 CET
 </div>
 </div>
 </body>
