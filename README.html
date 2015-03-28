@@ -419,7 +419,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_installation_de_l_environnement">Installation de l&#8217;environnement</a>
 <ul class="sectlevel2">
 <li><a href="#_prérequis">Prérequis</a></li>
-<li><a href="#_installation">Installation</a></li>
+<li><a href="#_récupérer_les_sources">Récupérer les sources</a></li>
+<li><a href="#_installer_java_8">Installer Java 8</a></li>
+<li><a href="#_installer_maven">Installer Maven</a></li>
+<li><a href="#_ouvrir_les_readme">Ouvrir les README</a></li>
 </ul>
 </li>
 <li><a href="#_structure_du_hands_on">Structure du Hands-on</a>
@@ -454,10 +457,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>un terminal</p>
 </li>
 <li>
-<p>Maven 3.1.1 ou 3.2.5</p>
+<p>Java 8</p>
 </li>
 <li>
-<p>Java 8</p>
+<p>Maven 3.1.1 ou 3.2.5 ou 3.3.1</p>
 </li>
 <li>
 <p>l&#8217;IDE de votre choix</p>
@@ -466,44 +469,209 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="_installation">Installation</h3>
+<h3 id="_récupérer_les_sources">Récupérer les sources</h3>
 <div class="paragraph">
-<p>Pour suivre ce hands-on, vous avez besoin:</p>
+<p>Pour suivre ce hands-on, vous avez besoin des sources. Vous pouvez les récupérer :</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>d&#8217;un clone de ce repo en local</p>
+<p>en faisant un clone du répository Git sur GitHub</p>
 <div class="listingblock">
 <div class="content">
-<pre>git clone https://github.com/fbiville/annotation-processing-ftw.git</pre>
+<pre>$ mkdir ~/devoxx_2015
+$ git clone https://github.com/fbiville/annotation-processing-ftw.git ~/devoxx_2015/annotation-processing-ftw</pre>
 </div>
 </div>
 </li>
 <li>
-<p>d&#8217;installer maven si ce n&#8217;est déjà fait</p>
+<p>en copiant le repértoire <code>annotation-processing-ftw</code> présent sur la clé USB</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_installer_java_8">Installer Java 8</h3>
 <div class="paragraph">
-<p>TODO</p>
+<p>Sur la clé USB, vous trouverez dans le répertoire <code>binaries</code> les fichiers d&#8217;installation pour :</p>
 </div>
-</li>
-<li>
-<p>d&#8217;installer Java 8 si ce n&#8217;est déjà fait</p>
-<div class="paragraph">
-<p>TODO</p>
-</div>
-</li>
-<li>
-<p>d&#8217;ouvrir le <code>README.html</code> (oui, oui, la page que vous êtes en train de lire) à la racine du repo dans votre navigateur ou de visualiser la racine du repo sur GitHub</p>
 <div class="ulist">
 <ul>
 <li>
-<p>la première solution est conseillée car le rendu est bien meilleur</p>
+<p>linux 32 bits (<code>jdk-8u40-linux-i586.tar.gz</code>) ou 64 bits (<code>jdk-8u40-linux-x64.tar.gz</code>)</p>
+<div class="ulist">
+<ul>
+<li>
+<p>créez un répertoire pour Java (par exemple <code>~/java</code>)</p>
+<div class="listingblock">
+<div class="content">
+<pre>$ mkdir ~/java</pre>
+</div>
+</div>
+</li>
+<li>
+<p>décompressez l&#8217;archive pour votre architecture, dans votre répertoire d&#8217;installation</p>
+<div class="listingblock">
+<div class="content">
+<pre>$ cp [chemin_vers_votre_copie_des_sources_du_hands-on]/binaries/jdk-8u40-linux-[votre_archi].tar.gz ~/java
+$ cd ~/java
+$ tar xvfz jdk-8u40-linux-[votre_archi].tar.gz</pre>
+</div>
+</div>
+</li>
+<li>
+<p>ajoutez le répertoire <code>bin</code> de Java à votre <code>PATH</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>de façon temporaire</p>
+<div class="listingblock">
+<div class="content">
+<pre>$ export JAVA_HOME="~/java/jdk1.8.0_40" &amp;&amp; export PATH="$JAVA_HOME/bin:$PATH"</pre>
+</div>
+</div>
+</li>
+<li>
+<p>de façon définitive en modifiant votre fichier <code>.bashrc</code> ou <code>.zshrc</code></p>
+<div class="listingblock">
+<div class="content">
+<pre>$ cp ~/.bashrc ~/.bashrc_save
+$ echo "export JAVA_HOME=\"~/java/jdk1.8.0_40\"" &gt;&gt; ~/.bashrc
+$ echo "export PATH=\"$JAVA_HOME/bin:$PATH\"" &gt;&gt; ~/.bashrc</pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
 </li>
 </ul>
 </div>
 </li>
 <li>
-<p>d&#8217;ouvrir le <code>README.html</code> du répertoire <code>doc</code> dans un autre onglet ou de visualiser ce répertoire du repo sur GitHub</p>
+<p>Mac OS (<code>jdk-8u40-macosx-x64.dmg</code>)</p>
+<div class="ulist">
+<ul>
+<li>
+<p>double-cliquez sur le fichier et suivez les écrans d&#8217;installation</p>
+</li>
+<li>
+<p>si vous aviez déjà un JDK d&#8217;une version antérieure installé précédemment, assurez-vous d&#8217;exécuter :</p>
+<div class="ulist">
+<ul>
+<li>
+<p>de façon temporaire</p>
+<div class="listingblock">
+<div class="content">
+<pre>$ export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_40.jdk" &amp;&amp; export PATH="$JAVA_HOME/bin:$PATH"</pre>
+</div>
+</div>
+</li>
+<li>
+<p>de façon définitive en modifiant votre fichier <code>.bashrc</code> ou <code>.zshrc</code></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Windows 32 bits (<code>jdk-8u40-windows-i586.exe</code>) ou 64 bits (<code>jdk-8u40-windows-x64.exe</code>)</p>
+<div class="ulist">
+<ul>
+<li>
+<p>lancez le <code>.exe</code> qui correspond à votre architecture et suivez les instructions de l&#8217;installeur (prenez garde à ne pas installer Ask)</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_installer_maven">Installer Maven</h3>
+<div class="paragraph">
+<p>Sur la clé USB, vous trouverez dans le répertoire <code>binaries</code> les fichiers d&#8217;installation pour Maven 3.3.1 (<code>apache-maven-3.3.1-bin.zip</code>) mais aussi pour Maven 3.2.5 et 3.1.1 qui sont présents pour votre divertissement.</p>
+</div>
+<div class="sect3">
+<h4 id="_installation_sous_linux_mac_os">Installation sous Linux &amp; Mac OS</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>créez un répertoire pour Maven (par exemple <code>~/maven</code>)</p>
+<div class="listingblock">
+<div class="content">
+<pre>$ mkdir ~/maven</pre>
+</div>
+</div>
+</li>
+<li>
+<p>décompressez l&#8217;archive <code>apache-maven-3.3.1-bin.zip</code>, dans votre répertoire d&#8217;installation</p>
+<div class="listingblock">
+<div class="content">
+<pre>$ cp [chemin_vers_votre_copie_des_sources_du_hands-on]/binaries/apache-maven-3.3.1-bin.zip ~/maven
+$ cd ~/maven
+$ unzip apache-maven-3.3.1-bin.zip</pre>
+</div>
+</div>
+</li>
+<li>
+<p>ajoutez le répertoire <code>bin</code> de Maven à votre <code>PATH</code> et définissez la variable globale <code>M2_HOME</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>de façon temporaire</p>
+<div class="listingblock">
+<div class="content">
+<pre>$ export M2_HOME="~/maven/apache-maven-3.3.1" &amp;&amp; export PATH="$M2_HOME/bin:$PATH"</pre>
+</div>
+</div>
+</li>
+<li>
+<p>de façon définitive en modifiant votre fichier <code>.bashrc</code> ou <code>.zshrc</code></p>
+<div class="listingblock">
+<div class="content">
+<pre>$ cp ~/.bashrc ~/.bashrc_save
+$ echo "export M2_HOME=\"~/maven/apache-maven-3.3.1\"" &gt;&gt; ~/.bashrc
+$ echo "export PATH=\"$M2_HOME/bin:$PATH\"" &gt;&gt; ~/.bashrc</pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_installation_sous_windows">Installation sous Windows</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>décompressez l&#8217;archive <code>apache-maven-3.3.1-bin.zip</code>, dans votre répertoire d&#8217;installation (e.g. <code>C:\Program Files\</code>)</p>
+</li>
+<li>
+<p>exportez <code>C:\Program Files\apache-maven-3.3.1</code> (ou équivalent) dans Path (pour y accéder : clic-droit sur Ordinateur dans le menu démarrer puis "Paramètres avancés")</p>
+</li>
+<li>
+<p>démarrez un terminal (saisissez <code>cmd.exe</code> dans le menu démarrer) et exécutez <code>mvn -version</code> pour vérifier que votre configuration fonctionne</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ouvrir_les_readme">Ouvrir les README</h3>
+<div class="paragraph">
+<p>Pour suivre ce hands-on, suivez les instructions présentées dans les fichiers <code>README.html</code>.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>ouvrez le <code>README.html</code> (oui, oui, la page que vous êtes en train de lire) à la racine du repo dans votre navigateur</p>
+</li>
+<li>
+<p>ouvrez le <code>README.html</code> du répertoire <code>doc</code> dans un autre onglet</p>
 <div class="ulist">
 <ul>
 <li>
@@ -627,7 +795,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-03-14 14:05:28 CET
+Last updated 2015-04-07 13:35:05 CEST
 </div>
 </div>
 </body>

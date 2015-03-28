@@ -10,28 +10,111 @@ Ceci est le support du Hands-On de Devoxx France 2015 intitulé http://cfp.devox
 === Prérequis
 
 1. un terminal
-2. Maven 3.1.1 ou 3.2.5
-3. Java 8
+2. Java 8
+3. Maven 3.1.1 ou 3.2.5 ou 3.3.1
 4. l'IDE de votre choix
 
-=== Installation
+=== Récupérer les sources
 
-Pour suivre ce hands-on, vous avez besoin:
+Pour suivre ce hands-on, vous avez besoin des sources. Vous pouvez les récupérer :
 
-1. d'un clone de ce repo en local
+1. en faisant un clone du répository Git sur GitHub
 +
 ----
-git clone https://github.com/fbiville/annotation-processing-ftw.git
+$ mkdir ~/devoxx_2015
+$ git clone https://github.com/fbiville/annotation-processing-ftw.git ~/devoxx_2015/annotation-processing-ftw
 ----
-2. d'installer maven si ce n'est déjà fait
+2. en copiant le repértoire `annotation-processing-ftw` présent sur la clé USB
+
+=== Installer Java 8
+
+Sur la clé USB, vous trouverez dans le répertoire `binaries` les fichiers d'installation pour :
+
+* linux 32 bits (`jdk-8u40-linux-i586.tar.gz`) ou 64 bits (`jdk-8u40-linux-x64.tar.gz`)
+** créez un répertoire pour Java (par exemple `~/java`)
 +
-TODO
-3. d'installer Java 8 si ce n'est déjà fait
+----
+$ mkdir ~/java
+----
+** décompressez l'archive pour votre architecture, dans votre répertoire d'installation
 +
-TODO
-4. d'ouvrir le `README.html` (oui, oui, la page que vous êtes en train de lire) à la racine du repo dans votre navigateur ou de visualiser la racine du repo sur GitHub
-** la première solution est conseillée car le rendu est bien meilleur
-5. d'ouvrir le `README.html` du répertoire `doc` dans un autre onglet ou de visualiser ce répertoire du repo sur GitHub
+----
+$ cp [chemin_vers_votre_copie_des_sources_du_hands-on]/binaries/jdk-8u40-linux-[votre_archi].tar.gz ~/java
+$ cd ~/java
+$ tar xvfz jdk-8u40-linux-[votre_archi].tar.gz
+----
+** ajoutez le répertoire `bin` de Java à votre `PATH`
+*** de façon temporaire
++
+----
+$ export JAVA_HOME="~/java/jdk1.8.0_40" && export PATH="$JAVA_HOME/bin:$PATH"
+----
+*** de façon définitive en modifiant votre fichier `.bashrc` ou `.zshrc`
++
+----
+$ cp ~/.bashrc ~/.bashrc_save
+$ echo "export JAVA_HOME=\"~/java/jdk1.8.0_40\"" >> ~/.bashrc
+$ echo "export PATH=\"$JAVA_HOME/bin:$PATH\"" >> ~/.bashrc
+----
+* Mac OS (`jdk-8u40-macosx-x64.dmg`)
++
+** double-cliquez sur le fichier et suivez les écrans d'installation
+** si vous aviez déjà un JDK d'une version antérieure installé précédemment, assurez-vous d'exécuter :
+*** de façon temporaire
++
+----
+$ export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_40.jdk" && export PATH="$JAVA_HOME/bin:$PATH"
+----
++
+*** de façon définitive en modifiant votre fichier `.bashrc` ou `.zshrc`
+
+* Windows 32 bits (`jdk-8u40-windows-i586.exe`) ou 64 bits (`jdk-8u40-windows-x64.exe`)
+** lancez le `.exe` qui correspond à votre architecture et suivez les instructions de l'installeur (prenez garde à ne pas installer Ask)
+
+=== Installer Maven
+
+Sur la clé USB, vous trouverez dans le répertoire `binaries` les fichiers d'installation pour Maven 3.3.1 (`apache-maven-3.3.1-bin.zip`) mais aussi pour Maven 3.2.5 et 3.1.1 qui sont présents pour votre divertissement.
+
+==== Installation sous Linux & Mac OS
+
+* créez un répertoire pour Maven (par exemple `~/maven`)
++
+----
+$ mkdir ~/maven
+----
+* décompressez l'archive `apache-maven-3.3.1-bin.zip`, dans votre répertoire d'installation
++
+----
+$ cp [chemin_vers_votre_copie_des_sources_du_hands-on]/binaries/apache-maven-3.3.1-bin.zip ~/maven
+$ cd ~/maven
+$ unzip apache-maven-3.3.1-bin.zip
+----
+* ajoutez le répertoire `bin` de Maven à votre `PATH` et définissez la variable globale `M2_HOME`
+** de façon temporaire
++
+----
+$ export M2_HOME="~/maven/apache-maven-3.3.1" && export PATH="$M2_HOME/bin:$PATH"
+----
+** de façon définitive en modifiant votre fichier `.bashrc` ou `.zshrc`
++
+----
+$ cp ~/.bashrc ~/.bashrc_save
+$ echo "export M2_HOME=\"~/maven/apache-maven-3.3.1\"" >> ~/.bashrc
+$ echo "export PATH=\"$M2_HOME/bin:$PATH\"" >> ~/.bashrc
+----
+
+==== Installation sous Windows
+
+* décompressez l'archive `apache-maven-3.3.1-bin.zip`, dans votre répertoire d'installation (e.g. `C:\Program Files\`)
+* exportez `C:\Program Files\apache-maven-3.3.1` (ou équivalent) dans Path (pour y accéder : clic-droit sur Ordinateur dans le menu démarrer puis "Paramètres avancés")
+* démarrez un terminal (saisissez `cmd.exe` dans le menu démarrer) et exécutez `mvn -version` pour vérifier que votre configuration fonctionne
+
+=== Ouvrir les README
+
+Pour suivre ce hands-on, suivez les instructions présentées dans les fichiers `README.html`.
+
+1. ouvrez le `README.html` (oui, oui, la page que vous êtes en train de lire) à la racine du repo dans votre navigateur
+2. ouvrez le `README.html` du répertoire `doc` dans un autre onglet
 ** nous vous fournissons les documentations qui vous permettront de résoudre la plupart des exercices
 ** régulièrement, nous vous orienterons même vers la bonne documentation (trop sympa)
 
