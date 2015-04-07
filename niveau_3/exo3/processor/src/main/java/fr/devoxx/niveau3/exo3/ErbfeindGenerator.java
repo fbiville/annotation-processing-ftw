@@ -1,23 +1,19 @@
 package fr.devoxx.niveau3.exo3;
 
-import com.google.auto.service.AutoService;
-import com.squareup.javapoet.AnnotationSpec;
-import com.squareup.javapoet.JavaFile;
-import com.squareup.javapoet.TypeSpec;
-
-import javax.annotation.processing.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
+import java.util.stream.Stream;
+import javax.annotation.processing.AbstractProcessor;
+import javax.annotation.processing.ProcessingEnvironment;
+import javax.annotation.processing.Processor;
+import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
-import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
+import com.google.auto.service.AutoService;
 
 @AutoService(Processor.class)
 /**
@@ -40,9 +36,7 @@ public class ErbfeindGenerator extends AbstractProcessor {
 
   @Override
   public Set<String> getSupportedAnnotationTypes() {
-    HashSet<String> types = new HashSet<>();
-    types.add(Erbfeind.class.getName());
-    return types;
+    return Collections.emptySet();
   }
 
   @Override
@@ -70,43 +64,25 @@ public class ErbfeindGenerator extends AbstractProcessor {
   public Collection<Element> extractClassElements(Set<? extends TypeElement> annotations,
                                            RoundEnvironment roundEnv) {
 
-    return annotations.stream()
-      .flatMap(annotation -> roundEnv.getElementsAnnotatedWith(annotation).stream())
-      .collect(Collectors.toList());
+    //TODO: extrait les éléments annotés par les annotations spécifiées
+    return Collections.emptyList();
   }
 
   String packageName(Element element) {
-    return elementUtils.getPackageOf(element).getQualifiedName().toString();
+    //TODO: extrait le nom de package d'un élément
+    return "";
   }
 
   private void write(Element element) {
-    erbfeindNames(element).forEach(
-      className -> {
-        String packageName = packageName(element);
-        if (elementUtils.getTypeElement(packageName + "." + className) != null) {
-          return;
-        }
-
-        try {
-          TypeSpec.Builder typeBuilder = TypeSpec.classBuilder(className)
-            .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
-            .addAnnotation(AnnotationSpec.builder(Erbfeind.class)
-              .addMember("value", "$S", element.getSimpleName().toString())
-              .build());
-
-          JavaFile.builder(packageName, typeBuilder.build())
-            .indent("\t")
-            .build()
-            .writeTo(processingEnv.getFiler());
-
-        } catch (IOException e) {
-          throw new RuntimeException(e.getMessage(), e);
-        }
-      }
-    );
+    /*
+     * TODO: génère une classe par nom d'Erbfeind spécifié par l'Element donné
+     */
   }
 
   private Stream<String> erbfeindNames(Element element) {
-    return Arrays.asList(element.getAnnotation(Erbfeind.class).value()).stream();
+    /*
+     * TODO: extrait les noms d'Erbfeind de l'élément spécifié
+     */
+    return Stream.empty();
   }
 }

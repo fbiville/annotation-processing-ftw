@@ -1,6 +1,7 @@
 package fr.devoxx.niveau3.exo3.etape3;
 
 import fr.devoxx.niveau3.exo3.ErbfeindGenerator;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static com.google.common.truth.Truth.assert_;
@@ -12,6 +13,7 @@ public class Etape3Test {
   private ErbfeindGenerator generator = new ErbfeindGenerator();
 
   @Test
+  @Ignore
   public void at_last_erbfeind_generates_annotated_erbfeind_classes() {
     assert_().about(javaSource())
       .that(sourceFile("A"))

@@ -35,7 +35,6 @@ public class Etape2Test {
   }
 
   @Test
-  @Ignore
   public void at_last_erbfeind_generates_simple_erbfeind_classes() {
     assert_().about(javaSource())
       .that(sourceFile("A"))
