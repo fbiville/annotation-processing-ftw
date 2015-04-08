@@ -2,6 +2,7 @@
 :toc: right
 :toc-title: Hands-On Devoxx 2015
 :icons: font
+:source-highlighter: pygments
 
 Ceci est le support du Hands-On de Devoxx France 2015 intitulé http://cfp.devoxx.fr/2015/talk/QHH-4326/Compile-time_annotation_processing_:_@Nailed(%22it%22)[Annotation Processing: @​Nailed("it")] créé par https://github.com/fbiville/[Florent Biville] et https://github.com/lesaint[Sébastien Lesaint].
 
@@ -108,6 +109,26 @@ $ echo "export PATH=\"$M2_HOME/bin:$PATH\"" >> ~/.bashrc
 * décompressez l'archive `apache-maven-3.3.1-bin.zip`, dans votre répertoire d'installation (e.g. `C:\Program Files\`)
 * exportez `C:\Program Files\apache-maven-3.3.1` (ou équivalent) dans Path (pour y accéder : clic-droit sur Ordinateur dans le menu démarrer puis "Paramètres avancés")
 * démarrez un terminal (saisissez `cmd.exe` dans le menu démarrer) et exécutez `mvn -version` pour vérifier que votre configuration fonctionne
+
+==== Utiliser le repo fourni
+
+Sur la clé USB fournie, vous trouverez un repository Maven préalimenté avec les dépendances nécessaires pour résoudre les exercices.
+
+Pour l'utiliser, il suffit de créer/modifier le fichier `${user.home}/.m2/settings.xml` de votre compte utilisateur pour pointer vers votre copie de ce repository.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+  <localRepository>[path_vers_votre_copie_du_contenu_de_la_clé_USB]/maven/repository</localRepository>
+
+  <!-- whatever -->
+
+</settings>
+```
+
 
 === Ouvrir les README
 
