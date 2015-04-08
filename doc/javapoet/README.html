@@ -1,32 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <meta http-equiv="Content-Style-Type" content="text/css" />
-  <meta name="generator" content="pandoc" />
-  <title></title>
-  <style type="text/css">code{white-space: pre;}</style>
-  <style type="text/css">
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; }
-code > span.dt { color: #902000; }
-code > span.dv { color: #40a070; }
-code > span.bn { color: #40a070; }
-code > span.fl { color: #40a070; }
-code > span.ch { color: #4070a0; }
-code > span.st { color: #4070a0; }
-code > span.co { color: #60a0b0; font-style: italic; }
-code > span.ot { color: #007020; }
-code > span.al { color: #ff0000; font-weight: bold; }
-code > span.fu { color: #06287e; }
-code > span.er { color: #ff0000; font-weight: bold; }
-  </style>
-</head>
-<body>
 <h1 id="javapoet">JavaPoet</h1>
 <p><code>JavaPoet</code> is a Java API for generating <code>.java</code> source files.</p>
 <p>Source file generation can useful when doing things such as annotation processing or interacting with metadata files (e.g., database schemas, protocol formats). By generating code, you eliminate the need to write boilerplate while also keeping a single source of truth for the metadata.</p>
@@ -55,9 +26,10 @@ TypeSpec helloWorld = TypeSpec.<span class="fu">classBuilder</span>(<span class=
 JavaFile javaFile = JavaFile.<span class="fu">builder</span>(<span class="st">&quot;com.example.helloworld&quot;</span>, helloWorld)
     .<span class="fu">build</span>();
 
-javaFile.<span class="fu">emit</span>(System.<span class="fu">out</span>);</code></pre>
+javaFile.<span class="fu">writeTo</span>(System.<span class="fu">out</span>);</code></pre>
 <p>To declare the main method, we've created a <code>MethodSpec</code> &quot;main&quot; configured with modifiers, return type, parameters and code statements. We add the main method to a <code>HelloWorld</code> class, and then add that to a <code>HelloWorld.java</code> file.</p>
 <p>In this case we write the file to <code>System.out</code>, but we could also get it as a string (<code>JavaFile.toString()</code>) or write it to the file system (<code>JavaPoet.writeTo()</code>).</p>
+<p>The <a href="https://square.github.io/javapoet/javadoc/javapoet/">Javadoc</a> catalogs the complete JavaPoet API, which we explore below.</p>
 <h3 id="code-control-flow">Code &amp; Control Flow</h3>
 <p>Most of JavaPoet's API uses plain old immutable Java objects. There's also builders, method chaining and varargs to make the API friendly. JavaPoet offers models for classes &amp; interfaces (<code>TypeSpec</code>), fields (<code>FieldSpec</code>), methods &amp; constructors (<code>MethodSpec</code>), parameters (<code>ParameterSpec</code>) and annotations (<code>AnnotationSpec</code>).</p>
 <p>But the <em>body</em> of methods and constructors is not modeled. There's no expression class, no statement class or syntax tree nodes. Instead, JavaPoet uses strings for code blocks:</p>
@@ -128,7 +100,7 @@ javaFile.<span class="fu">emit</span>(System.<span class="fu">out</span>);</code
   JavaFile javaFile = JavaFile.<span class="fu">builder</span>(<span class="st">&quot;com.example.helloworld&quot;</span>, helloWorld)
       .<span class="fu">build</span>();
       
-  javaFile.<span class="fu">emit</span>(System.<span class="fu">out</span>);
+  javaFile.<span class="fu">writeTo</span>(System.<span class="fu">out</span>);
 }
 
 <span class="kw">private</span> <span class="dt">static</span> MethodSpec <span class="fu">whatsMyName</span>(String name) {
@@ -166,7 +138,7 @@ TypeSpec helloWorld = TypeSpec.<span class="fu">classBuilder</span>(<span class=
 JavaFile javaFile = JavaFile.<span class="fu">builder</span>(<span class="st">&quot;com.example.helloworld&quot;</span>, helloWorld)
     .<span class="fu">build</span>();
     
-javaFile.<span class="fu">emit</span>(System.<span class="fu">out</span>);</code></pre>
+javaFile.<span class="fu">writeTo</span>(System.<span class="fu">out</span>);</code></pre>
 <p>That generates the following <code>.java</code> file, complete with the necessary <code>import</code>:</p>
 <pre class="sourceCode java"><code class="sourceCode java"><span class="kw">package com.example.helloworld;</span>
 
@@ -268,7 +240,7 @@ TypeSpec helloWorld = TypeSpec.<span class="fu">classBuilder</span>(<span class=
 <p>The other modifiers work where permitted. Note that when specifying modifiers, JavaPoet uses <a href="http://docs.oracle.com/javase/8/docs/api/javax/lang/model/element/Modifier.html"><code>javax.lang.model.element.Modifier</code></a>, a class that is not available on Android. This limitation applies to code-generating-code only; the output code runs everywhere: JVMs, Android, and GWT.</p>
 <p>Methods also have parameters, exceptions, varargs, Javadoc, annotations, type variables, and a return type. All of these are configured with <code>MethodSpec.Builder</code>.</p>
 <h3 id="constructors">Constructors</h3>
-<p><code>MethodSpec</code> is a slight misnomer; it is also be used for constructors:</p>
+<p><code>MethodSpec</code> is a slight misnomer; it can also be used for constructors:</p>
 <pre class="sourceCode java"><code class="sourceCode java">MethodSpec flux = MethodSpec.<span class="fu">constructorBuilder</span>()
     .<span class="fu">addModifiers</span>(Modifier.<span class="fu">PUBLIC</span>)
     .<span class="fu">addParameter</span>(String.<span class="fu">class</span>, <span class="st">&quot;greeting&quot;</span>)
@@ -531,5 +503,3 @@ limitations under the License.</code></pre>
 <h1 id="javawriter">JavaWriter</h1>
 <p>JavaPoet is the successor to <a href="https://github.com/square/javapoet/tree/javawriter_2">JavaWriter</a>. New projects should prefer JavaPoet because it has a stronger code model: it understands types and can manage imports automatically. JavaPoet is also better suited to composition: rather than streaming the contents of a <code>.java</code> file top-to-bottom in a single pass, a file can be assembled as a tree of declarations.</p>
 <p>JavaWriter continues to be available in <a href="https://github.com/square/javapoet/tree/javawriter_2">GitHub</a> and <a href="http://search.maven.org/#artifactdetails%7Ccom.squareup%7Cjavawriter%7C2.5.1%7Cjar">Maven Central</a>.</p>
-</body>
-</html>
